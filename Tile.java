@@ -28,8 +28,7 @@ public class Tile {
     public boolean hasRobber() {
         return robber;
     }
-    public void setRobber(boolean b) {
-        robber = b;
+    public void setRobber(boolean b) {robber = b;
     }
     public int getNumber(int i) {
         return number;
