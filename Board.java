@@ -119,6 +119,89 @@ public class Board {
     } //TODO: check if order of numbers can be just left to right
 
     public void setUpIntersections() {
-        Intersection[][] intersections = new Intersection[11][12];
+        Intersection[][] intersections = new Intersection[12][6];
+
+        //fill up intersections that will be used
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (i == 0 || i == 11) {
+                    if (j<3) {
+                        intersections[i][j] = new Intersection();
+                    }
+                }
+                else if (i == 1 || i == 2 || i == 9 || i == 10) {
+                    if (j<4) {
+                        intersections[i][j] = new Intersection();
+                    }
+                }
+                else if (i == 3 || i == 4 || i == 5 || i == 7 || i == 8) {
+                    if (j<5) {
+                        intersections[i][j] = new Intersection();
+                    }
+                }
+                else if (i == 6 || i == 7) {
+                    if (j<6) {
+                        intersections[i][j] = new Intersection();
+                    }
+                }
+            }
+        }
+
+        //connect intersections
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (i%2 == 0) {
+                    if (intersections[i][j] != null) {
+                        intersections[i][j].setI1(intersections[i+1][j]);
+                        intersections[i][j].setI2(intersections[i+1][j+1]);
+                    }
+                }
+                else if (i%2 == 1) {
+                    if (intersections[i][j] != null) {
+                        intersections[i][j].setI3(intersections[i+1][j]);
+                    }
+                }
+            }
+        }
+        for (int i = 11; i > 6; i--) {
+            for (int j = 0; j < 6; j++) {
+                if (i%2 == 0) {
+                    if (intersections[i][j] != null) {
+                        intersections[i][j].setI3(intersections[i-1][j]);
+                    }
+                }
+                else if (i%2 == 1) {
+                    if (intersections[i][j] != null) {
+                        intersections[i][j].setI1(intersections[i-1][j]);
+                        intersections[i][j].setI2(intersections[i-1][j+1]);
+                    }
+                }
+            }
+        }
+
+        //set intersections' tiles TODO: finish this
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (i == 0) {
+                    if (j < 3) {
+                        intersections[i][j].setT3(tiles[i][j+1]);
+                    }
+                }
+                else if (i == 1) {
+                    if (j < 4) {
+                        intersections[i][j].setT2(tiles[i-1][j+1]);
+                        intersections[i][j].setT3(tiles[i-1][j]);
+                    }
+                }
+                else if (i == 2) {
+                    if (j < 4) {
+                        intersections[i][j].setT2(tiles[i-2][j+1]);
+                        intersections[i][j].setT1(tiles[i-2][j]);
+                        intersections[i][j].setT3(tiles[i-1][j]);
+                    }
+                }
+            }
+        }
+
     }
 }
