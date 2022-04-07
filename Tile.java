@@ -9,6 +9,21 @@ public class Tile {
     ArrayList<Settlement> settles; //start at top vertex and go clockwise
     boolean robber;
 
+    public Tile(String res) {
+        resource = res;
+        xCoord = -1;
+        yCoord = -1;
+        number = -1;
+        resource = res;
+        t1 = null;
+        t2 = null;
+        t3 = null;
+        t4 = null;
+        t5 = null;
+        t6 = null;
+        settles = new ArrayList<Settlement>();
+        robber = false;
+    }
 
     public Tile(int x, int y, int num, String res) {
         xCoord = x;
@@ -21,14 +36,15 @@ public class Tile {
         t4 = null;
         t5 = null;
         t6 = null;
-        settles = new ArrayList<>();
+        settles = new ArrayList<Settlement>();
         robber = false;
     }
     //getters and setters
     public boolean hasRobber() {
         return robber;
     }
-    public void setRobber(boolean b) {robber = b;
+    public void setRobber(boolean b) {
+        robber = b;
     }
     public int getNumber(int i) {
         return number;
@@ -51,6 +67,21 @@ public class Tile {
     }
     public void setT1(Tile t) {
         t1 = t;
+    }
+    public void setT2(Tile t) {
+        t2 = t;
+    }
+    public void setT3(Tile t) {
+        t3 = t;
+    }
+    public void setT4(Tile t) {
+        t4 = t;
+    }
+    public void setT5(Tile t) {
+        t5 = t;
+    }
+    public void setT6(Tile t) {
+        t6 = t;
     }
 
 }
