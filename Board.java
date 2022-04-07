@@ -119,6 +119,6 @@ public class Board {
     } //TODO: check if order of numbers can be just left to right
 
     public void setUpIntersections() {
-
+        Intersection[][] intersections = new Intersection[11][12];
     }
 }
