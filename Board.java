@@ -276,9 +276,11 @@ public class Board {
                         intersections[i][j].setT1(tiles[4][j]);
                     }
                 }
-
             }
         }
+
+        //set up ports
+
 
     }
 }
