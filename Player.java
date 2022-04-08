@@ -1,5 +1,5 @@
 import java.util.*;
-/*
+
 public class Player {
     HashMap<String, Integer> inventory;
     HashSet<Settlement> settlements;
@@ -35,38 +35,27 @@ public class Player {
         inventory.put(resource, inventory.get(resource) - amount);
     }
 
-    public void addToSettlements(Settlement settlement) {
+    public void addToSettlement(Settlement settlement) {
         settlements.add(settlement);
-    }
-
-    public void removeFromSettlements(Settlement settlement) {
-        settlements.remove(settlement);
     }
 
     public void addToDevelopmentCards(String card, int amount) {
         developmentCards.put(card, developmentCards.get(card) + amount);
-        if (card.equals("Victory Point")) {
-            victoryPoints++;
-        }
     }
 
     public void removeFromDevelopmentCards(String card, int amount) {
         developmentCards.put(card, developmentCards.get(card) - amount);
     }
 
-    public void addToShopRatio(String resource, int amount) {
-        shopRatio.put(resource, shopRatio.get(resource) + amount);
-    }
-
-    public void removeFromShopRatio(String resource, int amount) {
-        shopRatio.put(resource, shopRatio.get(resource) - amount);
+    public void setShopRatio(String resource, int amount) {
+        shopRatio.put(resource, amount);
     }
 
     public int getInventory(String resource) {
         return inventory.get(resource);
     }
 
-    public int getKnightCount() {
+    public int getKnightsUsed() {
         return KnightsUsed;
     }
 
@@ -110,10 +99,6 @@ public class Player {
         developmentCards.put(card, amount);
     }
 
-    public void setShopRatio(String resource, int amount) {
-        shopRatio.put(resource, amount);
-    }
-
     public void addKnight() {
         KnightsUsed++;
     }
@@ -124,10 +109,6 @@ public class Player {
 
     public void addVictoryPoints(int points) {
         victoryPoints += points;
-    }
-
-    public void removeVictoryPoints(int points) {
-        victoryPoints -= points;
     }
 
     public void addDevelopmentCard(String card) {
@@ -222,7 +203,7 @@ public class Player {
         return settlements.size();
     }
 
-    public HashMap<String, Integer> getTotalDevelopmentCards() {
+    public HashMap<String, Integer> getDevCardInventory() {
         HashMap<String, Integer> total = new HashMap<>();
         for (String card : developmentCards.keySet()) {
             total.put(card, developmentCards.get(card));
@@ -242,10 +223,6 @@ public class Player {
         settlements.add(settlement);
     }
 
-    public void removeSettlement(Settlement settlement) {
-        settlements.remove(settlement);
-    }
-
     public void addDevelopmentCard(String card, int amount) {
         developmentCards.put(card, developmentCards.get(card) + amount);
     }
@@ -254,37 +231,9 @@ public class Player {
         developmentCards.put(card, developmentCards.get(card) - amount);
     }
 
-    public void addKnight(int amount) {
+    public void useKnight(int amount) {
+        developmentCards.put("knight", developmentCards.get("knight") - amount);
         KnightsUsed += amount;
-    }
-
-    public void removeAllResources() {
-        inventory.clear();
-    }
-
-    public void removeAllDevelopmentCards() {
-        developmentCards.clear();
-    }
-
-    public void removeAllShopRatio() {
-        shopRatio.clear();
-    }
-
-    public void removeAllSettlements() {
-        settlements.clear();
-    }
-
-    public void removeAll() {
-        removeAllResources();
-        removeAllDevelopmentCards();
-        removeAllShopRatio();
-        removeAllSettlements();
-    }
-
-    public void removeAllExcept(String resource) {
-        HashMap<String, Integer> temp = new HashMap<>();
-        temp.put(resource, inventory.get(resource));
-        inventory = temp;
     }
 
     public boolean hasLargestArmy() {
@@ -300,7 +249,7 @@ public class Player {
         return false;
     }
 }
-    */
+
 
 
 

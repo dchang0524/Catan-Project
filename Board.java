@@ -231,7 +231,7 @@ public class Board {
                     if (j < 6) {
                         if (j>0) {
                             intersections[i][j].setT1(tiles[2][j-1]);
-                            intersections[i][j].setT3(tiles[3][j-1])
+                            intersections[i][j].setT3(tiles[3][j-1]);
                         }
                         intersections[i][j].setT2(tiles[2][j]);
                     }
@@ -282,5 +282,15 @@ public class Board {
         //set up ports
 
 
-    }
+    } //TODO: set up ports
+
+    public void distributeResources(int k) {
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (tiles[i][j] != null && tiles[i][j].getNumber() == k) {
+                    tiles[i][j].giveResources();
+                }
+            }
+        }
+    } //interactions with robber will be covered in main method
 }

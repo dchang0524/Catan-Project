@@ -1,3 +1,4 @@
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Tile {
@@ -46,7 +47,7 @@ public class Tile {
     public void setRobber(boolean b) {
         robber = b;
     }
-    public int getNumber(int i) {
+    public int getNumber() {
         return number;
     }
     //getters and setters
@@ -83,5 +84,10 @@ public class Tile {
     public void setT6(Tile t) {
         t6 = t;
     }
-
+    public void giveResources() {
+        //give  resources to settlements
+        for (int i = 0; i < settles.size(); i++) {
+            settles.get(i).getOwner().addResource(this.resource, 1);
+        }
+    }
 }
