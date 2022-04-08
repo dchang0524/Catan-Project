@@ -8,8 +8,8 @@ public class Tile {
     String resource;
     ArrayList<Settlement> settles; //start at top vertex and go clockwise
     boolean robber;
-
-    public Tile(String res) {
+    BufferedImage image;
+    public Tile(String res, BufferedImage img) {
         resource = res;
         xCoord = -1;
         yCoord = -1;
