@@ -9,12 +9,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 public class CatanPanel extends JPanel implements MouseListener{
-
     public CatanPanel() {
         addMouseListener(this);
     }
-    public void paint(Graphics g) {
 
+    public void paint(Graphics g) {
     }
     public void mousePressed(MouseEvent m) {
 

@@ -147,10 +147,6 @@ public class Player {
         return settlements;
     }
 
-    public int getKnightsUsed() {
-        return KnightsUsed;
-    }
-
     public HashMap<String, Integer> getDevelopmentCards() {
         return developmentCards;
     }

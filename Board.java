@@ -1,10 +1,13 @@
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Board {
+public class Board{
     Tile[][] tiles;
     Intersection[][] intersections;
 
     public Board() {
+
         setUpTiles();
         setUpIntersections();
     }
@@ -13,17 +16,36 @@ public class Board {
         tiles = new Tile[5][5]; // [0][0] [0][4] [1][4] [3][4] [4][0] [4][4]
 
         //sets up resources for each tile in the board
+        BufferedImage wood = null;
+        BufferedImage sheep = null;
+        BufferedImage wheat = null;
+        BufferedImage brick = null;
+        BufferedImage ore = null;
+        BufferedImage desert = null;
+        try{
+            wood = ImageIO.read(Board.class.getResource("/TileImages/WoodTile.png"));
+            sheep = ImageIO.read(Board.class.getResource("/TileImages/SheepTile.png"));
+            wheat = ImageIO.read(Board.class.getResource("/TileImages/WheatTile.png"));
+            brick = ImageIO.read(Board.class.getResource("/TileImages/BrickTile.png"));
+            ore = ImageIO.read(Board.class.getResource("/TileImages/MountainTile.png"));
+            desert = ImageIO.read(Board.class.getResource("/TileImages/DesertTile.png"));
+        }
+        catch(Exception e){
+            System.out.println("Error loading image");
+        }
         ArrayList<Tile> tileList = new ArrayList<Tile>();
         for (int i = 0; i<4; i++){
-            tileList.add(new Tile("wood"));
-            tileList.add(new Tile("sheep"));
-            tileList.add(new Tile("wheat"));
+            tileList.add(new Tile("wood", wood));
+            tileList.add(new Tile("sheep", sheep));
+            tileList.add(new Tile("wheat", wheat));
         }
         for (int i = 0; i<3; i++){
-            tileList.add(new Tile("brick"));
-            tileList.add(new Tile("ore"));
+            tileList.add(new Tile("brick", brick));
+            tileList.add(new Tile("ore", ore));
         }
-        tileList.add(new Tile("desert"));
+
+        tileList.add(new Tile("desert", desert));
+
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 if (!((i == 0 && j == 0)|| (i == 0 && j == 4) || (i == 4 && j == 0) || (i == 4 && j == 4) || (i == 1 && j == 4) || (i == 3 && j == 4))) {

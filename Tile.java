@@ -24,6 +24,7 @@ public class Tile {
         t6 = null;
         settles = new ArrayList<Settlement>();
         robber = false;
+        image = img;
     }
 
     public Tile(int x, int y, int num, String res) {
@@ -89,5 +90,8 @@ public class Tile {
         for (int i = 0; i < settles.size(); i++) {
             settles.get(i).getOwner().addResource(this.resource, 1);
         }
+    }
+    public BufferedImage getImage() {
+        return image;
     }
 }
