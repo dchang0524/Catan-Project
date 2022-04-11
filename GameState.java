@@ -1,7 +1,7 @@
 public class GameState {
     static int gameState;
     //0 = initial set up, 1 = round start and trading, 2 = build/buy phase, 3 = game end
-    public GameState(){}
+    public GameState(){gameState = 0;}
     public GameState(int state){
         gameState = state;
     }
