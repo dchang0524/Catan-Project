@@ -6,6 +6,7 @@ public class Board{
     Tile[][] tiles;
     Intersection[][] intersections;
 
+
     public Board() {
 
         setUpTiles();

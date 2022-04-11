@@ -1,14 +1,16 @@
 public class GameState {
-    static int gameState;
-    //0 = initial set up, 1 = round start and trading, 2 = build/buy phase, 3 = game end
-    public GameState(){gameState = 0;}
-    public GameState(int state){
-        gameState = state;
+    private int gs;
+    //constructor for GameState
+    public GameState(){gs=0;}
+    public GameState(int gs) {
+        this.gs = gs;
     }
-    public static void setGameState(int state){
-        gameState = state;
+    //getter for gs
+    public int getGameState() {
+        return gs;
     }
-    public static int getGameState(){
-        return gameState;
+    //setter for gs
+    public void setGameState(int gs) {
+        this.gs = gs;
     }
 }

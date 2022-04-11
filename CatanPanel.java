@@ -11,6 +11,9 @@ import javax.imageio.ImageIO;
 public class CatanPanel extends JPanel implements MouseListener{
     GameState gs;
     BufferedImage startBackground, logo;
+    Board board;
+    PlayerManager pm;
+
     public CatanPanel() {
         gs = new GameState();
         try{
@@ -21,6 +24,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             System.out.println("Error loading image");
             return;
         }
+        board = new Board();
         setFocusable(true);
         requestFocus();
         addMouseListener(this);
@@ -29,12 +33,53 @@ public class CatanPanel extends JPanel implements MouseListener{
 
     public void paint(Graphics g) {
         //gameState = 0
-        g.drawImage(startBackground, 0, 0, 1900, 1000, null);
-        g.drawImage(logo, 500, 100, null);
-    }
-    public void mousePressed(MouseEvent m) {
+        if(gs.getGameState() == 0) {
+            menuScreen(g);
+        }
+        if(gs.getGameState() == 1) {
+            g.clearRect(0, 0, 1900, 1000);
+        }
 
     }
+    public void mousePressed(MouseEvent m) {
+        int x = m.getX();
+        int y = m.getY();
+        if(x > 800 && x < 1100 && y > 500 && y < 600) {
+            gs.setGameState(1);
+        }
+        if(x > 800 && x < 1100 && y > 650 && y < 750) {
+            //help screen
+        }
+        if(x > 800 && x < 1100 && y > 800 && y < 900) {
+            System.exit(0);
+        }
+        repaint();
+    }
+    public void menuScreen(Graphics g) {
+        g.drawImage(startBackground, 0, 0, 1900, 1000, null);
+        g.drawImage(logo, 475, 100, null);
+        g.setFont(new Font("Helvetica", Font.BOLD, 40));
+        g.setColor(Color.DARK_GRAY);
+        g.drawRoundRect(800, 500, 300, 100, 20, 20);
+        g.fillRoundRect(800, 500, 300, 100, 20, 20);
+        g.setColor(Color.YELLOW);
+        g.drawString("Start Game", 843, 565);
+        g.setColor(Color.DARK_GRAY);
+        g.drawRoundRect(800, 650, 300, 100, 20, 20);
+        g.fillRoundRect(800, 650, 300, 100, 20, 20);
+        g.setColor(Color.YELLOW);
+        g.drawString("Help", 910, 715);
+        g.setColor(Color.DARK_GRAY);
+        g.drawRoundRect(800, 800, 300, 100, 20, 20);
+        g.fillRoundRect(800, 800, 300, 100, 20, 20);
+        g.setColor(Color.YELLOW);
+        g.drawString("Exit", 910, 865);
+        g.setColor(Color.DARK_GRAY);
+    }
+    public void drawBoard(Graphics g) {
+        g.drawImage(board.tiles[0][1].getImage(), 400, 400, null);
+    }
+
 
 
     public void mouseReleased(MouseEvent m) {}
