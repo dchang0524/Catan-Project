@@ -1,24 +1,25 @@
 import java.awt.*;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.*;
 import javax.swing.*;
 import java.awt.image.*;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import java.io.File;
 
 public class CatanPanel extends JPanel implements MouseListener{
     GameState gs;
     BufferedImage startBackground, logo;
     Board board;
     PlayerManager pm;
+    File file;
 
     public CatanPanel() {
         gs = new GameState();
         try{
-            startBackground = ImageIO.read(CatanPanel.class.getResource("/miscPics/CatanBackground.png"));
-            logo = ImageIO.read(CatanPanel.class.getResource("/miscPics/logo.png"));
+            startBackground = ImageIO.read(CatanPanel.class.getResource("/misc/CatanBackground.png"));
+            logo = ImageIO.read(CatanPanel.class.getResource("/misc/logo.png"));
+            file = new File("/misc/CatanRules.pdf");
         }
         catch(Exception e){
             System.out.println("Error loading image");
@@ -47,8 +48,15 @@ public class CatanPanel extends JPanel implements MouseListener{
         if(x > 800 && x < 1100 && y > 500 && y < 600) {
             gs.setGameState(1);
         }
+        //help
         if(x > 800 && x < 1100 && y > 650 && y < 750) {
-            //help screen
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().open(file);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
         if(x > 800 && x < 1100 && y > 800 && y < 900) {
             System.exit(0);
