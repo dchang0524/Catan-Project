@@ -33,12 +33,16 @@ public class Intersection {
     }
     public void setI2(Intersection i) {
         i2 = i;
-        i.setI2(this);
+        i.setI2Help(this);
     }
     public void setI3(Intersection i) {
         i3 = i;
-        i.setI3(this);
+        i.setI3Help(this);
     }
+    public void setI3Help(Intersection i) {
+        i3 = i;
+    }
+
     public void setSettlement(Player p) {
         this.s = new Settlement(this, p);
     }
