@@ -19,7 +19,6 @@ public class CatanPanel extends JPanel implements MouseListener{
         try{
             startBackground = ImageIO.read(CatanPanel.class.getResource("/misc/CatanBackground.png"));
             logo = ImageIO.read(CatanPanel.class.getResource("/misc/logo.png"));
-            file = new File("/misc/CatanRules.pdf");
         }
         catch(Exception e){
             System.out.println("Error loading image");
@@ -52,6 +51,7 @@ public class CatanPanel extends JPanel implements MouseListener{
         if(x > 800 && x < 1100 && y > 650 && y < 750) {
             if (Desktop.isDesktopSupported()) {
                 try {
+                    File file = new File("/misc/CatanRules.pdf");
                     Desktop.getDesktop().open(file);
                 } catch (IOException ex) {
                     ex.printStackTrace();
