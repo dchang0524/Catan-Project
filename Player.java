@@ -23,7 +23,6 @@ public class Player {
         shopRatio = new HashMap<String, Integer>();
         playerName = name;
     }
-    //TO DO: fix this
     public void addToInventory(String resource, int amount) {
         if (resource == "Desert") {
             return;
@@ -35,7 +34,7 @@ public class Player {
         inventory.put(resource, inventory.get(resource) - amount);
     }
 
-    public void addToSettlement(Settlement settlement) {
+    public void addSettlement(Settlement settlement) {
         settlements.add(settlement);
     }
 
@@ -71,11 +70,11 @@ public class Player {
         return shopRatio.get(resource);
     }
 
-    public boolean getLargestArmy() {
+    public boolean hasLargestArmy() {
         return hasLargestArmy;
     }
 
-    public boolean getLongestRoad() {
+    public boolean hasLongestRoad() {
         return hasLongestRoad;
     }
 
@@ -103,10 +102,6 @@ public class Player {
         KnightsUsed++;
     }
 
-    public void removeKnight() {
-        KnightsUsed--;
-    }
-
     public void addVictoryPoints(int points) {
         victoryPoints += points;
     }
@@ -119,15 +114,7 @@ public class Player {
         KnightsUsed += amount;
     }
 
-    public void removeFromKnightsUsed(int amount) {
-        KnightsUsed -= amount;
-    }
-
-    public void addToVictoryPoints(int amount) {
-        victoryPoints += amount;
-    }
-
-    public void removeFromVictoryPoints(int amount) {
+    public void removeVictoryPoints(int amount) {
         victoryPoints -= amount;
     }
 
@@ -149,14 +136,6 @@ public class Player {
 
     public HashMap<String, Integer> getDevelopmentCards() {
         return developmentCards;
-    }
-
-    public boolean getHasLargestArmy() {
-        return hasLargestArmy;
-    }
-
-    public boolean getHasLongestRoad() {
-        return hasLongestRoad;
     }
 
     public HashMap<String, Integer> getShopRatio() {
@@ -195,16 +174,8 @@ public class Player {
         return victoryPoints;
     }
 
-    public int getTotalSettlements() {
+    public int getNumSettlements() {
         return settlements.size();
-    }
-
-    public HashMap<String, Integer> getDevCardInventory() {
-        HashMap<String, Integer> total = new HashMap<>();
-        for (String card : developmentCards.keySet()) {
-            total.put(card, developmentCards.get(card));
-        }
-        return total;
     }
 
     public void addResource(String resource, int amount) {
@@ -213,10 +184,6 @@ public class Player {
 
     public void removeResource(String resource, int amount) {
         inventory.put(resource, inventory.get(resource) - amount);
-    }
-
-    public void addSettlement(Settlement settlement) {
-        settlements.add(settlement);
     }
 
     public void addDevelopmentCard(String card, int amount) {
@@ -232,11 +199,7 @@ public class Player {
         KnightsUsed += amount;
     }
 
-    public boolean hasLargestArmy() {
-        return hasLargestArmy;
-    }
-
-    public boolean hasCard(String card) {
+    public boolean hasDevCard(String card) {
         for (String cardName : developmentCards.keySet()) {
             if (cardName.equals(card)) {
                 return true;

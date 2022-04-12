@@ -5,7 +5,8 @@ import java.util.ArrayList;
 public class Board{
     Tile[][] tiles;
     Intersection[][] intersections;
-    Port[] ports;
+
+
     public Board() {
 
         setUpTiles();
@@ -302,7 +303,10 @@ public class Board{
         }
 
         //set up ports
+
+
     } //TODO: set up ports
+
     public void setPorts (){
         Port[] ports = new Port[9];
         //fill ports
@@ -329,6 +333,8 @@ public class Board{
         ports[8].setI1(intersections[4][0]);
         ports[8].setI2(intersections[3][0]);
     }
+
+
 
     public void distributeResources(int k) {
         for (int i = 0; i < 12; i++) {
