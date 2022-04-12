@@ -55,6 +55,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                     Desktop.getDesktop().open(file);
                 } catch (IOException ex) {
                     ex.printStackTrace();
+                    System.out.println("Error opening file");
                 }
             }
         }
