@@ -3,14 +3,15 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Board{
-    Tile[][] tiles;
-    Intersection[][] intersections;
-
+    private Tile[][] tiles;
+    private Intersection[][] intersections;
+    private Port[] ports;
 
     public Board() {
 
         setUpTiles();
         setUpIntersections();
+        //setPorts();
     }
 
     public void setUpTiles() {
@@ -306,7 +307,7 @@ public class Board{
     } //TODO: set up ports
 
     public void setPorts (){
-        Port[] ports = new Port[9];
+        this.ports = new Port[9];
         //fill ports
         for(int i=0;i<9;i++){
             ports[i] = new Port();
@@ -332,7 +333,9 @@ public class Board{
         ports[8].setI2(intersections[3][0]);
     }
 
-
+    public Tile[][] getTiles() {
+        return tiles;
+    }
 
     public void distributeResources(int k) {
         for (int i = 0; i < 12; i++) {

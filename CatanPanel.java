@@ -13,6 +13,7 @@ public class CatanPanel extends JPanel implements MouseListener{
     Board board;
     PlayerManager pm;
     File file;
+    Tile[][] tiles;
 
     public CatanPanel() {
         gs = new GameState();
@@ -25,6 +26,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             return;
         }
         board = new Board();
+        tiles = board.getTiles();
         setFocusable(true);
         requestFocus();
         addMouseListener(this);
@@ -37,7 +39,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             menuScreen(g);
         }
         if(gs.getGameState() == 1) {
-            g.clearRect(0, 0, 1900, 1000);
+            drawBoard(g);
         }
 
     }
@@ -86,7 +88,65 @@ public class CatanPanel extends JPanel implements MouseListener{
         g.setColor(Color.DARK_GRAY);
     }
     public void drawBoard(Graphics g) {
-        g.drawImage(board.tiles[0][1].getImage(), 400, 400, null);
+        g.clearRect(0, 0, 1900, 1000);
+        g.setColor(Color.BLUE);
+        g.fillRect(0, 0, 1900, 1000);
+        g.setColor(Color.WHITE);
+        //g.fillRect(60, 60, 840, 840);
+        double horIndent = 158;
+        double verIndent = 120;
+        int width = 160;
+        int height = width * (210/182);
+
+        for (int j = 0; j<tiles[0].length; j++) {
+            if (tiles[0][j] != null) {
+                double x = 90+horIndent*j;
+                double y = 90;
+                tiles[0][j].setxCoord((int)x);
+                tiles[0][j].setyCoord((int)y);
+                g.drawImage(tiles[0][j].getImage(), (int)x, (int)y, width, height, null);
+            }
+
+        }
+        for (int j = 0; j<tiles[1].length; j++) {
+            if (tiles[1][j] != null) {
+                double x = 170+horIndent*j;
+                double y = 90+verIndent;
+                tiles[1][j].setxCoord((int)x);
+                tiles[1][j].setyCoord((int)y);
+                g.drawImage(tiles[1][j].getImage(), (int)x, (int)y, width, height, null);
+            }
+        }
+
+        for (int j = 0; j<tiles[2].length; j++) {
+            if (tiles[2][j] != null) {
+                double x = 90+horIndent*j;
+                double y = 90+verIndent*2;
+                tiles[2][j].setxCoord((int)x);
+                tiles[2][j].setyCoord((int)y);
+                g.drawImage(tiles[2][j].getImage(), (int)x, (int)y, width, height, null);
+            }
+        }
+
+        for (int j = 0; j<tiles[3].length; j++) {
+            if (tiles[3][j] != null) {
+                double x = 170+horIndent*j;
+                double y = 90+verIndent*3;
+                tiles[3][j].setxCoord((int)x);
+                tiles[3][j].setyCoord((int)y);
+                g.drawImage(tiles[3][j].getImage(), (int)x, (int)y, width, height, null);
+            }
+        }
+
+        for (int j = 0; j<tiles[4].length; j++) {
+            if (tiles[4][j] != null) {
+                double x = 90+horIndent*j;
+                double y = 90+verIndent*4;
+                tiles[4][j].setxCoord((int)x);
+                tiles[4][j].setyCoord((int)y);
+                g.drawImage(tiles[4][j].getImage(), (int)x, (int)y, width, height, null);
+            }
+        }
     }
 
 
