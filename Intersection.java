@@ -29,12 +29,20 @@ public class Intersection {
 
     public void setI1(Intersection i) {
         i1 = i;
-        i.setI1(this);
+        i.setI1Help(this);
     }
+    public void setI1Help(Intersection i) {
+        i1 = i;
+    }
+
     public void setI2(Intersection i) {
         i2 = i;
         i.setI2Help(this);
     }
+    public void setI2Help(Intersection i) {
+        i2 = i;
+    }
+
     public void setI3(Intersection i) {
         i3 = i;
         i.setI3Help(this);

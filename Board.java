@@ -80,7 +80,7 @@ public class Board{
         order.add(11);
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                if (!((i == 0 && j == 0)|| (i == 0 && j == 4) || (i == 4 && j == 0) || (i == 4 && j == 4) || (i == 1 && j == 4) || (i == 3 && j == 4)) || tiles[i][j].getResource().equals("desert")) {
+                if ((tiles[i][j] != null && !tiles[i][j].getResource().equals("desert"))) {
                     tiles[i][j].setNumber(order.remove(0));
                 }
             }
@@ -109,7 +109,7 @@ public class Board{
                         temp.setT3(tiles[i][j + 1]);
                     }
                     else if (i == 2) {
-                        if (i != 0) {
+                        if (j>0) {
                             temp.setT1(tiles[i - 1][j-1]);
                             temp.setT6(tiles[i][j-1]);
                             temp.setT5(tiles[i + 1][j-1]);
@@ -241,21 +241,21 @@ public class Board{
                     if (j < 5) {
                         intersections[i][j].setT2(tiles[2][j]);
                     }
-                        if (j>0) {
-                            System.out.println("i: " + i + " j: " + j);
-                            intersections[i][j].setT1(tiles[1][j-1]);
-                            intersections[i][j].setT3(tiles[2][j-1]);
-                        }
+                    if (j>0) {
+                        System.out.println("i: " + i + " j: " + j);
+                        intersections[i][j].setT1(tiles[1][j-1]);
+                        intersections[i][j].setT3(tiles[2][j-1]);
+                    }
 
                 }
                 else if (i == 6) {
                     if (j < 5) {
                         intersections[i][j].setT2(tiles[2][j]);
                     }
-                        if (j>0) {
-                            intersections[i][j].setT1(tiles[2][j-1]);
-                            intersections[i][j].setT3(tiles[3][j-1]);
-                        }
+                    if (j>0) {
+                        intersections[i][j].setT1(tiles[2][j-1]);
+                        intersections[i][j].setT3(tiles[3][j-1]);
+                    }
                 }
                 else if (i == 7) {
                     if (j < 5) {
