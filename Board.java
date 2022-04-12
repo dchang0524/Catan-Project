@@ -307,7 +307,32 @@ public class Board{
 
     } //TODO: set up ports
 
-
+    public void setPorts (){
+        Port[] ports = new Port[9];
+        //fill ports
+        for(int i=0;i<9;i++){
+            ports[i] = new Port();
+        }
+        //connect with intersections
+        ports[0].setI1(intersections[1][0]);
+        ports[0].setI2(intersections[0][0]);
+        ports[1].setI1(intersections[0][1]);
+        ports[1].setI2(intersections[1][2]);
+        ports[2].setI1(intersections[2][3]);
+        ports[2].setI2(intersections[3][4]);
+        ports[3].setI1(intersections[5][5]);
+        ports[3].setI2(intersections[6][5]);
+        ports[4].setI1(intersections[8][4]);
+        ports[4].setI2(intersections[9][3]);
+        ports[5].setI1(intersections[10][2]);
+        ports[5].setI2(intersections[11][1]);
+        ports[6].setI1(intersections[11][0]);
+        ports[6].setI2(intersections[10][1]);
+        ports[7].setI1(intersections[8][0]);
+        ports[7].setI2(intersections[7][0]);
+        ports[8].setI1(intersections[4][0]);
+        ports[8].setI2(intersections[3][0]);
+    }
 
 
 
