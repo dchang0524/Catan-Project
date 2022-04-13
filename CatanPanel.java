@@ -14,7 +14,6 @@ public class CatanPanel extends JPanel implements MouseListener{
     PlayerManager pm;
     File file;
     Tile[][] tiles;
-
     public CatanPanel() {
         gs = new GameState();
         try{
@@ -27,8 +26,7 @@ public class CatanPanel extends JPanel implements MouseListener{
         }
         board = new Board();
         tiles = board.getTiles();
-        setFocusable(true);
-        requestFocus();
+
         addMouseListener(this);
 
     }
@@ -53,7 +51,7 @@ public class CatanPanel extends JPanel implements MouseListener{
         if(x > 800 && x < 1100 && y > 650 && y < 750) {
             if (Desktop.isDesktopSupported()) {
                 try {
-                    File file = new File("/misc/CatanRules.pdf");
+                    File file = new File(this.getClass().getResource("misc/CatanRules.pdf").getFile());
                     Desktop.getDesktop().open(file);
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -92,7 +90,6 @@ public class CatanPanel extends JPanel implements MouseListener{
         g.setColor(Color.BLUE);
         g.fillRect(0, 0, 1900, 1000);
         g.setColor(Color.WHITE);
-        //g.fillRect(60, 60, 840, 840);
         double horIndent = 158;
         double verIndent = 120;
         int width = 160;
@@ -154,5 +151,9 @@ public class CatanPanel extends JPanel implements MouseListener{
     public void mouseReleased(MouseEvent m) {}
     public void mouseEntered(MouseEvent m) {}
     public void mouseExited(MouseEvent m) {}
-    public void mouseClicked(MouseEvent m) {}
+    public void mouseClicked(MouseEvent m) {
+        int x = m.getX();
+        int y = m.getY();
+       System.out.println("vertex:" + x + " " + y);
+    }
 }
