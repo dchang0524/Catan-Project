@@ -89,7 +89,7 @@ public class CatanPanel extends JPanel implements MouseListener{
     }
     public void drawBoard(Graphics g) {
         g.clearRect(0, 0, 1900, 1000);
-        g.setColor(Color.BLUE);
+        g.setColor(Color.DARK_GRAY);
         g.fillRect(0, 0, 1900, 1000);
         g.setColor(Color.WHITE);
         //g.fillRect(60, 60, 840, 840);
@@ -105,6 +105,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                 tiles[0][j].setxCoord((int)x);
                 tiles[0][j].setyCoord((int)y);
                 g.drawImage(tiles[0][j].getImage(), (int)x, (int)y, width, height, null);
+                System.out.println(tiles[0][j].number);
             }
 
         }

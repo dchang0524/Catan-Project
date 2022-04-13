@@ -1,6 +1,6 @@
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Board{
     private Tile[][] tiles;
@@ -60,25 +60,8 @@ public class Board{
 
         //set up numbers for the tiles,
         // TODO: check if numbers can be just from left from right, and if numbers are accurate
-        ArrayList<Integer> order = new ArrayList<>();
-        order.add(5);
-        order.add(2);
-        order.add(6);
-        order.add(3);
-        order.add(8);
-        order.add(10);
-        order.add(9);
-        order.add(12);
-        order.add(11);
-        order.add(4);
-        order.add(8);
-        order.add(10);
-        order.add(9);
-        order.add(4);
-        order.add(5);
-        order.add(6);
-        order.add(3);
-        order.add(11);
+
+        /*
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 if ((tiles[i][j] != null && !tiles[i][j].getResource().equals("desert"))) {
@@ -86,7 +69,7 @@ public class Board{
                 }
             }
         }
-
+        */
         //connect tiles
         //TODO: assumed that if we didnt put a tile in a certain spot(in tiles[][]), it will be null
         for (int i = 0; i < 5; i++) {
@@ -140,7 +123,57 @@ public class Board{
                 }
             }
         }
-    } //TODO: check if order of numbers can be just left to right
+        ArrayList<Integer> order = new ArrayList<>();
+        order.add(5);
+        order.add(2);
+        order.add(6);
+        order.add(3);
+        order.add(8);
+        order.add(10);
+        order.add(9);
+        order.add(12);
+        order.add(11);
+        order.add(4);
+        order.add(8);
+        order.add(10);
+        order.add(9);
+        order.add(4);
+        order.add(5);
+        order.add(6);
+        order.add(3);
+        order.add(11);
+        //int start =  (int)(Math.random()*4);
+            ArrayList<Tile> visited = new ArrayList<Tile>();
+            //if(start == 0){
+                Tile currentTile = tiles[0][1];
+                currentTile.setNumber(order.remove(0));
+                while(!order.isEmpty()){
+                    visited.add(currentTile);
+                    //TODO: check if tile is desert, needs to go to the desert but not add a number
+                    if(currentTile.t6 != null && !visited.contains(currentTile.t6) && !currentTile.t6.resource.equals("desert")){
+                        currentTile = currentTile.t6;
+                    }
+                    else if(currentTile.t5 != null && !visited.contains(currentTile.t5)&& !currentTile.t5.resource.equals("desert")){
+                        currentTile = currentTile.t5;
+                    }
+                    else if(currentTile.t4 != null && !visited.contains(currentTile.t4)&& !currentTile.t4.resource.equals("desert")){
+                        currentTile = currentTile.t4;
+                    }
+                    else if(currentTile.t3 != null && !visited.contains(currentTile.t3)&& !currentTile.t3.resource.equals("desert")){
+                        currentTile = currentTile.t3;
+                    }
+                    else if(currentTile.t2 != null && !visited.contains(currentTile.t2)&& !currentTile.t2.resource.equals("desert")){
+                        currentTile = currentTile.t2;
+                    }
+                    else if(currentTile.t1 != null && !visited.contains(currentTile.t1)&& !currentTile.t1.resource.equals("desert")) {
+                        currentTile = currentTile.t1;
+                    }
+                    currentTile.setNumber(order.remove(0));
+                    //System.out.println(currentTile.getNumber());
+                }
+            //}
+
+    }
 
     public void setUpIntersections() {
         Intersection[][] intersections = new Intersection[12][6];
