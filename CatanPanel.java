@@ -14,6 +14,7 @@ public class CatanPanel extends JPanel implements MouseListener{
     PlayerManager pm;
     File file;
     Tile[][] tiles;
+    Intersection[][] intersections;
     Dimension dim;
     public CatanPanel() {
         dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -28,7 +29,7 @@ public class CatanPanel extends JPanel implements MouseListener{
         }
         board = new Board();
         tiles = board.getTiles();
-
+        intersections = board.getIntersections();
         addMouseListener(this);
 
     }
@@ -145,7 +146,16 @@ public class CatanPanel extends JPanel implements MouseListener{
                 g.drawImage(tiles[4][j].getImage(), (int)x, (int)y, width, height, null);
             }
         }
-
+        /*
+        g.setColor(Color.CYAN);
+        for (int i = 0; i<intersections.length; i++) {
+            for (int j = 0; j<intersections[i].length; j++) {
+                if (intersections[i][j] != null) {
+                    g.fillRect(intersections[i][j].getX(), intersections[i][j].getY(), 10, 10);
+                }
+            }
+        }
+        */
     }
 
 
