@@ -2,14 +2,14 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Tile {
-    private Tile t1, t2, t3, t4, t5, t6; //start at upper right and go clockwise
-    private int number; //number on tile
-    private int xCoord;
-    private int yCoord;
-    private String resource;
-    private ArrayList<Settlement> settles; //start at top vertex and go clockwise
-    private boolean robber;
-    private BufferedImage image;
+    Tile t1, t2, t3, t4, t5, t6; //start at upper left and go clockwise
+    int number; //number on tile
+    int xCoord;
+    int yCoord;
+    String resource;
+    ArrayList<Settlement> settles; //start at top vertex and go clockwise
+    boolean robber;
+    BufferedImage image;
 
     public Tile(String res, BufferedImage img) {
         resource = res;
@@ -99,7 +99,9 @@ public class Tile {
         yCoord = y;
     }
     public BufferedImage getImage() {
+        System.out.println(number);
         return image;
+
     }
 
     public String toString() {
