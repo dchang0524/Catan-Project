@@ -46,10 +46,6 @@ public class Player {
         developmentCards.put(card, developmentCards.get(card) - amount);
     }
 
-    public void setShopRatio(String resource, int amount) {
-        shopRatio.put(resource, amount);
-    }
-
     public int getInventory(String resource) {
         return inventory.get(resource);
     }
@@ -165,7 +161,18 @@ public class Player {
         }
         return total;
     }
-
+    //set
+    public void setInventory(HashMap<String, Integer> inventory) {
+        this.inventory = inventory;
+    }
+    //set
+    public void setSettlements(HashSet<Settlement> settlements) {
+        this.settlements = settlements;
+    }
+    //set
+    public void setDevelopmentCards(HashMap<String, Integer> developmentCards) {
+        this.developmentCards = developmentCards;
+    }
     public int getTotalKnightsUsed() {
         return KnightsUsed;
     }
