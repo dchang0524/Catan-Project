@@ -9,6 +9,8 @@ public class Intersection {
     Tile t1;
     Tile t2;
     Tile t3;
+    int x;
+    int y;
     int portTrade;
     String portResource;
 
@@ -29,26 +31,38 @@ public class Intersection {
 
     public void setI1(Intersection i) {
         i1 = i;
-        i.setI1Help(this);
+        if (i != null) {
+            i.setI1Help(this);
+        }
     }
     public void setI1Help(Intersection i) {
-        i1 = i;
+        if (i != null) {
+            i1 = i;
+        }
     }
 
     public void setI2(Intersection i) {
         i2 = i;
-        i.setI2Help(this);
+        if (i != null) {
+            i.setI2Help(this);
+        }
     }
     public void setI2Help(Intersection i) {
-        i2 = i;
+        if (i != null) {
+            i2 = i;
+        }
     }
 
     public void setI3(Intersection i) {
         i3 = i;
-        i.setI3Help(this);
+        if (i != null) {
+            i.setI3Help(this);
+        }
     }
     public void setI3Help(Intersection i) {
-        i3 = i;
+        if (i != null) {
+            i3 = i;
+        }
     }
 
     public void setSettlement(Player p) {
@@ -65,4 +79,12 @@ public class Intersection {
         t3 = t;
     }
 
+    public void setX(int x) {this.x = x;}
+    public void setY(int y) {this.y = y;}
+    public int getX() {return x;}
+    public int getY() {return y;}
+
+    public String toString() {
+        return x + " " + y;
+    }
 }
