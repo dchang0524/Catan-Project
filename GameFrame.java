@@ -7,7 +7,7 @@ public class GameFrame extends JFrame{
     public GameFrame(String framename) {
         super(framename);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
+//comment
 
         WIDTH = (int) screenSize.getWidth();
         HEIGHT = (int) screenSize.getHeight();
