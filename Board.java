@@ -302,22 +302,19 @@ public class Board{
         for (int i = 0; i < 12; i++) {
             for (int j = 0; j < 6; j++) {
                 if (i == 0 || i == 11) {
-                    if (j<3) {
+                    if (j < 3) {
                         intersections[i][j] = new Intersection();
                     }
-                }
-                else if (i == 1 || i == 2 || i == 9 || i == 10) {
-                    if (j<4) {
+                } else if (i == 1 || i == 2 || i == 9 || i == 10) {
+                    if (j < 4) {
                         intersections[i][j] = new Intersection();
                     }
-                }
-                else if (i == 3 || i == 4 || i == 7 || i == 8) {
-                    if (j<5) {
+                } else if (i == 3 || i == 4 || i == 7 || i == 8) {
+                    if (j < 5) {
                         intersections[i][j] = new Intersection();
                     }
-                }
-                else if (i == 6 || i == 5) {
-                    if (j<6) {
+                } else if (i == 6 || i == 5) {
+                    if (j < 6) {
                         intersections[i][j] = new Intersection();
                     }
                 }
@@ -329,29 +326,27 @@ public class Board{
         //connect intersections
         for (int i = 0; i <= 6; i++) {
             for (int j = 0; j < 6; j++) {
-                if (i%2 == 0 && intersections[i][j] != null) {
-                    intersections[i][j].setI1(intersections[i+1][j]);
-                    if (j<5) {
+                if (i % 2 == 0 && intersections[i][j] != null) {
+                    intersections[i][j].setI1(intersections[i + 1][j]);
+                    if (j < 5) {
                         intersections[i][j].setI2(intersections[i + 1][j + 1]);
                     }
-                }
-                else if (i%2 == 1 && intersections[i][j] != null) {
-                    intersections[i][j].setI3(intersections[i+1][j]);
+                } else if (i % 2 == 1 && intersections[i][j] != null) {
+                    intersections[i][j].setI3(intersections[i + 1][j]);
                 }
             }
         }
 
         for (int i = 11; i > 6; i--) {
             for (int j = 0; j < 6; j++) {
-                if (i%2 == 0) {
+                if (i % 2 == 0) {
                     if (intersections[i][j] != null) {
-                        intersections[i][j].setI3(intersections[i-1][j]);
+                        intersections[i][j].setI3(intersections[i - 1][j]);
                     }
-                }
-                else if (i%2 == 1) {
+                } else if (i % 2 == 1) {
                     if (intersections[i][j] != null) {
-                        intersections[i][j].setI1(intersections[i-1][j]);
-                        intersections[i][j].setI2(intersections[i-1][j+1]);
+                        intersections[i][j].setI1(intersections[i - 1][j]);
+                        intersections[i][j].setI2(intersections[i - 1][j + 1]);
                     }
                 }
             }
@@ -362,104 +357,93 @@ public class Board{
             for (int j = 0; j < 6; j++) {
                 if (i == 0) {
                     if (j < 3) {
-                        intersections[i][j].setT3(tiles[i][j+1]);
+                        intersections[i][j].setT3(tiles[i][j + 1]);
                     }
-                }
-                else if (i == 1) {
+                } else if (i == 1) {
                     if (j < 4) {
-                        intersections[i][j].setT2(tiles[i-1][j+1]);
-                        intersections[i][j].setT3(tiles[i-1][j]);
+                        intersections[i][j].setT2(tiles[i - 1][j + 1]);
+                        intersections[i][j].setT3(tiles[i - 1][j]);
                     }
-                }
-                else if (i == 2) {
+                } else if (i == 2) {
                     if (j < 4) {
-                        intersections[i][j].setT2(tiles[i-2][j+1]);
-                        intersections[i][j].setT1(tiles[i-2][j]);
-                        intersections[i][j].setT3(tiles[i-1][j]);
+                        intersections[i][j].setT2(tiles[i - 2][j + 1]);
+                        intersections[i][j].setT1(tiles[i - 2][j]);
+                        intersections[i][j].setT3(tiles[i - 1][j]);
                     }
-                }
-                else if (i==3) {
-                    if (j<5) {
-                        intersections[i][j].setT1(tiles[i-3][j]);
-                        intersections[i][j].setT2(tiles[i-2][j]);
-                        if (j>0) {
-                            intersections[i][j].setT3(tiles[i-2][j-1]);
-                        }
-                    }
-                }
-                else if (i == 4) {
+                } else if (i == 3) {
                     if (j < 5) {
-                        intersections[i][j].setT2(tiles[i-3][j]);
-                        if (j>0) {
-                            intersections[i][j].setT1(tiles[i-3][j-1]);
+                        intersections[i][j].setT1(tiles[i - 3][j]);
+                        intersections[i][j].setT2(tiles[i - 2][j]);
+                        if (j > 0) {
+                            intersections[i][j].setT3(tiles[i - 2][j - 1]);
                         }
-                        intersections[i][j].setT3(tiles[i-2][j]);
                     }
-                }
-                else if (i == 5) {
+                } else if (i == 4) {
+                    if (j < 5) {
+                        intersections[i][j].setT2(tiles[i - 3][j]);
+                        if (j > 0) {
+                            intersections[i][j].setT1(tiles[i - 3][j - 1]);
+                        }
+                        intersections[i][j].setT3(tiles[i - 2][j]);
+                    }
+                } else if (i == 5) {
                     if (j < 5) {
                         intersections[i][j].setT2(tiles[2][j]);
                     }
-                    if (j>0) {
+                    if (j > 0) {
                         System.out.println("i: " + i + " j: " + j);
-                        intersections[i][j].setT1(tiles[1][j-1]);
-                        intersections[i][j].setT3(tiles[2][j-1]);
+                        intersections[i][j].setT1(tiles[1][j - 1]);
+                        intersections[i][j].setT3(tiles[2][j - 1]);
                     }
 
-                }
-                else if (i == 6) {
+                } else if (i == 6) {
                     if (j < 5) {
                         intersections[i][j].setT2(tiles[2][j]);
                     }
-                    if (j>0) {
-                        intersections[i][j].setT1(tiles[2][j-1]);
-                        intersections[i][j].setT3(tiles[3][j-1]);
+                    if (j > 0) {
+                        intersections[i][j].setT1(tiles[2][j - 1]);
+                        intersections[i][j].setT3(tiles[3][j - 1]);
                     }
-                }
-                else if (i == 7) {
+                } else if (i == 7) {
                     if (j < 5) {
                         intersections[i][j].setT2(tiles[3][j]);
                         intersections[i][j].setT1(tiles[2][j]);
-                        if (j>0) {
-                            intersections[i][j].setT3(tiles[3][j-1]);
+                        if (j > 0) {
+                            intersections[i][j].setT3(tiles[3][j - 1]);
                         }
                     }
-                }
-                else if (i == 8) {
+                } else if (i == 8) {
                     if (j < 5) {
-                        if (j<4) {
-                            intersections[i][j].setT2(tiles[3][j+1]);
+                        if (j < 4) {
+                            intersections[i][j].setT2(tiles[3][j + 1]);
                         }
-                        if (j>0) {
-                            intersections[i][j].setT1(tiles[3][j-1]);
+                        if (j > 0) {
+                            intersections[i][j].setT1(tiles[3][j - 1]);
                         }
                         intersections[i][j].setT3(tiles[4][j]);
                     }
-                }
-                else if (i == 9) {
+                } else if (i == 9) {
                     if (j < 4) {
-                        intersections[i][j].setT2(tiles[4][j+1]);
+                        intersections[i][j].setT2(tiles[4][j + 1]);
                         intersections[i][j].setT1(tiles[3][j]);
-                        if (j>0) {
-                            intersections[i][j].setT3(tiles[4][j-1]);
+                        if (j > 0) {
+                            intersections[i][j].setT3(tiles[4][j - 1]);
                         }
                     }
-                }
-                else if (i == 10) {
+                } else if (i == 10) {
                     if (j < 4) {
-                        intersections[i][j].setT2(tiles[4][j+1]);
+                        intersections[i][j].setT2(tiles[4][j + 1]);
                         intersections[i][j].setT1(tiles[4][j]);
                     }
-                }
-                else if (i == 11) {
+                } else if (i == 11) {
                     if (j < 3) {
                         intersections[i][j].setT1(tiles[4][j]);
                     }
                 }
             }
-        } //TODO: set up ports
-
-    public void setPorts (){
+        }
+    }
+    public void setPorts(){
         this.ports = new Port[9];
         //fill ports
         for(int i=0;i<9;i++){
