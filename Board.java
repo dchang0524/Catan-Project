@@ -296,7 +296,7 @@ public class Board{
             }
     }
     public void setUpIntersections() {
-        Intersection[][] intersections = new Intersection[12][6];
+        this.intersections = new Intersection[12][6];
 
         //fill up intersections that will be used
         for (int i = 0; i < 12; i++) {
@@ -323,19 +323,24 @@ public class Board{
                 }
             }
         }
-
+        for (int i = 0; i < intersections[i].length; i++) {
+            System.out.println(intersections[5][i] + " ");
+        }
         //connect intersections
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i <= 6; i++) {
             for (int j = 0; j < 6; j++) {
                 if (i%2 == 0 && intersections[i][j] != null) {
                     intersections[i][j].setI1(intersections[i+1][j]);
-                    intersections[i][j].setI2(intersections[i+1][j+1]);
+                    if (j<5) {
+                        intersections[i][j].setI2(intersections[i + 1][j + 1]);
+                    }
                 }
                 else if (i%2 == 1 && intersections[i][j] != null) {
                     intersections[i][j].setI3(intersections[i+1][j]);
                 }
             }
         }
+
         for (int i = 11; i > 6; i--) {
             for (int j = 0; j < 6; j++) {
                 if (i%2 == 0) {
@@ -452,83 +457,7 @@ public class Board{
                     }
                 }
             }
-        }
-
-        //set up coordinates
-        for (int i = 0; i<intersections[0].length; i++) {
-            if (intersections[0][i] != null) {
-                intersections[0][i].setX(328+158*i);
-                intersections[0][i].setY(91);
-            }
-        }
-        for (int i = 0; i<intersections[1].length; i++) {
-            if (intersections[1][i] != null) {
-                intersections[1][i].setX(253+158*i);
-                intersections[1][i].setY(131);
-            }
-        }
-        for (int i = 0; i<intersections[2].length; i++) {
-            if (intersections[2][i] != null) {
-                intersections[2][i].setX(247+158*i);
-                intersections[2][i].setY(208);
-            }
-        }
-        for (int i = 0; i<intersections[3].length; i++) {
-            if (intersections[3][i] != null) {
-                intersections[3][i].setX(174+158*i);
-                intersections[3][i].setY(249);
-            }
-        }
-        for (int i = 0; i<intersections[4].length; i++) {
-            if (intersections[4][i] != null) {
-                intersections[4][i].setX(169+158*i);
-                intersections[4][i].setY(328);
-            }
-        }
-        for (int i = 0; i<intersections[5].length; i++) {
-            if (intersections[5][i] != null) {
-                intersections[5][i].setX(92+158*i);
-                intersections[5][i].setY(372);
-            }
-        }
-        for (int i = 0; i<intersections[6].length; i++) {
-            if (intersections[6][i] != null) {
-                intersections[6][i].setX(92+158*i);
-                intersections[5][i].setY(447);
-            }
-        }
-        for (int i = 0; i<intersections[7].length; i++) {
-            if (intersections[7][i] != null) {
-                intersections[7][i].setX(170+158*i);
-                intersections[7][i].setY(485);
-            }
-        }
-        for (int i = 0; i<intersections[8].length; i++) {
-            if (intersections[8][i] != null) {
-                intersections[8][i].setX(173+158*i);
-                intersections[8][i].setY(567);
-            }
-        }
-        for (int i = 0; i<intersections[9].length; i++) {
-            if (intersections[9][i] != null) {
-                intersections[9][i].setX(251+158*i);
-                intersections[9][i].setY(607);
-            }
-        }
-        for (int i = 0; i<intersections[10].length; i++) {
-            if (intersections[10][i] != null) {
-                intersections[10][i].setX(251+158*i);
-                intersections[10][i].setY(688);
-            }
-        }
-        for (int i = 0; i<intersections[11].length; i++) {
-            if (intersections[11][i] != null) {
-                intersections[11][i].setX(327+158*i);
-                intersections[11][i].setY(725);
-            }
-        }
-
-    } //TODO: set up ports
+        } //TODO: set up ports
 
     public void setPorts (){
         this.ports = new Port[9];
