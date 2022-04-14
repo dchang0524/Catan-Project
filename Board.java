@@ -149,8 +149,8 @@ public class Board{
                 currentTile.setNumber(order.remove(0));
                 while(!order.isEmpty()){
                     visited.add(currentTile);
-                    //TODO: check if tile is desert, needs to go to the desert but not add a number
-                    if(currentTile.t6 != null && !visited.contains(currentTile.t6) && !currentTile.t6.resource.equals("desert")){
+                    //TODO: make different checks depending on the tile
+                    if(currentTile.t6 != null && !visited.contains(currentTile.t6)){
                         currentTile = currentTile.t6;
                     }
                     else if(currentTile.t5 != null && !visited.contains(currentTile.t5)&& !currentTile.t5.resource.equals("desert")){
@@ -168,7 +168,9 @@ public class Board{
                     else if(currentTile.t1 != null && !visited.contains(currentTile.t1)&& !currentTile.t1.resource.equals("desert")) {
                         currentTile = currentTile.t1;
                     }
-                    currentTile.setNumber(order.remove(0));
+                    if(!currentTile.resource.equals("desert")) {
+                        currentTile.setNumber(order.remove(0));
+                    }
                     //System.out.println(currentTile.getNumber());
                 }
             //}
