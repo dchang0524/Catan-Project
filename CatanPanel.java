@@ -103,7 +103,6 @@ public class CatanPanel extends JPanel implements MouseListener{
                 tiles[0][j].setxCoord((int)x);
                 tiles[0][j].setyCoord((int)y);
                 g.drawImage(tiles[0][j].getImage(), (int)x, (int)y, width, height, null);
-                System.out.println(tiles[0][j].number);
             }
 
         }
