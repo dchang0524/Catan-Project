@@ -142,41 +142,159 @@ public class Board{
         order.add(6);
         order.add(3);
         order.add(11);
-        //int start =  (int)(Math.random()*4);
+        int start = (int)(Math.random()*2);
             ArrayList<Tile> visited = new ArrayList<Tile>();
-            //if(start == 0){
+            if(start == 0){
+                System.out.println("Start " + start);
                 Tile currentTile = tiles[0][1];
                 currentTile.setNumber(order.remove(0));
+                int count = 1;
                 while(!order.isEmpty()){
                     visited.add(currentTile);
-                    //TODO: make different checks depending on the tile
-                    if(currentTile.t6 != null && !visited.contains(currentTile.t6)){
-                        currentTile = currentTile.t6;
+                    if(count < 8){
+                        if(currentTile.t6 != null && !visited.contains(currentTile.t6)){
+                            currentTile = currentTile.t6;
+                        }
+                        else if(currentTile.t5 != null && !visited.contains(currentTile.t5)){
+                            currentTile = currentTile.t5;
+                        }
+                        else if(currentTile.t4 != null && !visited.contains(currentTile.t4)){
+                            currentTile = currentTile.t4;
+                        }
+                        else if(currentTile.t3 != null && !visited.contains(currentTile.t3)){
+                            currentTile = currentTile.t3;
+                        }
+                        else if(currentTile.t2 != null && !visited.contains(currentTile.t2)){
+                            currentTile = currentTile.t2;
+                        }
+                        else if(currentTile.t1 != null && !visited.contains(currentTile.t1)) {
+                            currentTile = currentTile.t1;
+                        }
                     }
-                    else if(currentTile.t5 != null && !visited.contains(currentTile.t5)&& !currentTile.t5.resource.equals("desert")){
-                        currentTile = currentTile.t5;
+                    else if(count < 15){
+                        if(currentTile.t2 != null && !visited.contains(currentTile.t2)){
+                            currentTile = currentTile.t2;
+                        }
+                        else if(currentTile.t1 != null && !visited.contains(currentTile.t1)) {
+                            currentTile = currentTile.t1;
+                        }
+                        else if(currentTile.t6 != null && !visited.contains(currentTile.t6)){
+                            currentTile = currentTile.t6;
+                        }
+                        else if(currentTile.t5 != null && !visited.contains(currentTile.t5)){
+                            currentTile = currentTile.t5;
+                        }
+                        else if(currentTile.t4 != null && !visited.contains(currentTile.t4)){
+                            currentTile = currentTile.t4;
+                        }
+                        else if(currentTile.t3 != null && !visited.contains(currentTile.t3)){
+                            currentTile = currentTile.t3;
+                        }
                     }
-                    else if(currentTile.t4 != null && !visited.contains(currentTile.t4)&& !currentTile.t4.resource.equals("desert")){
-                        currentTile = currentTile.t4;
+                    else{
+                        if(currentTile.t5 != null && !visited.contains(currentTile.t5)){
+                            currentTile = currentTile.t5;
+                        }
+                        else if(currentTile.t4 != null && !visited.contains(currentTile.t4)){
+                            currentTile = currentTile.t4;
+                        }
+                        else if(currentTile.t3 != null && !visited.contains(currentTile.t3)){
+                            currentTile = currentTile.t3;
+                        }
+                        else if(currentTile.t2 != null && !visited.contains(currentTile.t2)){
+                            currentTile = currentTile.t2;
+                        }
+                        else if(currentTile.t1 != null && !visited.contains(currentTile.t1)) {
+                            currentTile = currentTile.t1;
+                        }
+                        else if(currentTile.t6 != null && !visited.contains(currentTile.t6)){
+                            currentTile = currentTile.t6;
+                        }
                     }
-                    else if(currentTile.t3 != null && !visited.contains(currentTile.t3)&& !currentTile.t3.resource.equals("desert")){
-                        currentTile = currentTile.t3;
-                    }
-                    else if(currentTile.t2 != null && !visited.contains(currentTile.t2)&& !currentTile.t2.resource.equals("desert")){
-                        currentTile = currentTile.t2;
-                    }
-                    else if(currentTile.t1 != null && !visited.contains(currentTile.t1)&& !currentTile.t1.resource.equals("desert")) {
-                        currentTile = currentTile.t1;
-                    }
-                    if(!currentTile.resource.equals("desert")) {
+                    if(!currentTile.resource.equals("desert")){
                         currentTile.setNumber(order.remove(0));
                     }
+                    count++;
                     //System.out.println(currentTile.getNumber());
                 }
-            //}
+            }
+            else if(start == 1){
+                System.out.println("Start " + start);
+                Tile currentTile = tiles[4][1];
+                currentTile.setNumber(order.remove(0));
+                int count = 1;
+                while(!order.isEmpty()){
+                    visited.add(currentTile);
+                    if(count < 10){
+                        if(currentTile.t3 != null && !visited.contains(currentTile.t3)){
+                            currentTile = currentTile.t3;
+                        }
+                        else if(currentTile.t2 != null && !visited.contains(currentTile.t2)){
+                            currentTile = currentTile.t2;
+                        }
+                        else if(currentTile.t1 != null && !visited.contains(currentTile.t1)) {
+                            currentTile = currentTile.t1;
+                        }
+                        else if(currentTile.t6 != null && !visited.contains(currentTile.t6)){
+                            currentTile = currentTile.t6;
+                        }
+                        else if(currentTile.t5 != null && !visited.contains(currentTile.t5)){
+                            currentTile = currentTile.t5;
+                        }
+                        else if(currentTile.t4 != null && !visited.contains(currentTile.t4)){
+                            currentTile = currentTile.t4;
+                        }
+                    }
+                    else if(count < 15){
+                        if(currentTile.t6 != null && !visited.contains(currentTile.t6)){
+                            currentTile = currentTile.t6;
+                        }
+                        else if(currentTile.t5 != null && !visited.contains(currentTile.t5)){
+                            currentTile = currentTile.t5;
+                        }
+                        else if(currentTile.t4 != null && !visited.contains(currentTile.t4)){
+                            currentTile = currentTile.t4;
+                        }
+                        else if(currentTile.t3 != null && !visited.contains(currentTile.t3)){
+                            currentTile = currentTile.t3;
+                        }
+                        else if(currentTile.t2 != null && !visited.contains(currentTile.t2)){
+                            currentTile = currentTile.t2;
+                        }
+                        else if(currentTile.t1 != null && !visited.contains(currentTile.t1)) {
+                            currentTile = currentTile.t1;
+                        }
+                    }
+                    else{
+                        if(currentTile.t2 != null && !visited.contains(currentTile.t2)){
+                            currentTile = currentTile.t2;
+                        }
+                        else if(currentTile.t1 != null && !visited.contains(currentTile.t1)) {
+                            currentTile = currentTile.t1;
+                        }
+                        else if(currentTile.t6 != null && !visited.contains(currentTile.t6)){
+                            currentTile = currentTile.t6;
+                        }
+                        else if(currentTile.t5 != null && !visited.contains(currentTile.t5)){
+                            currentTile = currentTile.t5;
+                        }
+                        else if(currentTile.t4 != null && !visited.contains(currentTile.t4)){
+                            currentTile = currentTile.t4;
+                        }
+                        else if(currentTile.t3 != null && !visited.contains(currentTile.t3)){
+                            currentTile = currentTile.t3;
+                        }
+                    }
+                    if(!currentTile.resource.equals("desert")){
+                        currentTile.setNumber(order.remove(0));
+                    }
+                    count++;
+                }
+            }
+            else if(start == 2){
 
+            }
     }
-
     public void setUpIntersections() {
         Intersection[][] intersections = new Intersection[12][6];
 
@@ -336,8 +454,79 @@ public class Board{
             }
         }
 
-        //set up ports
-
+        //set up coordinates
+        for (int i = 0; i<intersections[0].length; i++) {
+            if (intersections[0][i] != null) {
+                intersections[0][i].setX(328+158*i);
+                intersections[0][i].setY(91);
+            }
+        }
+        for (int i = 0; i<intersections[1].length; i++) {
+            if (intersections[1][i] != null) {
+                intersections[1][i].setX(253+158*i);
+                intersections[1][i].setY(131);
+            }
+        }
+        for (int i = 0; i<intersections[2].length; i++) {
+            if (intersections[2][i] != null) {
+                intersections[2][i].setX(247+158*i);
+                intersections[2][i].setY(208);
+            }
+        }
+        for (int i = 0; i<intersections[3].length; i++) {
+            if (intersections[3][i] != null) {
+                intersections[3][i].setX(174+158*i);
+                intersections[3][i].setY(249);
+            }
+        }
+        for (int i = 0; i<intersections[4].length; i++) {
+            if (intersections[4][i] != null) {
+                intersections[4][i].setX(169+158*i);
+                intersections[4][i].setY(328);
+            }
+        }
+        for (int i = 0; i<intersections[5].length; i++) {
+            if (intersections[5][i] != null) {
+                intersections[5][i].setX(92+158*i);
+                intersections[5][i].setY(372);
+            }
+        }
+        for (int i = 0; i<intersections[6].length; i++) {
+            if (intersections[6][i] != null) {
+                intersections[6][i].setX(92+158*i);
+                intersections[5][i].setY(447);
+            }
+        }
+        for (int i = 0; i<intersections[7].length; i++) {
+            if (intersections[7][i] != null) {
+                intersections[7][i].setX(170+158*i);
+                intersections[7][i].setY(485);
+            }
+        }
+        for (int i = 0; i<intersections[8].length; i++) {
+            if (intersections[8][i] != null) {
+                intersections[8][i].setX(173+158*i);
+                intersections[8][i].setY(567);
+            }
+        }
+        for (int i = 0; i<intersections[9].length; i++) {
+            if (intersections[9][i] != null) {
+                intersections[9][i].setX(251+158*i);
+                intersections[9][i].setY(607);
+            }
+        }
+        for (int i = 0; i<intersections[10].length; i++) {
+            if (intersections[10][i] != null) {
+                intersections[10][i].setX(251+158*i);
+                intersections[10][i].setY(688);
+            }
+        }
+        for (int i = 0; i<intersections[11].length; i++) {
+            if (intersections[11][i] != null) {
+                intersections[11][i].setX(327+158*i);
+                intersections[11][i].setY(725);
+            }
+        }
 
     } //TODO: set up ports
 
@@ -373,7 +562,6 @@ public class Board{
     }
 
     public void distributeResources(int k) {
-
         for (int i = 0; i < 12; i++) {
             for (int j = 0; j < 6; j++) {
                 if (tiles[i][j] != null && tiles[i][j].getNumber() == k) {
