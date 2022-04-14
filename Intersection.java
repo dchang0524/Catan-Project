@@ -11,7 +11,8 @@ public class Intersection {
     Tile t3;
     int portTrade;
     String portResource;
-
+    int x;
+    int y;
     public Intersection() {
         i1 = null;
         i2 = null;
@@ -65,4 +66,8 @@ public class Intersection {
         t3 = t;
     }
 
+    public void setX(int x) {this.x = x;}
+    public void setY(int y) {this.y = y;}
+    public int getX() {return x;}
+    public int getY() {return y;}
 }
