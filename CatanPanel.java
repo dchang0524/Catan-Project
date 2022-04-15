@@ -12,7 +12,8 @@ public class CatanPanel extends JPanel implements MouseListener{
     GameState gs;
     BufferedImage startBackground, logo;
     Board board;
-    PlayerManager pm;
+    PlayerManager pManage;
+    Player currentPlayer;
     File file;
     Tile[][] tiles;
     Intersection[][] intersections;
@@ -42,10 +43,11 @@ public class CatanPanel extends JPanel implements MouseListener{
             menuScreen(g);
         }
         if(gs.getGameState() == 1) {
+            currentPlayer = pManage.curentPlayer();
+            System.out.println("current player: " + currentPlayer.getColor());
+            drawPlayer(g, currentPlayer);
             drawTiles(g);
-            g.setColor(Color.CYAN);
             drawIntersections(g);
-            System.out.println(intersections[6][0] + " " + intersections[6][0].i1 + " " + intersections[6][0].i2 + " " + intersections[6][0].i3);
             for (int i = 0; i<toHighlight.size(); i++) {
                     g.setColor(Color.RED);
                     g.fillRect(toHighlight.get(i).getX()-10, toHighlight.get(i).getY()-10, 10, 10);
@@ -61,6 +63,9 @@ public class CatanPanel extends JPanel implements MouseListener{
         // comment
         if (gs.getGameState() == 0) {
         if(x > 800 && x < 1100 && y > 500 && y < 600) {
+            pManage = new PlayerManager(Integer.parseInt(JOptionPane.showInputDialog(null,
+                    "Please enter the number of players(3-4):",
+                    "Number of Players", JOptionPane.QUESTION_MESSAGE)));
             gs.setGameState(1);
         }
         if(x > 800 && x < 1100 && y > 650 && y < 750) {
@@ -80,12 +85,13 @@ public class CatanPanel extends JPanel implements MouseListener{
         repaint();
     }
         else if (gs.getGameState() == 1) {
+
             for (int i = 0; i < intersections.length; i++) {
                 for (int j = 0; j < intersections[i].length; j++) {
                     if (intersections[i][j] != null && intersections[i][j].getX()-10<=x && x<=intersections[i][j].getX()+10 && intersections[i][j].getY()-10<=y && y<=intersections[i][j].getY()+10) {
                         toHighlight.add(intersections[i][j]);
                         if (intersections[i][j].i1 != null) {
-                            toHighlight.add(intersections[i][j].i1);
+                            toHighlight.add(intersections      [i][j].i1);
                         }
                         if (intersections[i][j].i2 != null) {
                             toHighlight.add(intersections[i][j].i2);
@@ -196,7 +202,26 @@ public class CatanPanel extends JPanel implements MouseListener{
             }
         }
     }
-
+    public void drawPlayer(Graphics g, Player p) {
+        if (p.getColor().equals("red")) {
+            g.setColor(Color.RED);
+            System.out.println("set color to red");
+        }
+        else if (p.getColor().equals("blue")) {
+            g.setColor(Color.BLUE);
+            System.out.println("set color to blue");
+        }
+        else if (p.getColor().equals("white")) {
+            g.setColor(Color.WHITE);
+            System.out.println("set color to white");
+        }
+        else if (p.getColor().equals("yellow")) {
+            g.setColor(Color.YELLOW);
+            System.out.println("set color to yellow");
+        }
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 100));
+        g.drawString("Player: " + pManage.currentPlayerIndex(), 30, 900);
+    }
 
     public void mouseReleased(MouseEvent m) {}
     public void mouseEntered(MouseEvent m) {}

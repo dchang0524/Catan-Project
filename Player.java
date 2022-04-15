@@ -9,7 +9,7 @@ public class Player {
     boolean hasLargestArmy;
     boolean hasLongestRoad;
     HashMap<String, Integer> shopRatio;
-    String playerName;
+    String color;
 
     //constructor
     public Player(String name) {
@@ -21,7 +21,7 @@ public class Player {
         hasLargestArmy = false;
         hasLongestRoad = false;
         shopRatio = new HashMap<String, Integer>();
-        playerName = name;
+        color = name;
     }
     public void addToInventory(String resource, int amount) {
         if (resource == "Desert") {
@@ -213,6 +213,10 @@ public class Player {
             }
         }
         return false;
+    }
+
+    public String getColor() {
+        return color;
     }
 }
 
