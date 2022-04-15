@@ -6,6 +6,7 @@ import java.awt.image.*;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.io.File;
+import java.util.ArrayList;
 
 public class CatanPanel extends JPanel implements MouseListener{
     GameState gs;
@@ -16,6 +17,7 @@ public class CatanPanel extends JPanel implements MouseListener{
     Tile[][] tiles;
     Intersection[][] intersections;
     Dimension dim;
+    ArrayList<Intersection> toHighlight = new ArrayList<Intersection>();
     public CatanPanel() {
         dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
@@ -40,33 +42,65 @@ public class CatanPanel extends JPanel implements MouseListener{
             menuScreen(g);
         }
         if(gs.getGameState() == 1) {
-            drawBoard(g);
+            drawTiles(g);
+            g.setColor(Color.CYAN);
+            drawIntersections(g);
+            System.out.println(intersections[6][0] + " " + intersections[6][0].i1 + " " + intersections[6][0].i2 + " " + intersections[6][0].i3);
+            for (int i = 0; i<toHighlight.size(); i++) {
+                    g.setColor(Color.RED);
+                    g.fillRect(toHighlight.get(i).getX()-10, toHighlight.get(i).getY()-10, 10, 10);
+                    g.setColor(Color.CYAN);
+            }
+            toHighlight.clear();
         }
 
     }
     public void mousePressed(MouseEvent m) {
         int x = m.getX();
         int y = m.getY();
-    // comment
-
-        if(x > dim.width/2 - 100 && x < dim.width/2 + 100 && y > dim.height/2  && y < dim.height/2 + 80) {
-            gs.setGameState(1);
-        }
-        if(x > dim.width/2 - 60 && x < dim.width/2 + 140 && y > dim.height/2 + 125 && y < dim.height/2 + 225) {
-            if (Desktop.isDesktopSupported()) {
-                try {
-                    File file = new File(this.getClass().getResource("misc/CatanRules.pdf").getFile());
-                    Desktop.getDesktop().open(file);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    System.out.println("Error opening file");
-                }
+        // comment
+        if (gs.getGameState() == 0) {
+    if(x > dim.width/2 - 100 && x < dim.width/2 + 100 && y > dim.height/2  && y < dim.height/2 + 80) {
+        gs.setGameState(1);
+    }
+    if(x > dim.width/2 - 60 && x < dim.width/2 + 140 && y > dim.height/2 + 125 && y < dim.height/2 + 225) {
+        if (Desktop.isDesktopSupported()) {
+            try {
+                File file = new File(this.getClass().getResource("misc/CatanRules.pdf").getFile());
+                Desktop.getDesktop().open(file);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                System.out.println("Error opening file");
             }
         }
-        if(x > dim.width/2 - 60 && x < dim.width/2 + 140 && y > dim.height/2 + 250 && y < dim.height/2 + 333) {
-            System.exit(0);
+    }
+    if(x > dim.width/2 - 60 && x < dim.width/2 + 140 && y > dim.height/2 + 250 && y < dim.height/2 + 333) {
+        System.exit(0);
+    }
+    repaint();
+}
+        else if (gs.getGameState() == 1) {
+            for (int i = 0; i < intersections.length; i++) {
+                for (int j = 0; j < intersections[i].length; j++) {
+                    if (intersections[i][j] != null && intersections[i][j].getX()-10<=x && x<=intersections[i][j].getX()+10 && intersections[i][j].getY()-10<=y && y<=intersections[i][j].getY()+10) {
+                        toHighlight.add(intersections[i][j]);
+                        if (intersections[i][j].i1 != null) {
+                            toHighlight.add(intersections[i][j].i1);
+                        }
+                        if (intersections[i][j].i2 != null) {
+                            toHighlight.add(intersections[i][j].i2);
+                        }
+                        if (intersections[i][j].i3 != null) {
+                            toHighlight.add(intersections[i][j].i3);
+                        }
+
+                    }
+                }
+            }
+            repaint();
         }
-        repaint();
+
+
     }
     public void menuScreen(Graphics g) {
         g.drawImage(startBackground, 0, 0,(int) dim.getWidth(), (int) dim.getHeight(), null);
@@ -86,7 +120,7 @@ public class CatanPanel extends JPanel implements MouseListener{
         g.drawString("Exit", (int) (dim.getWidth()/2 - g.getFontMetrics().stringWidth("Exit")/2), (int) (dim.getHeight()/2 - logo.getHeight()/2 + 500));
 
     }
-    public void drawBoard(Graphics g) {
+    public void drawTiles(Graphics g) {
 
         g.clearRect(0, 0, 1900, 1000);
         g.setColor(Color.DARK_GRAY);
@@ -146,18 +180,17 @@ public class CatanPanel extends JPanel implements MouseListener{
                 g.drawImage(tiles[4][j].getImage(), (int)x, (int)y, width, height, null);
             }
         }
-        /*
+    }
+    public void drawIntersections(Graphics g) {
         g.setColor(Color.CYAN);
-        for (int i = 0; i<intersections.length; i++) {
-            for (int j = 0; j<intersections[i].length; j++) {
+        for (int i = 0; i < intersections.length; i++) {
+            for (int j = 0; j < intersections[i].length; j++) {
                 if (intersections[i][j] != null) {
-                    g.fillRect(intersections[i][j].getX(), intersections[i][j].getY(), 10, 10);
+                    g.fillRect(intersections[i][j].getX()-10, intersections[i][j].getY()-10, 10, 10);
                 }
             }
         }
-        */
     }
-
 
 
     public void mouseReleased(MouseEvent m) {}

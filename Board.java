@@ -8,7 +8,6 @@ public class Board{
     private Port[] ports;
 
     public Board() {
-
         setUpTiles();
         setUpIntersections();
         //setPorts();
@@ -299,7 +298,6 @@ public class Board{
     }
     public void setUpIntersections() {
         this.intersections = new Intersection[12][6];
-
         //fill up intersections that will be used
         for (int i = 0; i < 12; i++) {
             for (int j = 0; j < 6; j++) {
@@ -326,19 +324,16 @@ public class Board{
             System.out.println(intersections[5][i] + " ");
         }
         //connect intersections
-        for (int i = 0; i <= 6; i++) {
+        for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
                 if (i % 2 == 0 && intersections[i][j] != null) {
                     intersections[i][j].setI1(intersections[i + 1][j]);
-                    if (j < 5) {
-                        intersections[i][j].setI2(intersections[i + 1][j + 1]);
-                    }
+                    intersections[i][j].setI2(intersections[i + 1][j + 1]);
                 } else if (i % 2 == 1 && intersections[i][j] != null) {
                     intersections[i][j].setI3(intersections[i + 1][j]);
                 }
             }
         }
-
         for (int i = 11; i > 6; i--) {
             for (int j = 0; j < 6; j++) {
                 if (i % 2 == 0) {
@@ -353,7 +348,6 @@ public class Board{
                 }
             }
         }
-
         //set intersections' tiles
         for (int i = 0; i < 12; i++) {
             for (int j = 0; j < 6; j++) {
@@ -442,6 +436,57 @@ public class Board{
                         intersections[i][j].setT1(tiles[4][j]);
                     }
                 }
+            }
+        }
+        //set intersections' coordinates
+        for (int i = 0; i < intersections[0].length; i++) {
+            if (intersections[0][i] != null) {
+                intersections[0][i].setX(332+157*i);
+                intersections[0][i].setY(96);
+            }
+             if (intersections[1][i] != null) {
+                intersections[1][i].setX(255+157*i);
+                intersections[1][i].setY(133);
+            }
+             if (intersections[2][i] != null) {
+                intersections[2][i].setX(255+157*i);
+                intersections[2][i].setY(214);
+            }
+             if (intersections[3][i] != null) {
+                intersections[3][i].setX(176+157*i);
+                intersections[3][i].setY(255);
+            }
+             if (intersections[4][i] != null) {
+                intersections[4][i].setX(176+157*i);
+                intersections[4][i].setY(333);
+            }
+             if (intersections[5][i] != null) {
+                intersections[5][i].setX(98+157*i);
+                intersections[5][i].setY(378);
+            }
+             if (intersections[6][i] != null) {
+                intersections[6][i].setX(98+157*i);
+                intersections[6][i].setY(454);
+            }
+             if (intersections[7][i] != null) {
+                intersections[7][i].setX(175+157*i);
+                intersections[7][i].setY(490);
+            }
+             if (intersections[8][i] != null) {
+                intersections[8][i].setX(175+157*i);
+                intersections[8][i].setY(572);
+            }
+             if (intersections[9][i] != null) {
+                intersections[9][i].setX(255+157*i);
+                intersections[9][i].setY(612);
+            }
+             if (intersections[10][i] != null) {
+                intersections[10][i].setX(255+157*i);
+                intersections[10][i].setY(693);
+            }
+             if (intersections[11][i] != null) {
+                intersections[11][i].setX(332+157*i);
+                intersections[11][i].setY(730);
             }
         }
     }
