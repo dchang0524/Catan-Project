@@ -16,10 +16,10 @@ public class CatanPanel extends JPanel implements MouseListener{
     File file;
     Tile[][] tiles;
     Intersection[][] intersections;
-    Dimension dim;
+    //Dimension dim;
     ArrayList<Intersection> toHighlight = new ArrayList<Intersection>();
     public CatanPanel() {
-        dim = Toolkit.getDefaultToolkit().getScreenSize();
+        //dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
         try{
             startBackground = ImageIO.read(CatanPanel.class.getResource("/misc/CatanBackground.png"));
@@ -60,25 +60,25 @@ public class CatanPanel extends JPanel implements MouseListener{
         int y = m.getY();
         // comment
         if (gs.getGameState() == 0) {
-    if(x > dim.width/2 - 100 && x < dim.width/2 + 100 && y > dim.height/2  && y < dim.height/2 + 80) {
-        gs.setGameState(1);
-    }
-    if(x > dim.width/2 - 60 && x < dim.width/2 + 140 && y > dim.height/2 + 125 && y < dim.height/2 + 225) {
-        if (Desktop.isDesktopSupported()) {
-            try {
-                File file = new File(this.getClass().getResource("misc/CatanRules.pdf").getFile());
-                Desktop.getDesktop().open(file);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                System.out.println("Error opening file");
+        if(x > 800 && x < 1100 && y > 500 && y < 600) {
+            gs.setGameState(1);
+        }
+        if(x > 800 && x < 1100 && y > 650 && y < 750) {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    File file = new File(this.getClass().getResource("misc/CatanRules.pdf").getFile());
+                    Desktop.getDesktop().open(file);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    System.out.println("Error opening file");
+                }
             }
         }
+        if(x > 800 && x < 1100 && y > 800 && y < 900) {
+            System.exit(0);
+        }
+        repaint();
     }
-    if(x > dim.width/2 - 60 && x < dim.width/2 + 140 && y > dim.height/2 + 250 && y < dim.height/2 + 333) {
-        System.exit(0);
-    }
-    repaint();
-}
         else if (gs.getGameState() == 1) {
             for (int i = 0; i < intersections.length; i++) {
                 for (int j = 0; j < intersections[i].length; j++) {
@@ -103,21 +103,21 @@ public class CatanPanel extends JPanel implements MouseListener{
 
     }
     public void menuScreen(Graphics g) {
-        g.drawImage(startBackground, 0, 0,(int) dim.getWidth(), (int) dim.getHeight(), null);
-        g.drawImage(logo, (int) (dim.getWidth()/2 - logo.getWidth()/2), (int) (dim.getHeight()/2 - logo.getHeight()/2 - 200), null);
+        g.drawImage(startBackground, 0, 0,1900, 1000, null);
+        g.drawImage(logo, 475, 100, null);
 
         g.setColor(Color.DARK_GRAY);
-        g.drawRoundRect((int) (dim.getWidth()/2 - g.getFontMetrics().stringWidth("Start Game")/2 - 50)-28, (int) (dim.getHeight()/2 - logo.getHeight()/2 + 250 - 50), g.getFontMetrics().stringWidth("Start Game") + 155, 80, 20, 20);
-        g.fillRoundRect((int) (dim.getWidth()/2 - g.getFontMetrics().stringWidth("Start Game")/2 - 50)-28, (int) (dim.getHeight()/2 - logo.getHeight()/2 + 250 - 50), g.getFontMetrics().stringWidth("Start Game") + 155, 80, 20, 20);
-        g.drawRoundRect((int) (dim.getWidth()/2 - g.getFontMetrics().stringWidth("Help")/2 - 50), (int) (dim.getHeight()/2 - logo.getHeight()/2 + 375 - 50), g.getFontMetrics().stringWidth("Help") + 100, 80, 20, 20);
-        g.fillRoundRect((int) (dim.getWidth()/2 - g.getFontMetrics().stringWidth("Help")/2 - 50), (int) (dim.getHeight()/2 - logo.getHeight()/2 + 375 - 50), g.getFontMetrics().stringWidth("Help") + 100, 80, 20, 20);
-        g.drawRoundRect((int) (dim.getWidth()/2 - g.getFontMetrics().stringWidth("Exit")/2 - 50), (int) (dim.getHeight()/2 - logo.getHeight()/2 + 500 - 50), g.getFontMetrics().stringWidth("Exit") + 100, 80, 20, 20);
-        g.fillRoundRect((int) (dim.getWidth()/2 - g.getFontMetrics().stringWidth("Exit")/2 - 50), (int) (dim.getHeight()/2 - logo.getHeight()/2 + 500 - 50), g.getFontMetrics().stringWidth("Exit") + 100, 80, 20, 20);
+        g.drawRoundRect(800, 500, 300, 100, 20, 20);
+        g.fillRoundRect(800, 500, 300, 100, 20, 20);
+        g.drawRoundRect(800, 650, 300, 100, 20, 20);
+        g.fillRoundRect(800, 650, 300, 100, 20, 20);
+        g.drawRoundRect(800, 800, 300, 100, 20, 20);
+        g.fillRoundRect(800, 800, 300, 100, 20, 20);
         g.setFont(new Font("Helvetica", Font.BOLD, 40));
         g.setColor(Color.ORANGE);
-        g.drawString("Start Game", (int) (dim.getWidth()/2 - g.getFontMetrics().stringWidth("Start Game")/2), (int) (dim.getHeight()/2 - logo.getHeight()/2 + 250));
-        g.drawString("Help", (int) (dim.getWidth()/2 - g.getFontMetrics().stringWidth("Help")/2), (int) (dim.getHeight()/2 - logo.getHeight()/2 + 375));
-        g.drawString("Exit", (int) (dim.getWidth()/2 - g.getFontMetrics().stringWidth("Exit")/2), (int) (dim.getHeight()/2 - logo.getHeight()/2 + 500));
+        g.drawString("Start Game", 843, 565);
+        g.drawString("Help", 910, 715);
+        g.drawString("Exit", 910, 865);
 
     }
     public void drawTiles(Graphics g) {
@@ -138,6 +138,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                 tiles[0][j].setxCoord((int)x);
                 tiles[0][j].setyCoord((int)y);
                 g.drawImage(tiles[0][j].getImage(), (int)x, (int)y, width, height, null);
+                g.drawImage(tiles[0][j].getNumImage(), (int)x+52, (int)y+50, 55, 55, null);
             }
 
         }
@@ -148,6 +149,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                 tiles[1][j].setxCoord((int)x);
                 tiles[1][j].setyCoord((int)y);
                 g.drawImage(tiles[1][j].getImage(), (int)x, (int)y, width, height, null);
+                g.drawImage(tiles[1][j].getNumImage(), (int)x+52, (int)y+50, 55, 55, null);
             }
         }
 
@@ -158,6 +160,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                 tiles[2][j].setxCoord((int)x);
                 tiles[2][j].setyCoord((int)y);
                 g.drawImage(tiles[2][j].getImage(), (int)x, (int)y, width, height, null);
+                g.drawImage(tiles[2][j].getNumImage(), (int)x+52, (int)y+50, 55, 55, null);
             }
         }
 
@@ -168,6 +171,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                 tiles[3][j].setxCoord((int)x);
                 tiles[3][j].setyCoord((int)y);
                 g.drawImage(tiles[3][j].getImage(), (int)x, (int)y, width, height, null);
+                g.drawImage(tiles[3][j].getNumImage(), (int)x+52, (int)y+50, 55, 55, null);
             }
         }
 
@@ -178,6 +182,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                 tiles[4][j].setxCoord((int)x);
                 tiles[4][j].setyCoord((int)y);
                 g.drawImage(tiles[4][j].getImage(), (int)x, (int)y, width, height, null);
+                g.drawImage(tiles[4][j].getNumImage(), (int)x+52, (int)y+50, 55, 55, null);
             }
         }
     }

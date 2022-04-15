@@ -10,6 +10,7 @@ public class Tile {
     ArrayList<Settlement> settles; //start at top vertex and go clockwise
     boolean robber;
     BufferedImage image;
+    BufferedImage numImage;
 
     public Tile(String res, BufferedImage img) {
         resource = res;
@@ -26,6 +27,7 @@ public class Tile {
         settles = new ArrayList<Settlement>();
         robber = false;
         image = img;
+        numImage = null;
     }
 
     public Tile(int x, int y, int num, String res) {
@@ -103,7 +105,12 @@ public class Tile {
         return image;
 
     }
-
+    public void setNumImage(BufferedImage img) {
+        numImage = img;
+    }
+    public BufferedImage getNumImage() {
+        return numImage;
+    }
     public String toString() {
         return resource + " " + number;
     }

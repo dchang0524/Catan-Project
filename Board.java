@@ -6,6 +6,7 @@ public class Board{
     private Tile[][] tiles;
     private Intersection[][] intersections;
     private Port[] ports;
+    private BufferedImage[] numImages;
 
     public Board() {
         setUpTiles();
@@ -17,7 +18,7 @@ public class Board{
     }
     public void setUpTiles() {
         tiles = new Tile[5][5]; // [0][0] [0][4] [1][4] [3][4] [4][0] [4][4]
-
+        numImages = new BufferedImage[13];
         //sets up resources for each tile in the board
         BufferedImage wood = null;
         BufferedImage sheep = null;
@@ -32,6 +33,16 @@ public class Board{
             brick = ImageIO.read(Board.class.getResource("/TileImages/BrickTile.png"));
             ore = ImageIO.read(Board.class.getResource("/TileImages/MountainTile.png"));
             desert = ImageIO.read(Board.class.getResource("/TileImages/DesertTile.png"));
+            numImages[2] = ImageIO.read(Board.class.getResource("/Numbers/two.png"));
+            numImages[3] = ImageIO.read(Board.class.getResource("/Numbers/three.png"));
+            numImages[4] = ImageIO.read(Board.class.getResource("/Numbers/four.png"));
+            numImages[5] = ImageIO.read(Board.class.getResource("/Numbers/five.png"));
+            numImages[6] = ImageIO.read(Board.class.getResource("/Numbers/six.png"));
+            numImages[8] = ImageIO.read(Board.class.getResource("/Numbers/eight.png"));
+            numImages[9] = ImageIO.read(Board.class.getResource("/Numbers/nine.png"));
+            numImages[10] = ImageIO.read(Board.class.getResource("/Numbers/ten.png"));
+            numImages[11] = ImageIO.read(Board.class.getResource("/Numbers/eleven.png"));
+            numImages[12] = ImageIO.read(Board.class.getResource("/Numbers/twelve.png"));
         }
         catch(Exception e){
             System.out.println("Error loading image");
@@ -143,12 +154,13 @@ public class Board{
         order.add(6);
         order.add(3);
         order.add(11);
-        int start = (int)(Math.random()*2);
+        int start = (int)(Math.random()*4);
             ArrayList<Tile> visited = new ArrayList<Tile>();
             if(start == 0){
                 System.out.println("Start " + start);
                 Tile currentTile = tiles[0][1];
                 currentTile.setNumber(order.remove(0));
+                currentTile.setNumImage(numImages[currentTile.getNumber()]);
                 int count = 1;
                 while(!order.isEmpty()){
                     visited.add(currentTile);
@@ -214,6 +226,7 @@ public class Board{
                     }
                     if(!currentTile.resource.equals("desert")){
                         currentTile.setNumber(order.remove(0));
+                        currentTile.setNumImage(numImages[currentTile.getNumber()]);
                     }
                     count++;
                     //System.out.println(currentTile.getNumber());
@@ -223,6 +236,7 @@ public class Board{
                 System.out.println("Start " + start);
                 Tile currentTile = tiles[4][1];
                 currentTile.setNumber(order.remove(0));
+                currentTile.setNumImage(numImages[currentTile.getNumber()]);
                 int count = 1;
                 while(!order.isEmpty()){
                     visited.add(currentTile);
@@ -288,12 +302,160 @@ public class Board{
                     }
                     if(!currentTile.resource.equals("desert")){
                         currentTile.setNumber(order.remove(0));
+                        currentTile.setNumImage(numImages[currentTile.getNumber()]);
                     }
                     count++;
                 }
             }
             else if(start == 2){
-
+                System.out.println("Start " + start);
+                Tile currentTile = tiles[4][3];
+                currentTile.setNumber(order.remove(0));
+                currentTile.setNumImage(numImages[currentTile.getNumber()]);
+                int count = 1;
+                while(!order.isEmpty()){
+                    visited.add(currentTile);
+                    if(count < 9){
+                        if(currentTile.t2 != null && !visited.contains(currentTile.t2)){
+                            currentTile = currentTile.t2;
+                        }
+                        else if(currentTile.t1 != null && !visited.contains(currentTile.t1)) {
+                            currentTile = currentTile.t1;
+                        }
+                        else if(currentTile.t6 != null && !visited.contains(currentTile.t6)){
+                            currentTile = currentTile.t6;
+                        }
+                        else if(currentTile.t5 != null && !visited.contains(currentTile.t5)){
+                            currentTile = currentTile.t5;
+                        }
+                        else if(currentTile.t4 != null && !visited.contains(currentTile.t4)){
+                            currentTile = currentTile.t4;
+                        }
+                        else if(currentTile.t3 != null && !visited.contains(currentTile.t3)){
+                            currentTile = currentTile.t3;
+                        }
+                    }
+                    else if(count < 15){
+                        if(currentTile.t5 != null && !visited.contains(currentTile.t5)){
+                            currentTile = currentTile.t5;
+                        }
+                        else if(currentTile.t4 != null && !visited.contains(currentTile.t4)){
+                            currentTile = currentTile.t4;
+                        }
+                        else if(currentTile.t3 != null && !visited.contains(currentTile.t3)){
+                            currentTile = currentTile.t3;
+                        }
+                        else if(currentTile.t2 != null && !visited.contains(currentTile.t2)){
+                            currentTile = currentTile.t2;
+                        }
+                        else if(currentTile.t1 != null && !visited.contains(currentTile.t1)) {
+                            currentTile = currentTile.t1;
+                        }
+                        else if(currentTile.t6 != null && !visited.contains(currentTile.t6)){
+                            currentTile = currentTile.t6;
+                        }
+                    }
+                    else{
+                        if(currentTile.t6 != null && !visited.contains(currentTile.t6)){
+                            currentTile = currentTile.t6;
+                        }
+                        else if(currentTile.t5 != null && !visited.contains(currentTile.t5)){
+                            currentTile = currentTile.t5;
+                        }
+                        else if(currentTile.t4 != null && !visited.contains(currentTile.t4)){
+                            currentTile = currentTile.t4;
+                        }
+                        else if(currentTile.t3 != null && !visited.contains(currentTile.t3)){
+                            currentTile = currentTile.t3;
+                        }
+                        else if(currentTile.t2 != null && !visited.contains(currentTile.t2)){
+                            currentTile = currentTile.t2;
+                        }
+                        else if(currentTile.t1 != null && !visited.contains(currentTile.t1)) {
+                            currentTile = currentTile.t1;
+                        }
+                    }
+                    if(!currentTile.resource.equals("desert")){
+                        currentTile.setNumber(order.remove(0));
+                        currentTile.setNumImage(numImages[currentTile.getNumber()]);
+                    }
+                    count++;
+                }
+            }
+            else if(start == 3){
+                System.out.println("Start " + start);
+                Tile currentTile = tiles[0][3];
+                currentTile.setNumber(order.remove(0));
+                currentTile.setNumImage(numImages[currentTile.getNumber()]);
+                int count = 1;
+                while(!order.isEmpty()){
+                    visited.add(currentTile);
+                    if(count < 10){
+                        if(currentTile.t6 != null && !visited.contains(currentTile.t6)){
+                            currentTile = currentTile.t6;
+                        }
+                        else if(currentTile.t5 != null && !visited.contains(currentTile.t5)){
+                            currentTile = currentTile.t5;
+                        }
+                        else if(currentTile.t4 != null && !visited.contains(currentTile.t4)){
+                            currentTile = currentTile.t4;
+                        }
+                        else if(currentTile.t3 != null && !visited.contains(currentTile.t3)){
+                            currentTile = currentTile.t3;
+                        }
+                        else if(currentTile.t2 != null && !visited.contains(currentTile.t2)){
+                            currentTile = currentTile.t2;
+                        }
+                        else if(currentTile.t1 != null && !visited.contains(currentTile.t1)) {
+                            currentTile = currentTile.t1;
+                        }
+                    }
+                    else if(count < 15){
+                        if(currentTile.t3 != null && !visited.contains(currentTile.t3)){
+                            currentTile = currentTile.t3;
+                        }
+                        else if(currentTile.t2 != null && !visited.contains(currentTile.t2)){
+                            currentTile = currentTile.t2;
+                        }
+                        else if(currentTile.t1 != null && !visited.contains(currentTile.t1)) {
+                            currentTile = currentTile.t1;
+                        }
+                        else if(currentTile.t6 != null && !visited.contains(currentTile.t6)){
+                            currentTile = currentTile.t6;
+                        }
+                        else if(currentTile.t5 != null && !visited.contains(currentTile.t5)){
+                            currentTile = currentTile.t5;
+                        }
+                        else if(currentTile.t4 != null && !visited.contains(currentTile.t4)){
+                            currentTile = currentTile.t4;
+                        }
+                    }
+                    else{
+                        if(currentTile.t5 != null && !visited.contains(currentTile.t5)){
+                            currentTile = currentTile.t5;
+                        }
+                        else if(currentTile.t4 != null && !visited.contains(currentTile.t4)){
+                            currentTile = currentTile.t4;
+                        }
+                        else if(currentTile.t3 != null && !visited.contains(currentTile.t3)){
+                            currentTile = currentTile.t3;
+                        }
+                        else if(currentTile.t2 != null && !visited.contains(currentTile.t2)){
+                            currentTile = currentTile.t2;
+                        }
+                        else if(currentTile.t1 != null && !visited.contains(currentTile.t1)) {
+                            currentTile = currentTile.t1;
+                        }
+                        else if(currentTile.t6 != null && !visited.contains(currentTile.t6)){
+                            currentTile = currentTile.t6;
+                        }
+                    }
+                    if(!currentTile.resource.equals("desert")){
+                        currentTile.setNumber(order.remove(0));
+                        currentTile.setNumImage(numImages[currentTile.getNumber()]);
+                    }
+                    count++;
+                }
             }
     }
     public void setUpIntersections() {
