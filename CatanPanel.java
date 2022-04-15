@@ -45,9 +45,10 @@ public class CatanPanel extends JPanel implements MouseListener{
         if(gs.getGameState() == 1) {
             currentPlayer = pManage.curentPlayer();
             System.out.println("current player: " + currentPlayer.getColor());
-            drawPlayer(g, currentPlayer);
+            //do not paint anything before drawTiles
             drawTiles(g);
             drawIntersections(g);
+            drawPlayer(g, currentPlayer);
             for (int i = 0; i<toHighlight.size(); i++) {
                     g.setColor(Color.RED);
                     g.fillRect(toHighlight.get(i).getX()-10, toHighlight.get(i).getY()-10, 10, 10);
@@ -220,7 +221,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             System.out.println("set color to yellow");
         }
         g.setFont(new Font("TimesRoman", Font.PLAIN, 100));
-        g.drawString("Player: " + pManage.currentPlayerIndex(), 30, 900);
+        g.drawString("Player: " + pManage.currentPlayerIndex(), 30, 500);
     }
 
     public void mouseReleased(MouseEvent m) {}

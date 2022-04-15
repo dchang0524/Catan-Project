@@ -159,8 +159,10 @@ public class Board{
             if(start == 0){
                 System.out.println("Start " + start);
                 Tile currentTile = tiles[0][1];
-                currentTile.setNumber(order.remove(0));
-                currentTile.setNumImage(numImages[currentTile.getNumber()]);
+                if(!currentTile.resource.equals("desert")){
+                    currentTile.setNumber(order.remove(0));
+                    currentTile.setNumImage(numImages[currentTile.getNumber()]);
+                }
                 int count = 1;
                 while(!order.isEmpty()){
                     visited.add(currentTile);
@@ -235,8 +237,10 @@ public class Board{
             else if(start == 1){
                 System.out.println("Start " + start);
                 Tile currentTile = tiles[4][1];
-                currentTile.setNumber(order.remove(0));
-                currentTile.setNumImage(numImages[currentTile.getNumber()]);
+                if(!currentTile.resource.equals("desert")){
+                    currentTile.setNumber(order.remove(0));
+                    currentTile.setNumImage(numImages[currentTile.getNumber()]);
+                }
                 int count = 1;
                 while(!order.isEmpty()){
                     visited.add(currentTile);
@@ -310,8 +314,10 @@ public class Board{
             else if(start == 2){
                 System.out.println("Start " + start);
                 Tile currentTile = tiles[4][3];
-                currentTile.setNumber(order.remove(0));
-                currentTile.setNumImage(numImages[currentTile.getNumber()]);
+                if(!currentTile.resource.equals("desert")){
+                    currentTile.setNumber(order.remove(0));
+                    currentTile.setNumImage(numImages[currentTile.getNumber()]);
+                }
                 int count = 1;
                 while(!order.isEmpty()){
                     visited.add(currentTile);
@@ -385,8 +391,10 @@ public class Board{
             else if(start == 3){
                 System.out.println("Start " + start);
                 Tile currentTile = tiles[0][3];
-                currentTile.setNumber(order.remove(0));
-                currentTile.setNumImage(numImages[currentTile.getNumber()]);
+                if(!currentTile.resource.equals("desert")){
+                    currentTile.setNumber(order.remove(0));
+                    currentTile.setNumImage(numImages[currentTile.getNumber()]);
+                }
                 int count = 1;
                 while(!order.isEmpty()){
                     visited.add(currentTile);
