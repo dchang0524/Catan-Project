@@ -132,6 +132,19 @@ public class CatanPanel extends JPanel implements MouseListener{
                 for (int i = 0; i < tempList.size(); i++) {
                     if (tempList.get(i).getX()-10<=x && x<=tempList.get(i).getX()+10 && tempList.get(i).getY()-10<=y && y<=tempList.get(i).getY()+10) {
                         Road tempRoad = new Road(temp, tempList.get(i), currentPlayer);
+                        if (temp.i1 == tempList.get(i)) {
+                            temp.setR1(tempRoad);
+                            tempList.get(i).setR1(tempRoad);
+                        }
+                        else if (temp.i2 == tempList.get(i)) {
+                            temp.setR2(tempRoad);
+                            tempList.get(i).setR2(tempRoad);
+                        }
+                        else if (temp.i3 == tempList.get(i)) {
+                            temp.setR3(tempRoad);
+                            tempList.get(i).setR3(tempRoad);
+                        }
+
                         if (pManage.currentPlayerIndex()<3) {
                             pManage.nextPlayer();
                             gs.setSubState("settlement");
@@ -160,6 +173,20 @@ public class CatanPanel extends JPanel implements MouseListener{
                 for (int i = 0; i < tempList.size(); i++) {
                     if (tempList.get(i).getX()-10<=x && x<=tempList.get(i).getX()+10 && tempList.get(i).getY()-10<=y && y<=tempList.get(i).getY()+10) {
                         Road tempRoad = new Road(temp, tempList.get(i), currentPlayer);
+                        if (temp.i1 == tempList.get(i)) {
+                            temp.setR1(tempRoad);
+                            tempList.get(i).setR1(tempRoad);
+                        }
+                        else if (temp.i2 == tempList.get(i)) {
+                            temp.setR2(tempRoad);
+                            tempList.get(i).setR2(tempRoad);
+                        }
+                        else if (temp.i3 == tempList.get(i)) {
+                            temp.setR3(tempRoad);
+                            tempList.get(i).setR3(tempRoad);
+                        }
+
+
                         if (pManage.currentPlayerIndex()>0) {
                             pManage.prevPlayer();
                             gs.setSubState("settlement2");

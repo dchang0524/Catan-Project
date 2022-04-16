@@ -103,7 +103,24 @@ public class Intersection {
     public void setT3(Tile t) {
         t3 = t;
     }
-
+    public void setR1(Road r) {
+        r1 = r;
+    }
+    public void setR2(Road r) {
+        r2 = r;
+    }
+    public void setR3(Road r) {
+        r3 = r;
+    }
+    public Road getR1() {
+        return r1;
+    }
+    public Road getR2() {
+        return r2;
+    }
+    public Road getR3() {
+        return r3;
+    }
     public void setX(int x) {this.x = x;}
     public void setY(int y) {this.y = y;}
     public int getX() {return x;}
