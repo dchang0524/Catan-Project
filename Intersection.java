@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Intersection {
     Intersection i1;
     Intersection i2;
@@ -64,11 +66,34 @@ public class Intersection {
             i3 = i;
         }
     }
-
+    public boolean noAdjacentSettlement() {
+        if ((i1 == null || i1.hasSettlement() == false) && (i2 == null || i2.hasSettlement() == false) && (i3 == null || i3.hasSettlement() == false)) {
+            return true;
+        }
+        return false;
+    }
+    public ArrayList<Intersection> getAdjacentIntersections() {
+        ArrayList<Intersection> adj = new ArrayList<Intersection>();
+        if (i1 != null) {
+            adj.add(i1);
+        }
+        if (i2 != null) {
+            adj.add(i2);
+        }
+        if (i3 != null) {
+            adj.add(i3);
+        }
+        return adj;
+    }
+    public boolean hasSettlement() {
+        if (s != null) {
+            return true;
+        }
+        return false;
+    }
     public void setSettlement(Player p) {
         this.s = new Settlement(this, p);
     }
-
     public void setT1(Tile t) {
         t1 = t;
     }

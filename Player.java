@@ -1,8 +1,9 @@
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Player {
     HashMap<String, Integer> inventory;
-    HashSet<Settlement> settlements;
+    ArrayList<Settlement> settlements;
     int KnightsUsed;
     HashMap<String, Integer> developmentCards;
     int victoryPoints;
@@ -10,11 +11,12 @@ public class Player {
     boolean hasLongestRoad;
     HashMap<String, Integer> shopRatio;
     String color;
+    ArrayList<Road> roads;
 
     //constructor
     public Player(String name) {
         inventory = new HashMap<String, Integer>();
-        settlements = new HashSet<Settlement>();
+        settlements = new ArrayList<Settlement>();
         KnightsUsed = 0;
         developmentCards = new HashMap<String, Integer>();
         victoryPoints = 0;
@@ -22,7 +24,12 @@ public class Player {
         hasLongestRoad = false;
         shopRatio = new HashMap<String, Integer>();
         color = name;
+        roads = new ArrayList<Road>();
     }
+    public ArrayList<Road> getRoads(){
+        return roads;
+    }
+
     public void addToInventory(String resource, int amount) {
         if (resource == "Desert") {
             return;
@@ -126,7 +133,7 @@ public class Player {
         return inventory;
     }
 
-    public HashSet<Settlement> getSettlements() {
+    public ArrayList<Settlement> getSettlements() {
         return settlements;
     }
 
@@ -166,7 +173,7 @@ public class Player {
         this.inventory = inventory;
     }
     //set
-    public void setSettlements(HashSet<Settlement> settlements) {
+    public void setSettlements(ArrayList<Settlement> settlements) {
         this.settlements = settlements;
     }
     //set

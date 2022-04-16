@@ -101,7 +101,7 @@ public class Tile {
         yCoord = y;
     }
     public BufferedImage getImage() {
-        System.out.println(number);
+        //System.out.println(number);
         return image;
 
     }

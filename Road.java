@@ -8,6 +8,8 @@ public class Road {
         this.i1 = i1;
         this.i2 = i2;
         this.owner = owner;
+        owner.getRoads().add(this);
+
     }
     public void setOwner(Road road, Player player) {
         if (owner == null) {

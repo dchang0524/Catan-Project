@@ -157,7 +157,7 @@ public class Board{
         int start = (int)(Math.random()*4);
             ArrayList<Tile> visited = new ArrayList<Tile>();
             if(start == 0){
-                System.out.println("Start " + start);
+                //System.out.println("Start " + start);
                 Tile currentTile = tiles[0][1];
                 if(!currentTile.resource.equals("desert")){
                     currentTile.setNumber(order.remove(0));
@@ -235,7 +235,7 @@ public class Board{
                 }
             }
             else if(start == 1){
-                System.out.println("Start " + start);
+                //System.out.println("Start " + start);
                 Tile currentTile = tiles[4][1];
                 if(!currentTile.resource.equals("desert")){
                     currentTile.setNumber(order.remove(0));
@@ -312,7 +312,7 @@ public class Board{
                 }
             }
             else if(start == 2){
-                System.out.println("Start " + start);
+                //System.out.println("Start " + start);
                 Tile currentTile = tiles[4][3];
                 if(!currentTile.resource.equals("desert")){
                     currentTile.setNumber(order.remove(0));
@@ -389,7 +389,7 @@ public class Board{
                 }
             }
             else if(start == 3){
-                System.out.println("Start " + start);
+                //System.out.println("Start " + start);
                 Tile currentTile = tiles[0][3];
                 if(!currentTile.resource.equals("desert")){
                     currentTile.setNumber(order.remove(0));
@@ -491,7 +491,7 @@ public class Board{
             }
         }
         for (int i = 0; i < intersections[i].length; i++) {
-            System.out.println(intersections[5][i] + " ");
+            //System.out.println(intersections[5][i] + " ");
         }
         //connect intersections
         for (int i = 0; i < 6; i++) {
@@ -557,7 +557,7 @@ public class Board{
                         intersections[i][j].setT2(tiles[2][j]);
                     }
                     if (j > 0) {
-                        System.out.println("i: " + i + " j: " + j);
+                        //System.out.println("i: " + i + " j: " + j);
                         intersections[i][j].setT1(tiles[1][j - 1]);
                         intersections[i][j].setT3(tiles[2][j - 1]);
                     }

@@ -15,7 +15,12 @@ public class PlayerManager {
             players.add(new Player(c));
         }
     }
-
+    public Player get(int i) {
+        return players.get(i);
+    }
+    public int size() {
+        return players.size();
+    }
     public Player curentPlayer() {
         return players.get(currentPlayer);
     }

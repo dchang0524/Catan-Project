@@ -42,19 +42,27 @@ public class CatanPanel extends JPanel implements MouseListener{
         if(gs.getGameState() == 0) {
             menuScreen(g);
         }
-        if(gs.getGameState() == 1) {
+        //choose starting settlements
+        else if(gs.getGameState() == 1) {
             currentPlayer = pManage.curentPlayer();
             System.out.println("current player: " + currentPlayer.getColor());
             //do not paint anything before drawTiles
             drawTiles(g);
             drawIntersections(g);
             drawPlayer(g, currentPlayer);
-            for (int i = 0; i<toHighlight.size(); i++) {
-                    g.setColor(Color.RED);
-                    g.fillRect(toHighlight.get(i).getX()-10, toHighlight.get(i).getY()-10, 10, 10);
-                    g.setColor(Color.CYAN);
+            drawSetlements(g);
+            drawRoads(g);
+            if (gs.getSubState().equals("settlement")) {
+                changeColor(g);
+                g.drawString("Choose starting settlement", 800, 100);
+                if (currentPlayer.getSettlements().size() == 1) {
+                    gs.setSubState("road");
+                }
             }
-            toHighlight.clear();
+            else if (gs.getSubState().equals("road")) {
+                changeColor(g);
+                g.drawString("Choose road for the settlement", 800, 100);
+            }
         }
 
     }
@@ -68,6 +76,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                     "Please enter the number of players(3-4):",
                     "Number of Players", JOptionPane.QUESTION_MESSAGE)));
             gs.setGameState(1);
+            gs.setSubState("settlement");
         }
         if(x > 800 && x < 1100 && y > 650 && y < 750) {
             if (Desktop.isDesktopSupported()) {
@@ -86,24 +95,31 @@ public class CatanPanel extends JPanel implements MouseListener{
         repaint();
     }
         else if (gs.getGameState() == 1) {
-
-            for (int i = 0; i < intersections.length; i++) {
-                for (int j = 0; j < intersections[i].length; j++) {
-                    if (intersections[i][j] != null && intersections[i][j].getX()-10<=x && x<=intersections[i][j].getX()+10 && intersections[i][j].getY()-10<=y && y<=intersections[i][j].getY()+10) {
-                        toHighlight.add(intersections[i][j]);
-                        if (intersections[i][j].i1 != null) {
-                            toHighlight.add(intersections      [i][j].i1);
+            if(gs.getSubState().equals("settlement")) {
+                for (int i = 0; i < intersections.length; i++) {
+                    for (int j = 0; j < intersections[i].length; j++) {
+                        if (intersections[i][j] != null && intersections[i][j].noAdjacentSettlement() && !intersections[i][j].hasSettlement()
+                                && intersections[i][j].getX()-10<=x && x<=intersections[i][j].getX()+10 && intersections[i][j].getY()-10<=y && y<=intersections[i][j].getY()+10) {
+                            System.out.println("intersection: " + intersections[i][j].getX() + " " + intersections[i][j].getY());
+                            intersections[i][j].setSettlement(currentPlayer);
+                            gs.setSubState("road");
                         }
-                        if (intersections[i][j].i2 != null) {
-                            toHighlight.add(intersections[i][j].i2);
-                        }
-                        if (intersections[i][j].i3 != null) {
-                            toHighlight.add(intersections[i][j].i3);
-                        }
-
                     }
                 }
             }
+            else if(gs.getSubState().equals("road")) {
+                Intersection temp = currentPlayer.getSettlements().get(0).getPosition();
+                ArrayList<Intersection> tempList = temp.getAdjacentIntersections();
+                for (int i = 0; i < tempList.size(); i++) {
+                    if (tempList.get(i).getX()-10<=x && x<=tempList.get(i).getX()+10 && tempList.get(i).getY()-10<=y && y<=tempList.get(i).getY()+10) {
+                        Road tempRoad = new Road(temp, tempList.get(i), currentPlayer);
+                        pManage.nextPlayer();
+                        gs.setSubState("settlement");
+                    }
+                }
+            }
+
+
             repaint();
         }
 
@@ -206,23 +222,80 @@ public class CatanPanel extends JPanel implements MouseListener{
     public void drawPlayer(Graphics g, Player p) {
         if (p.getColor().equals("red")) {
             g.setColor(Color.RED);
-            System.out.println("set color to red");
+            //System.out.println("set color to red");
         }
         else if (p.getColor().equals("blue")) {
             g.setColor(Color.BLUE);
-            System.out.println("set color to blue");
+            //System.out.println("set color to blue");
         }
         else if (p.getColor().equals("white")) {
             g.setColor(Color.WHITE);
-            System.out.println("set color to white");
+            //System.out.println("set color to white");
         }
         else if (p.getColor().equals("yellow")) {
             g.setColor(Color.YELLOW);
-            System.out.println("set color to yellow");
+            //System.out.println("set color to yellow");
         }
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 100));
-        g.drawString("Player: " + pManage.currentPlayerIndex(), 30, 500);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
+        g.drawString("Player " + pManage.currentPlayerIndex(), 30, 850);
     }
+    public void drawSetlements(Graphics g) {
+        for (int i = 0; i < pManage.size(); i++) {
+            for (int j = 0; j < pManage.get(i).getSettlements().size(); j++) {
+                if (pManage.get(i).getColor().equals("red")) {
+                    g.setColor(Color.RED);
+                }
+                else if (pManage.get(i).getColor().equals("blue")) {
+                    g.setColor(Color.BLUE);
+                }
+                else if (pManage.get(i).getColor().equals("white")) {
+                    g.setColor(Color.WHITE);
+                }
+                else if (pManage.get(i).getColor().equals("yellow")) {
+                    g.setColor(Color.YELLOW);
+                }
+                //System.out.println("Will Highlight: " + pManage.get(i).getSettlements().get(j));
+
+                g.fillRect(pManage.get(i).getSettlements().get(j).getX()-10, pManage.get(i).getSettlements().get(j).getY()-10, 20, 20);
+            }
+        }
+    }
+    public void drawRoads(Graphics g) {
+        for (int i = 0; i < pManage.size(); i++) {
+            for (int j = 0; j < pManage.get(i).getRoads().size(); j++) {
+                if (pManage.get(i).getColor().equals("red")) {
+                    g.setColor(Color.RED);
+                }
+                else if (pManage.get(i).getColor().equals("blue")) {
+                    g.setColor(Color.BLUE);
+                }
+                else if (pManage.get(i).getColor().equals("white")) {
+                    g.setColor(Color.WHITE);
+                }
+                else if (pManage.get(i).getColor().equals("yellow")) {
+                    g.setColor(Color.YELLOW);
+                }
+                Road temp = pManage.get(i).getRoads().get(j);
+                g.drawLine(temp.getI1().getX(), temp.getI1().getY(), temp.getI2().getX(), temp.getI2().getY());
+            }
+        }
+    }
+    public void changeColor(Graphics g) {
+        if (currentPlayer.getColor().equals("red")) {
+            g.setColor(Color.RED);
+        }
+        else if (currentPlayer.getColor().equals("blue")) {
+            g.setColor(Color.BLUE);
+        }
+        else if (currentPlayer.getColor().equals("white")) {
+            g.setColor(Color.WHITE);
+        }
+        else if (currentPlayer.getColor().equals("yellow")) {
+            g.setColor(Color.YELLOW);
+        }
+    }
+
+
 
     public void mouseReleased(MouseEvent m) {}
     public void mouseEntered(MouseEvent m) {}
@@ -230,6 +303,7 @@ public class CatanPanel extends JPanel implements MouseListener{
     public void mouseClicked(MouseEvent m) {
         int x = m.getX();
         int y = m.getY();
-       System.out.println("vertex:" + x + " " + y);
+       System.out.println("click:" + x + " " + y);
     }
+
 }
