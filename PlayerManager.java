@@ -30,5 +30,7 @@ public class PlayerManager {
     public void nextPlayer() {
         currentPlayer = (currentPlayer + 1) % players.size();
     }
-
+    public void prevPlayer() {
+        currentPlayer = (currentPlayer - 1 + players.size()) % players.size();
+    }
 }
