@@ -276,6 +276,8 @@ public class CatanPanel extends JPanel implements MouseListener{
                     g.setColor(Color.YELLOW);
                 }
                 Road temp = pManage.get(i).getRoads().get(j);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setStroke(new BasicStroke(8));
                 g.drawLine(temp.getI1().getX(), temp.getI1().getY(), temp.getI2().getX(), temp.getI2().getY());
             }
         }
