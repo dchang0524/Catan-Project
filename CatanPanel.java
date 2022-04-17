@@ -17,6 +17,7 @@ public class CatanPanel extends JPanel implements MouseListener{
     File file;
     Tile[][] tiles;
     Intersection[][] intersections;
+    boolean startGame = false, adjacent = false, firstTimeGameState1 = true;
     //Dimension dim;
     ArrayList<Intersection> toHighlight = new ArrayList<Intersection>();
     public CatanPanel() {
@@ -38,64 +39,79 @@ public class CatanPanel extends JPanel implements MouseListener{
     }
 
     public void paint(Graphics g) {
-        //gameState = 0, menuscreen
+        //gameState = 0, menuscreen, choose starting settlements
         if(gs.getGameState() == 0) {
             menuScreen(g);
-        }
-        //gameState = 1, choose starting settlements
-        else if(gs.getGameState() == 1) {
-            currentPlayer = pManage.curentPlayer();
-            System.out.println("game state " + gs.getGameState() + " " +"subState " + gs.getSubState());
-            //do not paint anything before drawTiles
-            drawTiles(g);
-            drawIntersections(g);
-            drawPlayer(g, currentPlayer);
-            drawSetlements(g);
-            drawRoads(g);
-            if (gs.getSubState().equals("settlement")) {
-                changeColor(g);
-                g.drawString("Choose starting settlement", 800, 100);
-                if (currentPlayer.getSettlements().size() == 1) {
-                    gs.setSubState("road");
+            if(startGame == true){
+                currentPlayer = pManage.curentPlayer();
+                System.out.println("game state " + gs.getGameState() + " subState " + gs.getSubState() + " startgame " + startGame);
+                //do not paint anything before drawTiles
+                drawTiles(g);
+                drawIntersections(g);
+                drawPlayer(g, currentPlayer);
+                drawSetlements(g);
+                drawRoads(g);
+                if (gs.getSubState().equals("settlement")) {
+                    changeColor(g);
+                    if(adjacent == false){
+                        g.drawString("Choose starting settlement", 800, 100);
+                    } else{
+                        g.setFont(new Font("TimesRoman", Font.PLAIN, 45)); g.drawString("Cannot place settlement on adjacent intersection", 800, 100);
+                        g.drawString("Choose a different starting settlement", 800, 150); g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
+                        adjacent = false;
+                    }
+                    if (currentPlayer.getSettlements().size() == 1) {
+                        gs.setSubState("road");
+                    }
+                }
+                else if (gs.getSubState().equals("road")) {
+                    changeColor(g);
+                    g.setFont(new Font("TimesRoman", Font.PLAIN, 55)); g.drawString("Choose endpoint of road for the settlement", 800, 100); g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
+                }
+                else if (gs.getSubState().equals("settlement2")) {
+                    changeColor(g);
+                    if(adjacent == false) {
+                        g.drawString("Choose second settlement", 800, 100);
+                    } else{
+                        g.setFont(new Font("TimesRoman", Font.PLAIN, 45)); g.drawString("Cannot place settlement on adjacent intersection", 800, 100);
+                        g.drawString("Choose a different second starting settlement", 800, 150); g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
+                        adjacent = false;
+                    }
+                }
+                else if (gs.getSubState().equals("road2")) {
+                    changeColor(g);
+                    g.setFont(new Font("TimesRoman", Font.PLAIN, 55)); g.drawString("Choose road for the second settlement", 800, 100); g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
                 }
             }
-            else if (gs.getSubState().equals("road")) {
-                changeColor(g);
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 55));
-                g.drawString("Choose endpoint of road for the settlement", 800, 100);
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
-            }
-            else if (gs.getSubState().equals("settlement2")) {
-                changeColor(g);
-                g.drawString("Choose second settlement", 800, 100);
-            }
-            else if (gs.getSubState().equals("road2")) {
-                changeColor(g);
-                g.drawString("Choose road for the second settlement", 800, 100);
-            }
         }
-        //gameState = 2, game loop
-        else if(gs.getGameState() == 2) {
+        //gameState = 1, game loop and trade phase
+        else if(gs.getGameState() == 1) {
+            if(firstTimeGameState1 == true){
+                g.setColor(Color.darkGray);
+                g.fillRect(790,0,1900,220);
+                firstTimeGameState1 = false;
+            }
             currentPlayer = pManage.curentPlayer();
             System.out.println("game state " + gs.getGameState() + " " +"subState " + gs.getSubState());
-            //do not paint anything before drawTiles
-            drawTiles(g);
-            drawIntersections(g);
             drawPlayer(g, currentPlayer);
             drawSetlements(g);
             drawRoads(g);
+        }
+        //gameState = 2, buy phase
+        else if(gs.getGameState() == 2) {
+
         }
     }
     public void mousePressed(MouseEvent m) {
         int x = m.getX();
         int y = m.getY();
         // menu screen
-        if (gs.getGameState() == 0) {
+        if (gs.getGameState() == 0 && startGame == false) {
         if(x > 800 && x < 1100 && y > 500 && y < 600) {
             pManage = new PlayerManager(Integer.parseInt(JOptionPane.showInputDialog(null,
                     "Please enter the number of players(3-4):",
                     "Number of Players", JOptionPane.QUESTION_MESSAGE)));
-            gs.setGameState(1);
+            startGame = true;
             gs.setSubState("settlement");
         }
         if(x > 800 && x < 1100 && y > 650 && y < 750) {
@@ -115,15 +131,19 @@ public class CatanPanel extends JPanel implements MouseListener{
         repaint();
         }
         //choose starting settlements
-        else if (gs.getGameState() == 1) {
+        else if (gs.getGameState() == 0 && startGame) {
             if(gs.getSubState().equals("settlement")) {
                 for (int i = 0; i < intersections.length; i++) {
                     for (int j = 0; j < intersections[i].length; j++) {
                         if (intersections[i][j] != null && intersections[i][j].noAdjacentSettlement() && !intersections[i][j].hasSettlement()
-                                && intersections[i][j].getX()-10<=x && x<=intersections[i][j].getX()+10 && intersections[i][j].getY()-10<=y && y<=intersections[i][j].getY()+10) {
+                                && intersections[i][j].getX()-14<=x && x<=intersections[i][j].getX()+14 && intersections[i][j].getY()-14<=y && y<=intersections[i][j].getY()+14) {
                             System.out.println("intersection: " + intersections[i][j].getX() + " " + intersections[i][j].getY());
                             intersections[i][j].setSettlement(currentPlayer);
                             gs.setSubState("road");
+                        }
+                        else if(intersections[i][j] != null && !intersections[i][j].noAdjacentSettlement() && !intersections[i][j].hasSettlement()
+                                && intersections[i][j].getX()-14<=x && x<=intersections[i][j].getX()+14 && intersections[i][j].getY()-14<=y && y<=intersections[i][j].getY()+14){
+                            adjacent = true;
                         }
                     }
                 }
@@ -132,7 +152,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                 Intersection temp = currentPlayer.getSettlements().get(0).getPosition();
                 ArrayList<Intersection> tempList = temp.getAdjacentIntersections();
                 for (int i = 0; i < tempList.size(); i++) {
-                    if (tempList.get(i).getX()-10<=x && x<=tempList.get(i).getX()+10 && tempList.get(i).getY()-10<=y && y<=tempList.get(i).getY()+10) {
+                    if (tempList.get(i).getX()-14<=x && x<=tempList.get(i).getX()+14 && tempList.get(i).getY()-14<=y && y<=tempList.get(i).getY()+14) {
                         Road tempRoad = new Road(temp, tempList.get(i), currentPlayer);
                         if (temp.i1 == tempList.get(i)) {
                             temp.setR1(tempRoad);
@@ -147,11 +167,11 @@ public class CatanPanel extends JPanel implements MouseListener{
                             tempList.get(i).setR3(tempRoad);
                         }
 
-                        if (pManage.currentPlayerIndex()<3) {
+                        if (pManage.currentPlayerIndex()<pManage.size()-1) {
                             pManage.nextPlayer();
                             gs.setSubState("settlement");
                         }
-                        else if (pManage.currentPlayerIndex()==3) {
+                        else if (pManage.currentPlayerIndex()==pManage.size()-1) {
                             gs.setSubState("settlement2");
                         }
                     }
@@ -161,10 +181,14 @@ public class CatanPanel extends JPanel implements MouseListener{
                 for (int i = 0; i < intersections.length; i++) {
                     for (int j = 0; j < intersections[i].length; j++) {
                         if (intersections[i][j] != null && intersections[i][j].noAdjacentSettlement() && !intersections[i][j].hasSettlement()
-                                && intersections[i][j].getX()-10<=x && x<=intersections[i][j].getX()+10 && intersections[i][j].getY()-10<=y && y<=intersections[i][j].getY()+10) {
+                                && intersections[i][j].getX()-14<=x && x<=intersections[i][j].getX()+14 && intersections[i][j].getY()-14<=y && y<=intersections[i][j].getY()+14) {
                             System.out.println("intersection: " + intersections[i][j].getX() + " " + intersections[i][j].getY());
                             intersections[i][j].setSettlement(currentPlayer);
                             gs.setSubState("road2");
+                        }
+                        if (intersections[i][j] != null && intersections[i][j].noAdjacentSettlement() && !intersections[i][j].hasSettlement()
+                                && intersections[i][j].getX()-14<=x && x<=intersections[i][j].getX()+14 && intersections[i][j].getY()-14<=y && y<=intersections[i][j].getY()+14) {
+                            adjacent = true;
                         }
                     }
                 }
@@ -173,7 +197,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                 Intersection temp = currentPlayer.getSettlements().get(1).getPosition();
                 ArrayList<Intersection> tempList = temp.getAdjacentIntersections();
                 for (int i = 0; i < tempList.size(); i++) {
-                    if (tempList.get(i).getX()-10<=x && x<=tempList.get(i).getX()+10 && tempList.get(i).getY()-10<=y && y<=tempList.get(i).getY()+10) {
+                    if (tempList.get(i).getX()-14<=x && x<=tempList.get(i).getX()+14 && tempList.get(i).getY()-14<=y && y<=tempList.get(i).getY()+14) {
                         Road tempRoad = new Road(temp, tempList.get(i), currentPlayer);
                         if (temp.i1 == tempList.get(i)) {
                             temp.setR1(tempRoad);
@@ -194,14 +218,14 @@ public class CatanPanel extends JPanel implements MouseListener{
                             gs.setSubState("settlement2");
                         }
                         else if (pManage.currentPlayerIndex()==0) {
-                            gs.setGameState(2);
+                            gs.setGameState(1);
                         }
                     }
                 }
             }
             repaint();
         }
-        else if (gs.getGameState()==2) {
+        else if (gs.getGameState()==1) {
 
         }
 
@@ -216,7 +240,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                     g.setColor(Color.RED);
                 }
                 else if (pManage.get(i).getColor().equals("blue")) {
-                    g.setColor(Color.BLUE);
+                    g.setColor(new Color(31, 69, 252));
                 }
                 else if (pManage.get(i).getColor().equals("white")) {
                     g.setColor(Color.WHITE);
@@ -237,7 +261,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                     g.setColor(Color.RED);
                 }
                 else if (pManage.get(i).getColor().equals("blue")) {
-                    g.setColor(Color.BLUE);
+                    g.setColor(new Color(31, 69, 252));
                 }
                 else if (pManage.get(i).getColor().equals("white")) {
                     g.setColor(Color.WHITE);
@@ -257,7 +281,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             g.setColor(Color.RED);
         }
         else if (currentPlayer.getColor().equals("blue")) {
-            g.setColor(Color.BLUE);
+            g.setColor(new Color(31, 69, 252));
         }
         else if (currentPlayer.getColor().equals("white")) {
             g.setColor(Color.WHITE);
@@ -365,7 +389,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             //System.out.println("set color to red");
         }
         else if (p.getColor().equals("blue")) {
-            g.setColor(Color.BLUE);
+            g.setColor(new Color(31, 69, 252));
             //System.out.println("set color to blue");
         }
         else if (p.getColor().equals("white")) {
