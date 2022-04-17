@@ -61,7 +61,9 @@ public class CatanPanel extends JPanel implements MouseListener{
             }
             else if (gs.getSubState().equals("road")) {
                 changeColor(g);
-                g.drawString("Choose road for the settlement", 800, 100);
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 55));
+                g.drawString("Choose endpoint of road for the settlement", 800, 100);
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
             }
             else if (gs.getSubState().equals("settlement2")) {
                 changeColor(g);
@@ -111,7 +113,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             System.exit(0);
         }
         repaint();
-    }
+        }
         //choose starting settlements
         else if (gs.getGameState() == 1) {
             if(gs.getSubState().equals("settlement")) {
@@ -204,6 +206,66 @@ public class CatanPanel extends JPanel implements MouseListener{
         }
 
     }
+
+
+
+    public void drawSetlements(Graphics g) {
+        for (int i = 0; i < pManage.size(); i++) {
+            for (int j = 0; j < pManage.get(i).getSettlements().size(); j++) {
+                if (pManage.get(i).getColor().equals("red")) {
+                    g.setColor(Color.RED);
+                }
+                else if (pManage.get(i).getColor().equals("blue")) {
+                    g.setColor(Color.BLUE);
+                }
+                else if (pManage.get(i).getColor().equals("white")) {
+                    g.setColor(Color.WHITE);
+                }
+                else if (pManage.get(i).getColor().equals("yellow")) {
+                    g.setColor(Color.YELLOW);
+                }
+                //System.out.println("Will Highlight: " + pManage.get(i).getSettlements().get(j));
+
+                g.fillRect(pManage.get(i).getSettlements().get(j).getX()-10, pManage.get(i).getSettlements().get(j).getY()-10, 20, 20);
+            }
+        }
+    }
+    public void drawRoads(Graphics g) {
+        for (int i = 0; i < pManage.size(); i++) {
+            for (int j = 0; j < pManage.get(i).getRoads().size(); j++) {
+                if (pManage.get(i).getColor().equals("red")) {
+                    g.setColor(Color.RED);
+                }
+                else if (pManage.get(i).getColor().equals("blue")) {
+                    g.setColor(Color.BLUE);
+                }
+                else if (pManage.get(i).getColor().equals("white")) {
+                    g.setColor(Color.WHITE);
+                }
+                else if (pManage.get(i).getColor().equals("yellow")) {
+                    g.setColor(Color.YELLOW);
+                }
+                Road temp = pManage.get(i).getRoads().get(j);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setStroke(new BasicStroke(8));
+                g.drawLine(temp.getI1().getX(), temp.getI1().getY(), temp.getI2().getX(), temp.getI2().getY());
+            }
+        }
+    }
+    public void changeColor(Graphics g) {
+        if (currentPlayer.getColor().equals("red")) {
+            g.setColor(Color.RED);
+        }
+        else if (currentPlayer.getColor().equals("blue")) {
+            g.setColor(Color.BLUE);
+        }
+        else if (currentPlayer.getColor().equals("white")) {
+            g.setColor(Color.WHITE);
+        }
+        else if (currentPlayer.getColor().equals("yellow")) {
+            g.setColor(Color.YELLOW);
+        }
+    }
     public void menuScreen(Graphics g) {
         g.drawImage(startBackground, 0, 0,1900, 1000, null);
         g.drawImage(logo, 475, 100, null);
@@ -220,7 +282,6 @@ public class CatanPanel extends JPanel implements MouseListener{
         g.drawString("Start Game", 843, 565);
         g.drawString("Help", 910, 715);
         g.drawString("Exit", 910, 865);
-
     }
     public void drawTiles(Graphics g) {
 
@@ -318,65 +379,6 @@ public class CatanPanel extends JPanel implements MouseListener{
         g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
         g.drawString("Player " + pManage.currentPlayerIndex(), 30, 850);
     }
-    public void drawSetlements(Graphics g) {
-        for (int i = 0; i < pManage.size(); i++) {
-            for (int j = 0; j < pManage.get(i).getSettlements().size(); j++) {
-                if (pManage.get(i).getColor().equals("red")) {
-                    g.setColor(Color.RED);
-                }
-                else if (pManage.get(i).getColor().equals("blue")) {
-                    g.setColor(Color.BLUE);
-                }
-                else if (pManage.get(i).getColor().equals("white")) {
-                    g.setColor(Color.WHITE);
-                }
-                else if (pManage.get(i).getColor().equals("yellow")) {
-                    g.setColor(Color.YELLOW);
-                }
-                //System.out.println("Will Highlight: " + pManage.get(i).getSettlements().get(j));
-
-                g.fillRect(pManage.get(i).getSettlements().get(j).getX()-10, pManage.get(i).getSettlements().get(j).getY()-10, 20, 20);
-            }
-        }
-    }
-    public void drawRoads(Graphics g) {
-        for (int i = 0; i < pManage.size(); i++) {
-            for (int j = 0; j < pManage.get(i).getRoads().size(); j++) {
-                if (pManage.get(i).getColor().equals("red")) {
-                    g.setColor(Color.RED);
-                }
-                else if (pManage.get(i).getColor().equals("blue")) {
-                    g.setColor(Color.BLUE);
-                }
-                else if (pManage.get(i).getColor().equals("white")) {
-                    g.setColor(Color.WHITE);
-                }
-                else if (pManage.get(i).getColor().equals("yellow")) {
-                    g.setColor(Color.YELLOW);
-                }
-                Road temp = pManage.get(i).getRoads().get(j);
-                Graphics2D g2 = (Graphics2D) g;
-                g2.setStroke(new BasicStroke(8));
-                g.drawLine(temp.getI1().getX(), temp.getI1().getY(), temp.getI2().getX(), temp.getI2().getY());
-            }
-        }
-    }
-    public void changeColor(Graphics g) {
-        if (currentPlayer.getColor().equals("red")) {
-            g.setColor(Color.RED);
-        }
-        else if (currentPlayer.getColor().equals("blue")) {
-            g.setColor(Color.BLUE);
-        }
-        else if (currentPlayer.getColor().equals("white")) {
-            g.setColor(Color.WHITE);
-        }
-        else if (currentPlayer.getColor().equals("yellow")) {
-            g.setColor(Color.YELLOW);
-        }
-    }
-
-
 
     public void mouseReleased(MouseEvent m) {}
     public void mouseEntered(MouseEvent m) {}
