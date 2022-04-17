@@ -125,6 +125,9 @@ public class Intersection {
     public void setY(int y) {this.y = y;}
     public int getX() {return x;}
     public int getY() {return y;}
+    public Intersection getI1() {return i1;}
+    public Intersection getI2() {return i2;}
+    public Intersection getI3() {return i3;}
 
     public String toString() {
         return x + " " + y;

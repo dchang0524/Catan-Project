@@ -225,6 +225,7 @@ public class Player {
     public String getColor() {
         return color;
     }
+
 }
 
 
