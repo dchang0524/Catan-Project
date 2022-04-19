@@ -2,15 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameFrame extends JFrame{
-    private static int WIDTH;
-    private static int HEIGHT;
+    private static int WIDTH = 1900;
+    private static int HEIGHT = 1000;
     public GameFrame(String framename) {
         super(framename);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//comment
-
-        WIDTH = (int) screenSize.getWidth();
-        HEIGHT = (int) screenSize.getHeight();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WIDTH, HEIGHT);
         CatanPanel cp = new CatanPanel();

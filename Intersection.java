@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Intersection {
     Intersection i1;
     Intersection i2;
@@ -64,11 +66,34 @@ public class Intersection {
             i3 = i;
         }
     }
-
+    public boolean noAdjacentSettlement() {
+        if ((i1 == null || i1.hasSettlement() == false) && (i2 == null || i2.hasSettlement() == false) && (i3 == null || i3.hasSettlement() == false)) {
+            return true;
+        }
+        return false;
+    }
+    public ArrayList<Intersection> getAdjacentIntersections() {
+        ArrayList<Intersection> adj = new ArrayList<Intersection>();
+        if (i1 != null) {
+            adj.add(i1);
+        }
+        if (i2 != null) {
+            adj.add(i2);
+        }
+        if (i3 != null) {
+            adj.add(i3);
+        }
+        return adj;
+    }
+    public boolean hasSettlement() {
+        if (s != null) {
+            return true;
+        }
+        return false;
+    }
     public void setSettlement(Player p) {
         this.s = new Settlement(this, p);
     }
-
     public void setT1(Tile t) {
         t1 = t;
     }
@@ -78,11 +103,31 @@ public class Intersection {
     public void setT3(Tile t) {
         t3 = t;
     }
-
+    public void setR1(Road r) {
+        r1 = r;
+    }
+    public void setR2(Road r) {
+        r2 = r;
+    }
+    public void setR3(Road r) {
+        r3 = r;
+    }
+    public Road getR1() {
+        return r1;
+    }
+    public Road getR2() {
+        return r2;
+    }
+    public Road getR3() {
+        return r3;
+    }
     public void setX(int x) {this.x = x;}
     public void setY(int y) {this.y = y;}
     public int getX() {return x;}
     public int getY() {return y;}
+    public Intersection getI1() {return i1;}
+    public Intersection getI2() {return i2;}
+    public Intersection getI3() {return i3;}
 
     public String toString() {
         return x + " " + y;
