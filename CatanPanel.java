@@ -395,6 +395,7 @@ public class CatanPanel extends JPanel implements MouseListener{
 
 
     private void drawPorts(Graphics g){
+        Graphics2D g2 = (Graphics2D) g;
     }
 
 
