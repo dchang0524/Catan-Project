@@ -1,3 +1,4 @@
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -7,6 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.*;
 
 public class CatanPanel extends JPanel implements MouseListener{
     GameState gs;
@@ -51,6 +53,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                 drawPlayer(g, currentPlayer);
                 drawSetlements(g);
                 drawRoads(g);
+                drawPorts(g);
                 if (gs.getSubState().equals("settlement")) {
                     changeColor(g);
                     if(adjacent == false){
@@ -102,6 +105,9 @@ public class CatanPanel extends JPanel implements MouseListener{
 
         }
     }
+
+
+
     public void mousePressed(MouseEvent m) {
         int x = m.getX();
         int y = m.getY();
@@ -383,6 +389,12 @@ public class CatanPanel extends JPanel implements MouseListener{
             }
         }
     }
+
+
+    private void drawPorts(Graphics g){
+    }
+
+
     public void drawPlayer(Graphics g, Player p) {
         if (p.getColor().equals("red")) {
             g.setColor(Color.RED);

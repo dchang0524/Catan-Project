@@ -1,3 +1,7 @@
+import javax.swing.*;
+import java.awt.*;
+import java.util.*;
+
 public class Port {
     Intersection i1;
     Intersection i2;
@@ -6,7 +10,9 @@ public class Port {
     Player p1;
     Player p2;
     int tradeRatio;
+    ArrayList<String> ports = new ArrayList<String>();
     String portResource;
+
     public Port() {
         i1 = null;
         i2 = null;
@@ -14,6 +20,12 @@ public class Port {
         s2 = null;
         tradeRatio = 0;
         portResource = "";
+        ports.add("Brick");
+        ports.add("Sheep");
+        ports.add("Wheat");
+        ports.add("Wood");
+        ports.add("Ore");
+
     }
 
     public void setI1(Intersection i1) {
@@ -47,4 +59,7 @@ public class Port {
     public void setTradeRatio(int tradeRatio) {
         this.tradeRatio = tradeRatio;
     }
+
+
+
 }
