@@ -296,7 +296,7 @@ public class Board{
             }
     }
     public void setUpIntersections() {
-        Intersection[][] intersections = new Intersection[12][6];
+        this.intersections = new Intersection[12][6];
 
         //fill up intersections that will be used
         for (int i = 0; i < 12; i++) {
@@ -323,19 +323,24 @@ public class Board{
                 }
             }
         }
-
+        for (int i = 0; i < intersections[i].length; i++) {
+            System.out.println(intersections[5][i] + " ");
+        }
         //connect intersections
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i <= 6; i++) {
             for (int j = 0; j < 6; j++) {
                 if (i%2 == 0 && intersections[i][j] != null) {
                     intersections[i][j].setI1(intersections[i+1][j]);
-                    intersections[i][j].setI2(intersections[i+1][j+1]);
+                    if (j<5) {
+                        intersections[i][j].setI2(intersections[i + 1][j + 1]);
+                    }
                 }
                 else if (i%2 == 1 && intersections[i][j] != null) {
                     intersections[i][j].setI3(intersections[i+1][j]);
                 }
             }
         }
+
         for (int i = 11; i > 6; i--) {
             for (int j = 0; j < 6; j++) {
                 if (i%2 == 0) {
@@ -452,12 +457,7 @@ public class Board{
                     }
                 }
             }
-        }
-
-        //set up ports
-
-
-    } //TODO: set up ports
+        } //TODO: set up ports
 
     public void setPorts (){
         this.ports = new Port[9];
