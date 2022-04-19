@@ -22,6 +22,7 @@ public class CatanPanel extends JPanel implements MouseListener{
     boolean startGame = false, adjacent = false, firstTimeGameState1 = true;
     //Dimension dim;
     ArrayList<Intersection> toHighlight = new ArrayList<Intersection>();
+    Cards bank;
     public CatanPanel() {
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
@@ -36,9 +37,11 @@ public class CatanPanel extends JPanel implements MouseListener{
         board = new Board();
         tiles = board.getTiles();
         intersections = board.getIntersections();
+        bank = new Cards();
         addMouseListener(this);
 
     }
+
 
     public void paint(Graphics g) {
         //gameState = 0, menuscreen, choose starting settlements
@@ -100,6 +103,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             drawSetlements(g);
             drawRoads(g);
             drawCards(g);
+            System.out.println("current player: " + currentPlayer.getResources().keySet());
         }
         //gameState = 2, buy phase
         else if(gs.getGameState() == 2) {
@@ -117,7 +121,7 @@ public class CatanPanel extends JPanel implements MouseListener{
         if(x > 800 && x < 1100 && y > 500 && y < 600) {
             pManage = new PlayerManager(Integer.parseInt(JOptionPane.showInputDialog(null,
                     "Please enter the number of players(3-4):",
-                    "Number of Players", JOptionPane.QUESTION_MESSAGE)));
+                    "Number of Players", JOptionPane.QUESTION_MESSAGE)), bank);
             startGame = true;
             gs.setSubState("settlement");
         }
@@ -191,6 +195,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                                 && intersections[i][j].getX()-14<=x && x<=intersections[i][j].getX()+14 && intersections[i][j].getY()-14<=y && y<=intersections[i][j].getY()+14) {
                             System.out.println("intersection: " + intersections[i][j].getX() + " " + intersections[i][j].getY());
                             intersections[i][j].setSettlement(currentPlayer);
+                            intersections[i][j].s.giveResource();
                             gs.setSubState("road2");
                         }
                         if (intersections[i][j] != null && !intersections[i][j].noAdjacentSettlement() && !intersections[i][j].hasSettlement()
@@ -240,7 +245,26 @@ public class CatanPanel extends JPanel implements MouseListener{
 
 
     public void drawCards(Graphics g) {
-        //g.drawImage()
+        double ratio = 454.0/296.0;
+        HashMap<String, Integer> resources = pManage.curentPlayer().getResources();
+        Set<String> keys = resources.keySet();
+        if (keys != null) {
+            Iterator<String> iter = keys.iterator();
+            int width = 100;
+            int height = (int) (width*ratio);
+            int count = 0;
+            int horDiff = width + 30;
+            while (iter.hasNext()) {
+                String resource = iter.next();
+                int amount = resources.get(resource);
+                BufferedImage img = Cards.cardImages.get(resource);
+                g.drawImage(img, 400+horDiff*count, 800, width, height, null);
+                changeColor(g);
+                g.drawString(""+currentPlayer.getResourceCount(resource), 400+horDiff*count, 850);
+                count++;
+            }
+        }
+
     }
     public void drawSetlements(Graphics g) {
         for (int i = 0; i < pManage.size(); i++) {
@@ -392,12 +416,9 @@ public class CatanPanel extends JPanel implements MouseListener{
             }
         }
     }
-
-
     private void drawPorts(Graphics g){
         Graphics2D g2 = (Graphics2D) g;
     }
-
 
     public void drawPlayer(Graphics g, Player p) {
         if (p.getColor().equals("red")) {

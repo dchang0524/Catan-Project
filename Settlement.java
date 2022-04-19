@@ -41,4 +41,19 @@ public class Settlement {
     public Intersection getPosition() {
         return position;
     }
+    public void giveResource() {
+        int amount = 1;
+        if (isCity) {
+            amount = 2;
+        }
+        if (t1 != null && !t1.resource.equals("desert")) {
+            owner.addResource(t1.getResource(),amount);
+        }
+        if (t2 != null && !t2.resource.equals("desert")) {
+            owner.addResource(t2.getResource(),amount);
+        }
+        if (t3 != null && !t3.resource.equals("desert")) {
+            owner.addResource(t3.getResource(),amount);
+        }
+    }
 }
