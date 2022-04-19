@@ -96,6 +96,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             drawPlayer(g, currentPlayer);
             drawSetlements(g);
             drawRoads(g);
+            drawCards(g);
         }
         //gameState = 2, buy phase
         else if(gs.getGameState() == 2) {
@@ -186,7 +187,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                             intersections[i][j].setSettlement(currentPlayer);
                             gs.setSubState("road2");
                         }
-                        if (intersections[i][j] != null && intersections[i][j].noAdjacentSettlement() && !intersections[i][j].hasSettlement()
+                        if (intersections[i][j] != null && !intersections[i][j].noAdjacentSettlement() && !intersections[i][j].hasSettlement()
                                 && intersections[i][j].getX()-14<=x && x<=intersections[i][j].getX()+14 && intersections[i][j].getY()-14<=y && y<=intersections[i][j].getY()+14) {
                             adjacent = true;
                         }
@@ -232,7 +233,9 @@ public class CatanPanel extends JPanel implements MouseListener{
     }
 
 
-
+    public void drawCards(Graphics g) {
+        g.drawImage()
+    }
     public void drawSetlements(Graphics g) {
         for (int i = 0; i < pManage.size(); i++) {
             for (int j = 0; j < pManage.get(i).getSettlements().size(); j++) {
