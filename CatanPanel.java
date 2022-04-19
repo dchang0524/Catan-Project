@@ -240,7 +240,7 @@ public class CatanPanel extends JPanel implements MouseListener{
 
 
     public void drawCards(Graphics g) {
-        g.drawImage()
+        //g.drawImage()
     }
     public void drawSetlements(Graphics g) {
         for (int i = 0; i < pManage.size(); i++) {
