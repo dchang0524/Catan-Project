@@ -692,8 +692,8 @@ public class Board{
     }
 
     public void distributeResources(int k) {
-        for (int i = 0; i < 12; i++) {
-            for (int j = 0; j < 6; j++) {
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
                 if (tiles[i][j] != null && tiles[i][j].getNumber() == k) {
                     tiles[i][j].giveResources();
                 }

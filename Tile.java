@@ -91,7 +91,7 @@ public class Tile {
     public void giveResources() {
         //give  resources to settlements
         for (int i = 0; i < settles.size(); i++) {
-            settles.get(i).getOwner().addResource(this.resource, 1);
+            settles.get(i).giveResource(this);
         }
     }
     public void setxCoord(int x) {

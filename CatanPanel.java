@@ -25,7 +25,7 @@ public class CatanPanel extends JPanel implements MouseListener{
     ArrayList<Intersection> toHighlight = new ArrayList<Intersection>();
     Cards bank;
     ArrayList<BufferedImage> portImages = new ArrayList<BufferedImage>();
-    boolean rolledDice;
+    boolean rolledDice = false;
     public CatanPanel() {
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
@@ -125,6 +125,8 @@ public class CatanPanel extends JPanel implements MouseListener{
             drawRoads(g);
             drawCards(g);
             System.out.println("current player: " + currentPlayer.getResources().keySet());
+            changeColor(g);
+            g.fillRect(30,130,100,100);
         }
         //gameState = 2, buy phase
         else if(gs.getGameState() == 2) {
@@ -216,7 +218,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                                 && intersections[i][j].getX()-14<=x && x<=intersections[i][j].getX()+14 && intersections[i][j].getY()-14<=y && y<=intersections[i][j].getY()+14) {
                             System.out.println("intersection: " + intersections[i][j].getX() + " " + intersections[i][j].getY());
                             intersections[i][j].setSettlement(currentPlayer);
-                            intersections[i][j].s.giveResource();
+                            intersections[i][j].s.giveAllResource();
                             gs.setSubState("road2");
                         }
                         if (intersections[i][j] != null && !intersections[i][j].noAdjacentSettlement() && !intersections[i][j].hasSettlement()
@@ -259,7 +261,23 @@ public class CatanPanel extends JPanel implements MouseListener{
             repaint();
         }
         else if (gs.getGameState()==1) {
+            if (rolledDice == false) {
+                if (x>=30 && x<=130 && y>=130 && y<=230) {
+                    rolledDice = true;
+                    int die1 = (int)(Math.random()*6+1);
+                    int die2 = (int)(Math.random()*6+1);
+                    int sum = die1 + die2;
+                    System.out.println("dice: " + die1 + " " + die2 + " sum: " + sum);
+                    if (sum == 7) {
+                        gs.setSubState("robber");
+                    }
+                    else {
+                        board.distributeResources(sum);
+                    }
+                }
+            }
 
+            repaint();
         }
 
     }
