@@ -11,8 +11,9 @@ import java.util.ArrayList;
 import java.util.*;
 
 public class CatanPanel extends JPanel implements MouseListener{
+
     GameState gs;
-    BufferedImage startBackground, logo;
+    BufferedImage startBackground, logo, portBrick, portWood, portSheep, portWheat, portOre, portUnknown;
     Board board;
     PlayerManager pManage;
     Player currentPlayer;
@@ -23,14 +24,25 @@ public class CatanPanel extends JPanel implements MouseListener{
     //Dimension dim;
     ArrayList<Intersection> toHighlight = new ArrayList<Intersection>();
     Cards bank;
+    ArrayList<BufferedImage> portImages = new ArrayList<BufferedImage>();
+    boolean rolledDice;
     public CatanPanel() {
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
         try{
             startBackground = ImageIO.read(CatanPanel.class.getResource("/misc/CatanBackground.png"));
             logo = ImageIO.read(CatanPanel.class.getResource("/misc/logo.png"));
+
+           /* portBrick = ImageIO.read(CatanPanel.class.getResource("/PortImages/port_brick.png"));
+            portWood = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_wood.png")));
+            portSheep = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_sheep.png")));
+            portWheat = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_wheat.png")));
+            portOre = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_ore.png")));
+            portUnknown = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_unknown.png")));*/
+
         }
         catch(Exception e){
+            e.printStackTrace();
             System.out.println("Error loading image");
             return;
         }
@@ -39,7 +51,16 @@ public class CatanPanel extends JPanel implements MouseListener{
         intersections = board.getIntersections();
         bank = new Cards();
         addMouseListener(this);
-
+      /*  portImages.add(portBrick);
+        portImages.add(portWood);
+        portImages.add(portSheep);
+        portImages.add(portWheat);
+        portImages.add(portOre);
+        portImages.add(portUnknown);
+        portImages.add(portUnknown);
+        portImages.add(portUnknown);
+        portImages.add(portUnknown);
+        Collections.shuffle(portImages);*/
     }
 
 
@@ -418,6 +439,11 @@ public class CatanPanel extends JPanel implements MouseListener{
     }
     private void drawPorts(Graphics g){
         Graphics2D g2 = (Graphics2D) g;
+        int x = 246;
+        int y = 47;
+       /* g2.drawImage(portImages.get(0), x, y, 50, 50,  null);
+        g2.drawImage(portImages.get(1), x+100, y, 50, 50,  null);*/
+
     }
 
     public void drawPlayer(Graphics g, Player p) {
