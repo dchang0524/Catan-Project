@@ -254,6 +254,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                         }
                         else if (pManage.currentPlayerIndex()==0) {
                             gs.setGameState(1);
+                            gs.setSubState(null);
                         }
                     }
                 }
