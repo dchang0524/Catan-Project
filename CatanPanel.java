@@ -77,7 +77,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                 drawTiles(g);
                 drawIntersections(g);
                 drawPlayer(g, currentPlayer);
-                drawSetlements(g);
+                drawSettlements(g);
                 drawRoads(g);
                 drawPorts(g);
                 if (gs.getSubState().equals("settlement")) {
@@ -115,15 +115,14 @@ public class CatanPanel extends JPanel implements MouseListener{
         }
         //gameState = 1, game loop and trade phase
         else if(gs.getGameState() == 1) {
-            if(firstTimeGameState1 == true){
-                g.setColor(Color.darkGray);
-                g.fillRect(790,0,1900,220);
-                firstTimeGameState1 = false;
-            }
+            g.setColor(Color.darkGray);
+            g.fillRect(790,0,1900,220);
+            firstTimeGameState1 = false;
             currentPlayer = pManage.curentPlayer();
             System.out.println("game state " + gs.getGameState() + " " +"subState " + gs.getSubState());
             drawPlayer(g, currentPlayer);
-            drawSetlements(g);
+            drawTiles(g);
+            drawSettlements(g);
             drawRoads(g);
             drawCards(g);
             System.out.println("current player: " + currentPlayer.getResources().keySet());
@@ -135,7 +134,7 @@ public class CatanPanel extends JPanel implements MouseListener{
 
             }
             if (gs.getSubState().equals("robber")) {
-                g.drawString("Choose tile to place robber", 800, 10);
+                g.drawString("Choose tile to place robber", 800, 100);
             }
         }
         //gameState = 2, buy phase
@@ -338,7 +337,7 @@ public class CatanPanel extends JPanel implements MouseListener{
         }
 
     }
-    public void drawSetlements(Graphics g) {
+    public void drawSettlements(Graphics g) {
         for (int i = 0; i < pManage.size(); i++) {
             for (int j = 0; j < pManage.get(i).getSettlements().size(); j++) {
                 if (pManage.get(i).getColor().equals("red")) {
@@ -493,13 +492,13 @@ public class CatanPanel extends JPanel implements MouseListener{
         int x = 246;
         int y = 47;
         g2.drawImage(portImages.get(0), x-50, y-50, 100, 100,  null);
-        g2.drawImage(portImages.get(1), 81-50, 273-30, 100, 100,  null);
-        g2.drawImage(portImages.get(2), 84-30, 534-50, 100, 100,  null);
+        g2.drawImage(portImages.get(1), 84-50, 273-30, 100, 100,  null);
+        g2.drawImage(portImages.get(2), 84-50, 534-50, 100, 100,  null);
         g2.drawImage(portImages.get(3), 240-10, 760-50, 100, 100,  null);
         g2.drawImage(portImages.get(4), 559-20, 760-50, 100, 100,  null);
         g2.drawImage(portImages.get(5), 795-50, 639-35, 100, 100,  null);
         g2.drawImage(portImages.get(6), 940-50, 404-50, 100, 100,  null);
-        g2.drawImage(portImages.get(7), 788-30, 162-20, 100, 100,  null);
+        g2.drawImage(portImages.get(7), 788-30, 162-50, 100, 100,  null);
         g2.drawImage(portImages.get(8), 698-150, y-50, 100, 100,  null);
 
     }
