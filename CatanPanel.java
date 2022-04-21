@@ -34,12 +34,12 @@ public class CatanPanel extends JPanel implements MouseListener{
             startBackground = ImageIO.read(CatanPanel.class.getResource("/misc/CatanBackground.png"));
             logo = ImageIO.read(CatanPanel.class.getResource("/misc/logo.png"));
 
-           /* portBrick = ImageIO.read(CatanPanel.class.getResource("/PortImages/port_brick.png"));
-            portWood = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_wood.png")));
+            portBrick = ImageIO.read(CatanPanel.class.getResource("/PortImages/port_brick.png"));
+            portWood = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_lumber.png")));
             portSheep = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_sheep.png")));
             portWheat = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_wheat.png")));
             portOre = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_ore.png")));
-            portUnknown = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_unknown.png")));*/
+            portUnknown = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_unknown.png")));
 
         }
         catch(Exception e){
@@ -53,7 +53,7 @@ public class CatanPanel extends JPanel implements MouseListener{
         bank = new Cards();
         robber = new Robber();
         addMouseListener(this);
-      /*  portImages.add(portBrick);
+        portImages.add(portBrick);
         portImages.add(portWood);
         portImages.add(portSheep);
         portImages.add(portWheat);
@@ -62,7 +62,7 @@ public class CatanPanel extends JPanel implements MouseListener{
         portImages.add(portUnknown);
         portImages.add(portUnknown);
         portImages.add(portUnknown);
-        Collections.shuffle(portImages);*/
+        Collections.shuffle(portImages);
     }
 
 
@@ -492,8 +492,15 @@ public class CatanPanel extends JPanel implements MouseListener{
         Graphics2D g2 = (Graphics2D) g;
         int x = 246;
         int y = 47;
-       /* g2.drawImage(portImages.get(0), x, y, 50, 50,  null);
-        g2.drawImage(portImages.get(1), x+100, y, 50, 50,  null);*/
+        g2.drawImage(portImages.get(0), x-50, y-50, 100, 100,  null);
+        g2.drawImage(portImages.get(1), 81-50, 273-30, 100, 100,  null);
+        g2.drawImage(portImages.get(2), 84-30, 534-50, 100, 100,  null);
+        g2.drawImage(portImages.get(3), 240-10, 760-50, 100, 100,  null);
+        g2.drawImage(portImages.get(4), 559-20, 760-50, 100, 100,  null);
+        g2.drawImage(portImages.get(5), 795-50, 639-35, 100, 100,  null);
+        g2.drawImage(portImages.get(6), 940-50, 404-50, 100, 100,  null);
+        g2.drawImage(portImages.get(7), 788-30, 162-20, 100, 100,  null);
+        g2.drawImage(portImages.get(8), 698-150, y-50, 100, 100,  null);
 
     }
 
