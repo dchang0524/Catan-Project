@@ -17,7 +17,7 @@ public class Player {
     int playerIndex;
 
     //constructor
-    public Player(String name, Cards c) {
+    public Player(String name, Cards c, int i) {
         resources = new HashMap<String, Integer>();
         settlements = new ArrayList<Settlement>();
         KnightsUsed = 0;
@@ -34,6 +34,7 @@ public class Player {
         resources.put("sheep", 0);
         resources.put("wheat", 0);
         resources.put("wood", 0);
+        playerIndex = i;
     }
     public void setPlayerIndex(int i) {
         playerIndex = i;

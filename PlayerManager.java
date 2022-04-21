@@ -14,7 +14,7 @@ public class PlayerManager {
         possColors.add("yellow");
         for (int i = 0; i < k; i++) {
             String c = possColors.remove((int)(Math.random() * possColors.size()));
-            players.add(new Player(c, bank));
+            players.add(new Player(c, bank, i));
         }
     }
     public Player get(int i) {
