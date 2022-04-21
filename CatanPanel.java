@@ -291,7 +291,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                     for (int j = 0; j<tiles[i].length; j++) {
                         if (tiles[i][j] != null && x>= tiles[i][j].getX()+52 && x<= tiles[i][j].getX()+52+55 && y>= tiles[i][j].getY()+50 && y<= tiles[i][j].getY()+100) {
                             robber.setPosition(tiles[i][j]);
-
+                            System.out.println("robber in " + i + " " + j + " " + tiles[i][j].getResource());
                             //stealing
                             ArrayList<String> owners = new ArrayList<String>();
                             for (int k = 0; k<tiles[i][j].settles.size(); k++) {
@@ -299,10 +299,16 @@ public class CatanPanel extends JPanel implements MouseListener{
                                     owners.add(tiles[i][j].settles.get(k).getOwner().toString());
                                 }
                             }
-                            String[] owns = new String[owners.size()];
-                            owns = (String[])owners.toArray();
-                            String picked = (String) JOptionPane.showInputDialog(null, "What player do you want to rob?", "Rob Player", JOptionPane.QUESTION_MESSAGE, null, owns, owns[0]);
-                            Player toSteal = pManage.toStringReverse(picked);
+                            if (owners.size()>0) {
+                                String[] owns = new String[owners.size()];
+                                for (int n = 0; n<owners.size(); n++) {
+                                    owns[n] = owners.get(n);
+                                }
+                                System.out.println("Choose player to steal from");
+                                String picked = (String) JOptionPane.showInputDialog(null, "What player do you want to rob?", "Rob Player", JOptionPane.QUESTION_MESSAGE, null, owns, owns[0]);
+                                Player toSteal = pManage.toStringReverse(picked);
+                            }
+
 
                             //discarding
                         }
