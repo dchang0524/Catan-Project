@@ -26,6 +26,7 @@ public class CatanPanel extends JPanel implements MouseListener{
     Cards bank;
     ArrayList<BufferedImage> portImages = new ArrayList<BufferedImage>();
     boolean rolledDice = false;
+    Robber robber;
     public CatanPanel() {
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
@@ -50,6 +51,7 @@ public class CatanPanel extends JPanel implements MouseListener{
         tiles = board.getTiles();
         intersections = board.getIntersections();
         bank = new Cards();
+        robber = new Robber();
         addMouseListener(this);
       /*  portImages.add(portBrick);
         portImages.add(portWood);
@@ -126,7 +128,15 @@ public class CatanPanel extends JPanel implements MouseListener{
             drawCards(g);
             System.out.println("current player: " + currentPlayer.getResources().keySet());
             changeColor(g);
-            g.fillRect(30,130,100,100);
+            g.fillRect(30,130,100,100); //dice button
+            gs.setSubState("robber");
+            if (rolledDice == false)  {
+                g.drawString("Roll Dice", 800, 10);
+
+            }
+            if (gs.getSubState().equals("robber")) {
+                g.drawString("Choose tile to place robber", 800, 10);
+            }
         }
         //gameState = 2, buy phase
         else if(gs.getGameState() == 2) {
@@ -277,7 +287,29 @@ public class CatanPanel extends JPanel implements MouseListener{
                     }
                 }
             }
+            if (gs.getSubState().equals("robber")) {
+                for (int i = 0; i<tiles.length; i++) {
+                    for (int j = 0; j<tiles[i].length; j++) {
+                        if (tiles[i][j] != null && x>= tiles[i][j].getX()+52 && x<= tiles[i][j].getX()+52+55 && y>= tiles[i][j].getY()+50 && y<= tiles[i][j].getY()+100) {
+                            robber.setPosition(tiles[i][j]);
 
+                            //stealing
+                            ArrayList<String> owners = new ArrayList<String>();
+                            for (int k = 0; k<tiles[i][j].settles.size(); k++) {
+                                if (tiles[i][j].settles.get(k).getOwner() != currentPlayer) {
+                                    owners.add(tiles[i][j].settles.get(k).getOwner().toString());
+                                }
+                            }
+                            String[] owns = new String[owners.size()];
+                            owns = (String[])owners.toArray();
+                            String picked = (String) JOptionPane.showInputDialog(null, "What player do you want to rob?", "Rob Player", JOptionPane.QUESTION_MESSAGE, null, owns, owns[0]);
+                            Player toSteal = pManage.toStringReverse(picked);
+
+                            //discarding
+                        }
+                    }
+                }
+            }
             repaint();
         }
 

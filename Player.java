@@ -14,6 +14,8 @@ public class Player {
     String color;
     ArrayList<Road> roads;
     Cards bank;
+    int playerIndex;
+
     //constructor
     public Player(String name, Cards c) {
         resources = new HashMap<String, Integer>();
@@ -32,6 +34,12 @@ public class Player {
         resources.put("sheep", 0);
         resources.put("wheat", 0);
         resources.put("wood", 0);
+    }
+    public void setPlayerIndex(int i) {
+        playerIndex = i;
+    }
+    public String toString() {
+        return "Player " + playerIndex;
     }
     public ArrayList<Road> getRoads(){
         return roads;

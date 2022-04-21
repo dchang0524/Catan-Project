@@ -35,4 +35,20 @@ public class PlayerManager {
     public void prevPlayer() {
         currentPlayer = (currentPlayer - 1 + players.size()) % players.size();
     }
+
+    public Player toStringReverse(String s) {
+        if (s.equals("Player 0")) {
+            return players.get(0);
+        }
+        else if (s.equals("Player 1")) {
+            return players.get(1);
+        }
+        else if (s.equals("Player 2")) {
+            return players.get(2);
+        }
+        else if (s.equals("Player 3")) {
+            return players.get(3);
+        }
+        return null;
+    }
 }

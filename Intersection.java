@@ -94,6 +94,9 @@ public class Intersection {
     public void setSettlement(Player p) {
         this.s = new Settlement(this, p);
     }
+    public Settlement getSettlement() {
+        return s;
+    }
     public void setT1(Tile t) {
         t1 = t;
     }

@@ -64,4 +64,15 @@ public class Settlement {
             owner.addResource(t.getResource(),2);
         }
     }
+    public void distributeAllResources() {
+        if (t1 != null) {
+            owner.addResource(t1.getResource(), 1);
+        }
+        else if (t2 != null) {
+            owner.addResource(t2.getResource(), 1);
+        }
+        else if (t3 != null) {
+            owner.addResource(t3.getResource(), 1);
+        }
+    }
 }
