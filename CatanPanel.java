@@ -125,7 +125,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             drawSettlements(g);
             drawRoads(g);
             drawCards(g);
-            System.out.println("current player: " + currentPlayer.getResources().keySet());
+            System.out.println("current play4er: " + currentPlayer.getResources().keySet());
             changeColor(g);
             g.fillRect(30,130,100,100); //dice button
             gs.setSubState("robber");
@@ -158,7 +158,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             gs.setSubState("settlement");
         }
         if(x > 800 && x < 1100 && y > 650 && y < 750) {
-            if (Desktop.isDesktopSupported()) {
+            if (Desktop.isDesktopSupported()) {//LOL
                 try {
                     File file = new File(this.getClass().getResource("misc/CatanRules.pdf").getFile());
                     Desktop.getDesktop().open(file);
