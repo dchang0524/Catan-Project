@@ -42,6 +42,13 @@ public class Player {
     public String toString() {
         return "Player " + playerIndex;
     }
+    public int getInventorySize() {
+        int total = 0;
+        for (String resource : resources.keySet()) {
+            total += resources.get(resource);
+        }
+        return total;
+    }
     public ArrayList<Road> getRoads(){
         return roads;
     }

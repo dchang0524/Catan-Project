@@ -16,6 +16,15 @@ public class Settlement {
         xCoord = pos.getX();
         yCoord = pos.getY();
         p.getSettlements().add(this);
+        if (t1 != null) {
+            t1.settles.add(this);
+        }
+        if (t2 != null) {
+            t2.settles.add(this);
+        }
+        if (t3 != null) {
+            t3.settles.add(this);
+        }
     }
     public void upgrade() {
         isCity = true;

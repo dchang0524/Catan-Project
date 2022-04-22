@@ -27,6 +27,8 @@ public class CatanPanel extends JPanel implements MouseListener{
     ArrayList<BufferedImage> portImages = new ArrayList<BufferedImage>();
     boolean rolledDice = false;
     Robber robber;
+    ArrayList<Player> toDiscard = new ArrayList<Player>();
+
     public CatanPanel() {
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
@@ -286,7 +288,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                     }
                 }
             }
-            if (gs.getSubState().equals("robber")) {
+            else if (gs.getSubState().equals("robber")) {
                 for (int i = 0; i<tiles.length; i++) {
                     for (int j = 0; j<tiles[i].length; j++) {
                         if (tiles[i][j] != null && x>= tiles[i][j].getX()+52 && x<= tiles[i][j].getX()+52+55 && y>= tiles[i][j].getY()+50 && y<= tiles[i][j].getY()+100) {
@@ -299,21 +301,32 @@ public class CatanPanel extends JPanel implements MouseListener{
                                     owners.add(tiles[i][j].settles.get(k).getOwner().toString());
                                 }
                             }
+                            System.out.println("could steal from" + owners);
                             if (owners.size()>0) {
                                 String[] owns = new String[owners.size()];
                                 for (int n = 0; n<owners.size(); n++) {
-                                    owns[n] = owners.get(n);
+                                    owns[n] = owners.get(n) + "(Inventory Size: " + pManage.toStringReverse(owners.get(n)).getInventorySize() + " Color: " + pManage.toStringReverse(owners.get(n)).color.toUpperCase() + ")";
                                 }
-                                System.out.println("Choose player to steal from");
+                                System.out.println("choose player to steal");
                                 String picked = (String) JOptionPane.showInputDialog(null, "What player do you want to rob?", "Rob Player", JOptionPane.QUESTION_MESSAGE, null, owns, owns[0]);
-                                Player toSteal = pManage.toStringReverse(picked);
+                                Player toSteal = pManage.get(Integer.parseInt("" + picked.charAt(7)));
+                                pManage.steal(currentPlayer, toSteal);
                             }
-
-
                             //discarding
+                            for (int b= 0; b<pManage.size(); b++) {
+                                if (pManage.get(b).getInventorySize()>7 && pManage.get(b) != currentPlayer) {
+                                        toDiscard.add(pManage.get(b));
+                                }
+                            }
+                            if (toDiscard.size()>0) {
+                                gs.setSubState("discard");
+                            }
                         }
                     }
                 }
+            }
+            else if (gs.getSubState().equals("discard")) {
+
             }
             repaint();
         }
