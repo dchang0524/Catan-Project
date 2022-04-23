@@ -351,6 +351,8 @@ public class CatanPanel extends JPanel implements MouseListener{
                                 pManage.steal(currentPlayer, toSteal);
                             }
                             //discarding
+                            toDiscard = new ArrayList<Player>();
+                            numDiscard = new ArrayList<Integer>();
                             for (int b= 0; b<pManage.size(); b++) {
                                 if (pManage.get(b).getInventorySize()>7 && pManage.get(b) != currentPlayer) {
                                         toDiscard.add(pManage.get(b));
