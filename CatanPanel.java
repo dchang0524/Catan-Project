@@ -7,6 +7,10 @@ import java.awt.image.*;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.*;
 
@@ -172,8 +176,17 @@ public class CatanPanel extends JPanel implements MouseListener{
         if(x > 800 && x < 1100 && y > 650 && y < 750) {
             if (Desktop.isDesktopSupported()) {
                 try {
-                    File file = new File(this.getClass().getResource("misc/CatanRules.pdf").getFile());
-                    Desktop.getDesktop().open(file);
+                    InputStream manualAsStream = getClass().getClassLoader().getResourceAsStream("misc/CatanRules.pdf");
+
+                    Path tempOutput = Files.createTempFile("TempManual", ".pdf");
+                    tempOutput.toFile().deleteOnExit();
+
+                    Files.copy(manualAsStream, tempOutput, StandardCopyOption.REPLACE_EXISTING);
+
+                    File userManual = new File(tempOutput.toFile().getPath());
+                    if (userManual.exists()) {
+                        Desktop.getDesktop().open(userManual);
+                    }
                 } catch (IOException ex) {
                     ex.printStackTrace();
                     System.out.println("Error opening file");
