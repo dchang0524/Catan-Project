@@ -137,6 +137,11 @@ public class CatanPanel extends JPanel implements MouseListener{
             drawPorts(g);
             drawSettlements(g);
             drawRoads(g);
+            //TODO: drawRobber();
+            //TODO: drawDevCards();
+            //TODO: drawTradeButton();
+            //TODO: drawLogButton();
+            //TODO: drawBuildButton();
             if (!gs.getSubState().equals("discard")) {
                 drawCards(g, currentPlayer);
             }
@@ -147,14 +152,18 @@ public class CatanPanel extends JPanel implements MouseListener{
 
             //System.out.println("current player: " + currentPlayer.getResources().keySet());
             changeColor(g);
+            //TODO: make a proper dice button
             g.fillRect(30,130,100,100); //dice button
 
             if (rolledDice == false)  {
-                g.drawString("Roll Dice", 800, 10);
-
+                g.drawString("Roll Dice", 800, 100);
+            }
+            else {
+                //TODO: display sum of the dice rolls
             }
             if (gs.getSubState().equals("robber")) {
                 g.drawString("Choose tile to place robber", 800, 120);
+                //TODO: print all players' inventory counts
             }
         }
         //gameState = 2, buy phase
@@ -298,7 +307,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                         else if (pManage.currentPlayerIndex()==0) {
                             gs.setGameState(1);
                             gs.setSubState("");
-                            /*
+/*
                             // robber testing
                             gs.setSubState("robber");
                             rolledDice = true;
@@ -335,7 +344,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                             //stealing
                             ArrayList<String> owners = new ArrayList<String>();
                             for (int k = 0; k<tiles[i][j].settles.size(); k++) {
-                                if (tiles[i][j].settles.get(k).getOwner() != currentPlayer && owners.contains(tiles[i][j].settles.get(k).getOwner().toString()) == false) {
+                                if (tiles[i][j].settles.get(k).getOwner() != currentPlayer && owners.contains(tiles[i][j].settles.get(k).getOwner().toString()) == false && tiles[i][j].settles.get(k).getOwner().getInventorySize()>0) {
                                     owners.add(tiles[i][j].settles.get(k).getOwner().toString());
                                 }
                             }

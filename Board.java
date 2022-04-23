@@ -7,7 +7,6 @@ public class Board{
     private Intersection[][] intersections;
     private Port[] ports;
     private BufferedImage[] numImages;
-
     public Board() {
         setUpTiles();
         setUpIntersections();
@@ -695,7 +694,7 @@ public class Board{
     public void distributeResources(int k) {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                if (tiles[i][j] != null && tiles[i][j].getNumber() == k) {
+                if (tiles[i][j] != null && tiles[i][j].getNumber() == k && tiles[i][j].hasRobber() == false) {
                     tiles[i][j].giveResources();
                 }
             }
