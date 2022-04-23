@@ -33,8 +33,8 @@ public class CatanPanel extends JPanel implements MouseListener{
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
         try{
-            startBackground = ImageIO.read(Objects.requireNonNull(CatanPanel.class.getResource("/misc/CatanBackground.png")));
-            logo = ImageIO.read(Objects.requireNonNull(CatanPanel.class.getResource("/misc/logo.png")));
+            startBackground = ImageIO.read(CatanPanel.class.getResource("/misc/CatanBackground.png"));
+            logo = ImageIO.read(CatanPanel.class.getResource("/misc/logo.png"));
 
             portBrick = ImageIO.read(CatanPanel.class.getResource("/PortImages/port_brick.png"));
             portWood = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_lumber.png")));
@@ -43,7 +43,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             portOre = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_ore.png")));
             portUnknown = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_unknown.png")));
 
-        }//lol
+        }
         catch(Exception e){
             e.printStackTrace();
             System.out.println("Error loading image");
@@ -118,6 +118,7 @@ public class CatanPanel extends JPanel implements MouseListener{
         }
         //gameState = 1, game loop and trade phase
         else if(gs.getGameState() == 1) {
+            System.out.println();
             g.setColor(Color.darkGray);
             g.fillRect(790,0,1900,220);
             firstTimeGameState1 = false;
@@ -125,20 +126,22 @@ public class CatanPanel extends JPanel implements MouseListener{
             System.out.println("game state " + gs.getGameState() + " " +"subState " + gs.getSubState());
             drawPlayer(g, currentPlayer);
             drawTiles(g);
+            drawIntersections(g);
             drawPorts(g);
             drawSettlements(g);
             drawRoads(g);
             drawCards(g);
-            System.out.println("current player: " + currentPlayer.getResources().keySet());
+
+            //System.out.println("current player: " + currentPlayer.getResources().keySet());
             changeColor(g);
             g.fillRect(30,130,100,100); //dice button
-            gs.setSubState("robber");
+
             if (rolledDice == false)  {
                 g.drawString("Roll Dice", 800, 10);
 
             }
             if (gs.getSubState().equals("robber")) {
-                g.drawString("Choose tile to place robber", 800, 100);
+                g.drawString("Choose tile to place robber", 800, 120);
             }
         }
         //gameState = 2, buy phase
@@ -155,6 +158,8 @@ public class CatanPanel extends JPanel implements MouseListener{
     public void mousePressed(MouseEvent m) {
         int x = m.getX();
         int y = m.getY();
+        System.out.println("click: " + x + " " + y);
+        System.out.println("mousePresed: gameState: " + gs.getGameState() + " " + "subState: " + gs.getSubState());
         // menu screen
         if (gs.getGameState() == 0 && startGame == false) {
         if(x > 800 && x < 1100 && y > 500 && y < 600) {
@@ -167,7 +172,7 @@ public class CatanPanel extends JPanel implements MouseListener{
         if(x > 800 && x < 1100 && y > 650 && y < 750) {
             if (Desktop.isDesktopSupported()) {
                 try {
-                    File file = new File(Objects.requireNonNull(CatanPanel.class.getResource("misc/CatanRules.pdf")).getFile());
+                    File file = new File(this.getClass().getResource("misc/CatanRules.pdf").getFile());
                     Desktop.getDesktop().open(file);
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -270,7 +275,12 @@ public class CatanPanel extends JPanel implements MouseListener{
                         }
                         else if (pManage.currentPlayerIndex()==0) {
                             gs.setGameState(1);
-                            gs.setSubState(null);
+                            gs.setSubState("");
+                            /* robber testing
+                            gs.setSubState("robber");
+                            rolledDice = true;
+                             */
+
                         }
                     }
                 }
@@ -298,7 +308,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                     for (int j = 0; j<tiles[i].length; j++) {
                         if (tiles[i][j] != null && x>= tiles[i][j].getX()+52 && x<= tiles[i][j].getX()+52+55 && y>= tiles[i][j].getY()+50 && y<= tiles[i][j].getY()+100) {
                             robber.setPosition(tiles[i][j]);
-                            System.out.println("robber in " + i + " " + j + " " + tiles[i][j].getResource());
+                            System.out.println("robber moved to " + i + " " + j + " " + tiles[i][j].getResource());
                             //stealing
                             ArrayList<String> owners = new ArrayList<String>();
                             for (int k = 0; k<tiles[i][j].settles.size(); k++) {
@@ -552,9 +562,9 @@ public class CatanPanel extends JPanel implements MouseListener{
     public void mouseEntered(MouseEvent m) {}
     public void mouseExited(MouseEvent m) {}
     public void mouseClicked(MouseEvent m) {
-        int x = m.getX();
-        int y = m.getY();
-       System.out.println("click:" + x + " " + y);
+        //int x = m.getX();
+        //int y = m.getY();
+       //System.out.println("click:" + x + " " + y);
     }
 
 }
