@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.*;
 
 public class Port {
@@ -11,6 +12,7 @@ public class Port {
     Player p2;
     int tradeRatio;
     ArrayList<String> ports = new ArrayList<String>();
+    ArrayList<BufferedImage> portImages = new ArrayList<BufferedImage>();
     String portResource;
 
     public Port() {
@@ -25,6 +27,7 @@ public class Port {
         ports.add("Wheat");
         ports.add("Wood");
         ports.add("Ore");
+
 
     }
 
@@ -54,6 +57,13 @@ public class Port {
 
     public void setS2(Settlement s2) {
         this.s2 = s2;
+    }
+
+    public void setPortImages(ArrayList<BufferedImage> portImages) {
+        this.portImages = portImages;
+    }
+    public ArrayList<BufferedImage> getPortImages() {
+        return portImages;
     }
 
     public void setTradeRatio(int tradeRatio) {

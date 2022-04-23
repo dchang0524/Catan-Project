@@ -16,6 +16,7 @@ public class Board{
     public Intersection[][] getIntersections() {
         return intersections;
     }
+
     public void setUpTiles() {
         tiles = new Tile[5][5]; // [0][0] [0][4] [1][4] [3][4] [4][0] [4][4]
         numImages = new BufferedImage[13];

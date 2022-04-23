@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.*;
 
 public class CatanPanel extends JPanel implements MouseListener{
-
+    private static final long serialVersionUID = 1L;
     GameState gs;
     BufferedImage startBackground, logo, portBrick, portWood, portSheep, portWheat, portOre, portUnknown;
     Board board;
@@ -80,6 +80,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                 drawIntersections(g);
                 drawPlayer(g, currentPlayer);
                 drawSettlements(g);
+                //drawGameLog(g);
                 drawRoads(g);
                 drawPorts(g);
                 if (gs.getSubState().equals("settlement")) {
@@ -124,6 +125,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             System.out.println("game state " + gs.getGameState() + " " +"subState " + gs.getSubState());
             drawPlayer(g, currentPlayer);
             drawTiles(g);
+            drawPorts(g);
             drawSettlements(g);
             drawRoads(g);
             drawCards(g);
@@ -143,6 +145,9 @@ public class CatanPanel extends JPanel implements MouseListener{
         else if(gs.getGameState() == 2) {
 
         }
+    }
+
+    private void drawGameLog(Graphics g) {
     }
 
 
