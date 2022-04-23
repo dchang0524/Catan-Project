@@ -33,8 +33,8 @@ public class CatanPanel extends JPanel implements MouseListener{
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
         try{
-            startBackground = ImageIO.read(CatanPanel.class.getResource("/misc/CatanBackground.png"));
-            logo = ImageIO.read(CatanPanel.class.getResource("/misc/logo.png"));
+            startBackground = ImageIO.read(Objects.requireNonNull(CatanPanel.class.getResource("/misc/CatanBackground.png")));
+            logo = ImageIO.read(Objects.requireNonNull(CatanPanel.class.getResource("/misc/logo.png")));
 
             portBrick = ImageIO.read(CatanPanel.class.getResource("/PortImages/port_brick.png"));
             portWood = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_lumber.png")));
@@ -43,7 +43,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             portOre = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_ore.png")));
             portUnknown = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_unknown.png")));
 
-        }
+        }//lol
         catch(Exception e){
             e.printStackTrace();
             System.out.println("Error loading image");
@@ -167,7 +167,7 @@ public class CatanPanel extends JPanel implements MouseListener{
         if(x > 800 && x < 1100 && y > 650 && y < 750) {
             if (Desktop.isDesktopSupported()) {
                 try {
-                    File file = new File(this.getClass().getResource("misc/CatanRules.pdf").getFile());
+                    File file = new File(Objects.requireNonNull(CatanPanel.class.getResource("misc/CatanRules.pdf")).getFile());
                     Desktop.getDesktop().open(file);
                 } catch (IOException ex) {
                     ex.printStackTrace();
