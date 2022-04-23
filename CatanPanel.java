@@ -28,6 +28,7 @@ public class CatanPanel extends JPanel implements MouseListener{
     boolean rolledDice = false;
     Robber robber;
     ArrayList<Player> toDiscard = new ArrayList<Player>();
+    ArrayList<Integer> numDiscard = new ArrayList<Integer>();
 
     public CatanPanel() {
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -130,7 +131,13 @@ public class CatanPanel extends JPanel implements MouseListener{
             drawPorts(g);
             drawSettlements(g);
             drawRoads(g);
-            drawCards(g);
+            if (!gs.getSubState().equals("discard")) {
+                drawCards(g, currentPlayer);
+            }
+            else if (gs.getSubState().equals("discard")) {
+                drawCards(g, toDiscard.get(0));
+                g.drawString("Player " + toDiscard.get(0).playerIndex + " must discard " + numDiscard.get(0) + " cards", 500, 100);
+            }
 
             //System.out.println("current player: " + currentPlayer.getResources().keySet());
             changeColor(g);
@@ -276,10 +283,11 @@ public class CatanPanel extends JPanel implements MouseListener{
                         else if (pManage.currentPlayerIndex()==0) {
                             gs.setGameState(1);
                             gs.setSubState("");
-                            /* robber testing
+
+                            // robber testing
                             gs.setSubState("robber");
                             rolledDice = true;
-                             */
+
 
                         }
                     }
@@ -329,8 +337,9 @@ public class CatanPanel extends JPanel implements MouseListener{
                             }
                             //discarding
                             for (int b= 0; b<pManage.size(); b++) {
-                                if (pManage.get(b).getInventorySize()>7 && pManage.get(b) != currentPlayer) {
+                                if (pManage.get(b).getInventorySize()>1 && pManage.get(b) != currentPlayer) {
                                         toDiscard.add(pManage.get(b));
+                                        numDiscard.add((int)Math.floor(pManage.get(b).getInventorySize()/2.0));
                                 }
                             }
                             if (toDiscard.size()>0) {
@@ -341,17 +350,61 @@ public class CatanPanel extends JPanel implements MouseListener{
                 }
             }
             else if (gs.getSubState().equals("discard")) {
-
+                if (numDiscard.get(0)>0) {
+                    Player temp = toDiscard.get(0);
+                    String resource = coordToResource(x, y);
+                    System.out.println("discarding " + resource);
+                    if (resource != null) {
+                        if (temp.getResourceCount(resource)>0) {
+                            temp.removeResource(resource, 1);
+                            numDiscard.set(0, numDiscard.get(0)-1);
+                            if (numDiscard.get(0)==0) {
+                                toDiscard.remove(0);
+                                numDiscard.remove(0);
+                                if (toDiscard.size() == 0) {
+                                    gs.setSubState("");
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    gs.setSubState("");
+                }
             }
             repaint();
         }
 
     }
 
-
-    public void drawCards(Graphics g) {
-        double ratio = 454.0/296.0;
+    public String coordToResource(int x, int y) {
         HashMap<String, Integer> resources = pManage.curentPlayer().getResources();
+        Set<String> keys = resources.keySet();
+        if (keys != null) {
+            Iterator<String> iter = keys.iterator();
+            double ratio = 454.0/296.0;
+            int width = 100;
+            int height = (int) (width*ratio);
+            int count = 0;
+            int horDiff = width + 30;
+            while (iter.hasNext()) {
+                String resource = iter.next();
+                int amount = resources.get(resource);
+                if (x>=400+horDiff*count && x<=400+horDiff*count+width && y>=800 && y<=800+height) {
+                    return resource;
+                }
+                //g.drawImage(img, 400+horDiff*count, 800, width, height, null);
+                //changeColor(g);
+                //g.drawString(""+currentPlayer.getResourceCount(resource), 400+horDiff*count, 850);
+                count++;
+            }
+        }
+        return null;
+    }
+
+    public void drawCards(Graphics g, Player p) {
+        double ratio = 454.0/296.0;
+        HashMap<String, Integer> resources = p.getResources();
         Set<String> keys = resources.keySet();
         if (keys != null) {
             Iterator<String> iter = keys.iterator();
@@ -364,8 +417,8 @@ public class CatanPanel extends JPanel implements MouseListener{
                 int amount = resources.get(resource);
                 BufferedImage img = Cards.cardImages.get(resource);
                 g.drawImage(img, 400+horDiff*count, 800, width, height, null);
-                changeColor(g);
-                g.drawString(""+currentPlayer.getResourceCount(resource), 400+horDiff*count, 850);
+                changeColor(g, p);
+                g.drawString(""+p.getResourceCount(resource), 400+horDiff*count, 850);
                 count++;
             }
         }
@@ -425,6 +478,20 @@ public class CatanPanel extends JPanel implements MouseListener{
             g.setColor(Color.WHITE);
         }
         else if (currentPlayer.getColor().equals("yellow")) {
+            g.setColor(Color.YELLOW);
+        }
+    }
+    public void changeColor(Graphics g, Player p) {
+        if (p.getColor().equals("red")) {
+            g.setColor(Color.RED);
+        }
+        else if (p.getColor().equals("blue")) {
+            g.setColor(new Color(31, 69, 252));
+        }
+        else if (p.getColor().equals("white")) {
+            g.setColor(Color.WHITE);
+        }
+        else if (p.getColor().equals("yellow")) {
             g.setColor(Color.YELLOW);
         }
     }
