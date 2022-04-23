@@ -13,6 +13,8 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.*;
+import java.nio.*;
+import java.io.*;
 
 public class CatanPanel extends JPanel implements MouseListener{
     private static final long serialVersionUID = 1L;
@@ -129,8 +131,8 @@ public class CatanPanel extends JPanel implements MouseListener{
             firstTimeGameState1 = false;
             currentPlayer = pManage.curentPlayer();
             System.out.println("game state " + gs.getGameState() + " " +"subState " + gs.getSubState());
-            drawPlayer(g, currentPlayer);
             drawTiles(g);
+            drawPlayer(g, currentPlayer);
             drawIntersections(g);
             drawPorts(g);
             drawSettlements(g);
@@ -300,7 +302,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                             // robber testing
                             gs.setSubState("robber");
                             rolledDice = true;
-                            */
+*/
 
                         }
                     }
@@ -635,7 +637,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             //System.out.println("set color to yellow");
         }
         g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
-        g.drawString("Player " + pManage.currentPlayerIndex(), 30, 850);
+        g.drawString("Player " + p.playerIndex, 30, 850);
     }
 
     public void mouseReleased(MouseEvent m) {}
