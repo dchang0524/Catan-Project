@@ -283,11 +283,11 @@ public class CatanPanel extends JPanel implements MouseListener{
                         else if (pManage.currentPlayerIndex()==0) {
                             gs.setGameState(1);
                             gs.setSubState("");
-
+                            /*
                             // robber testing
                             gs.setSubState("robber");
                             rolledDice = true;
-
+                            */
 
                         }
                     }
@@ -320,7 +320,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                             //stealing
                             ArrayList<String> owners = new ArrayList<String>();
                             for (int k = 0; k<tiles[i][j].settles.size(); k++) {
-                                if (tiles[i][j].settles.get(k).getOwner() != currentPlayer) {
+                                if (tiles[i][j].settles.get(k).getOwner() != currentPlayer && owners.contains(tiles[i][j].settles.get(k).getOwner().toString()) == false) {
                                     owners.add(tiles[i][j].settles.get(k).getOwner().toString());
                                 }
                             }
@@ -337,7 +337,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                             }
                             //discarding
                             for (int b= 0; b<pManage.size(); b++) {
-                                if (pManage.get(b).getInventorySize()>1 && pManage.get(b) != currentPlayer) {
+                                if (pManage.get(b).getInventorySize()>7 && pManage.get(b) != currentPlayer) {
                                         toDiscard.add(pManage.get(b));
                                         numDiscard.add((int)Math.floor(pManage.get(b).getInventorySize()/2.0));
                                 }
