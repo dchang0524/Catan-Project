@@ -12,13 +12,13 @@ public class GameState {
         return gs;
     }
     public String getSubState() {
-        return (subState);
+        return subState;
     }
     //setter for gs
     public void setGameState(int gs) {
         this.gs = gs;
     }
-    public void setSubState(String subState) {
-        this.subState = subState;
+    public void setSubState(String s) {
+        this.subState = s;
     }
 }
