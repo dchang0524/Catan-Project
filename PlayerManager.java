@@ -14,7 +14,7 @@ public class PlayerManager {
         possColors.add("yellow");
         for (int i = 0; i < k; i++) {
             String c = possColors.remove((int)(Math.random() * possColors.size()));
-            players.add(new Player(c, bank));
+            players.add(new Player(c, bank, i));
         }
     }
     public Player get(int i) {
@@ -34,5 +34,35 @@ public class PlayerManager {
     }
     public void prevPlayer() {
         currentPlayer = (currentPlayer - 1 + players.size()) % players.size();
+    }
+
+    public Player toStringReverse(String s) {
+        if (s.equals("Player 0")) {
+            return players.get(0);
+        }
+        else if (s.equals("Player 1")) {
+            return players.get(1);
+        }
+        else if (s.equals("Player 2")) {
+            return players.get(2);
+        }
+        else if (s.equals("Player 3")) {
+            return players.get(3);
+        }
+        return null;
+    }
+
+    public String steal(Player A, Player toSteal) {
+        int rand = (int)(Math.random() * toSteal.getInventorySize());
+        int current = 0;
+        for (String resource : toSteal.getResources().keySet()) {
+            int quantity = toSteal.getResources().get(resource);
+            if (current + quantity > rand) {
+                toSteal.removeResource(resource, 1);
+                A.addResource(resource, 1);
+                return resource;
+            }
+        }
+        return null;
     }
 }

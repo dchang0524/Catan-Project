@@ -7,11 +7,17 @@ import java.awt.image.*;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.*;
+import java.nio.*;
+import java.io.*;
 
 public class CatanPanel extends JPanel implements MouseListener{
-
+    private static final long serialVersionUID = 1L;
     GameState gs;
     BufferedImage startBackground, logo, portBrick, portWood, portSheep, portWheat, portOre, portUnknown;
     Board board;
@@ -26,6 +32,10 @@ public class CatanPanel extends JPanel implements MouseListener{
     Cards bank;
     ArrayList<BufferedImage> portImages = new ArrayList<BufferedImage>();
     boolean rolledDice = false;
+    Robber robber;
+    ArrayList<Player> toDiscard = new ArrayList<Player>();
+    ArrayList<Integer> numDiscard = new ArrayList<Integer>();
+
     public CatanPanel() {
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
@@ -33,12 +43,12 @@ public class CatanPanel extends JPanel implements MouseListener{
             startBackground = ImageIO.read(CatanPanel.class.getResource("/misc/CatanBackground.png"));
             logo = ImageIO.read(CatanPanel.class.getResource("/misc/logo.png"));
 
-           /* portBrick = ImageIO.read(CatanPanel.class.getResource("/PortImages/port_brick.png"));
-            portWood = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_wood.png")));
+            portBrick = ImageIO.read(CatanPanel.class.getResource("/PortImages/port_brick.png"));
+            portWood = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_lumber.png")));
             portSheep = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_sheep.png")));
             portWheat = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_wheat.png")));
             portOre = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_ore.png")));
-            portUnknown = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_unknown.png")));*/
+            portUnknown = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_unknown.png")));
 
         }
         catch(Exception e){
@@ -50,8 +60,9 @@ public class CatanPanel extends JPanel implements MouseListener{
         tiles = board.getTiles();
         intersections = board.getIntersections();
         bank = new Cards();
+        robber = new Robber();
         addMouseListener(this);
-      /*  portImages.add(portBrick);
+        portImages.add(portBrick);
         portImages.add(portWood);
         portImages.add(portSheep);
         portImages.add(portWheat);
@@ -60,7 +71,7 @@ public class CatanPanel extends JPanel implements MouseListener{
         portImages.add(portUnknown);
         portImages.add(portUnknown);
         portImages.add(portUnknown);
-        Collections.shuffle(portImages);*/
+        Collections.shuffle(portImages);
     }
 
 
@@ -75,7 +86,8 @@ public class CatanPanel extends JPanel implements MouseListener{
                 drawTiles(g);
                 drawIntersections(g);
                 drawPlayer(g, currentPlayer);
-                drawSetlements(g);
+                drawSettlements(g);
+                //drawGameLog(g);
                 drawRoads(g);
                 drawPorts(g);
                 if (gs.getSubState().equals("settlement")) {
@@ -113,20 +125,46 @@ public class CatanPanel extends JPanel implements MouseListener{
         }
         //gameState = 1, game loop and trade phase
         else if(gs.getGameState() == 1) {
-            if(firstTimeGameState1 == true){
-                g.setColor(Color.darkGray);
-                g.fillRect(790,0,1900,220);
-                firstTimeGameState1 = false;
-            }
+            System.out.println();
+            g.setColor(Color.darkGray);
+            g.fillRect(790,0,1900,220);
+            firstTimeGameState1 = false;
             currentPlayer = pManage.curentPlayer();
             System.out.println("game state " + gs.getGameState() + " " +"subState " + gs.getSubState());
+            drawTiles(g);
             drawPlayer(g, currentPlayer);
-            drawSetlements(g);
+            drawIntersections(g);
+            drawPorts(g);
+            drawSettlements(g);
             drawRoads(g);
-            drawCards(g);
-            System.out.println("current player: " + currentPlayer.getResources().keySet());
+            //TODO: drawRobber();
+            //TODO: drawDevCards();
+            //TODO: drawTradeButton();
+            //TODO: drawLogButton();
+            //TODO: drawBuildButton();
+            if (!gs.getSubState().equals("discard")) {
+                drawCards(g, currentPlayer);
+            }
+            else if (gs.getSubState().equals("discard")) {
+                drawCards(g, toDiscard.get(0));
+                g.drawString("Player " + toDiscard.get(0).playerIndex + " must discard " + numDiscard.get(0) + " cards", 500, 100);
+            }
+
+            //System.out.println("current player: " + currentPlayer.getResources().keySet());
             changeColor(g);
-            g.fillRect(30,130,100,100);
+            //TODO: make a proper dice button
+            g.fillRect(30,130,100,100); //dice button
+
+            if (rolledDice == false)  {
+                g.drawString("Roll Dice", 800, 100);
+            }
+            else {
+                //TODO: display sum of the dice rolls
+            }
+            if (gs.getSubState().equals("robber")) {
+                g.drawString("Choose tile to place robber", 800, 120);
+                //TODO: print all players' inventory counts
+            }
         }
         //gameState = 2, buy phase
         else if(gs.getGameState() == 2) {
@@ -134,11 +172,16 @@ public class CatanPanel extends JPanel implements MouseListener{
         }
     }
 
+    private void drawGameLog(Graphics g) {
+    }
+
 
 
     public void mousePressed(MouseEvent m) {
         int x = m.getX();
         int y = m.getY();
+        System.out.println("click: " + x + " " + y);
+        System.out.println("mousePresed: gameState: " + gs.getGameState() + " " + "subState: " + gs.getSubState());
         // menu screen
         if (gs.getGameState() == 0 && startGame == false) {
         if(x > 800 && x < 1100 && y > 500 && y < 600) {
@@ -151,8 +194,17 @@ public class CatanPanel extends JPanel implements MouseListener{
         if(x > 800 && x < 1100 && y > 650 && y < 750) {
             if (Desktop.isDesktopSupported()) {
                 try {
-                    File file = new File(this.getClass().getResource("misc/CatanRules.pdf").getFile());
-                    Desktop.getDesktop().open(file);
+                    InputStream manualAsStream = getClass().getClassLoader().getResourceAsStream("misc/CatanRules.pdf");
+
+                    Path tempOutput = Files.createTempFile("TempManual", ".pdf");
+                    tempOutput.toFile().deleteOnExit();
+
+                    Files.copy(manualAsStream, tempOutput, StandardCopyOption.REPLACE_EXISTING);
+
+                    File userManual = new File(tempOutput.toFile().getPath());
+                    if (userManual.exists()) {
+                        Desktop.getDesktop().open(userManual);
+                    }
                 } catch (IOException ex) {
                     ex.printStackTrace();
                     System.out.println("Error opening file");
@@ -254,7 +306,13 @@ public class CatanPanel extends JPanel implements MouseListener{
                         }
                         else if (pManage.currentPlayerIndex()==0) {
                             gs.setGameState(1);
-                            gs.setSubState(null);
+                            gs.setSubState("");
+/*
+                            // robber testing
+                            gs.setSubState("robber");
+                            rolledDice = true;
+*/
+
                         }
                     }
                 }
@@ -277,16 +335,102 @@ public class CatanPanel extends JPanel implements MouseListener{
                     }
                 }
             }
-
+            else if (gs.getSubState().equals("robber")) {
+                for (int i = 0; i<tiles.length; i++) {
+                    for (int j = 0; j<tiles[i].length; j++) {
+                        if (tiles[i][j] != null && x>= tiles[i][j].getX()+52 && x<= tiles[i][j].getX()+52+55 && y>= tiles[i][j].getY()+50 && y<= tiles[i][j].getY()+100) {
+                            robber.setPosition(tiles[i][j]);
+                            System.out.println("robber moved to " + i + " " + j + " " + tiles[i][j].getResource());
+                            //stealing
+                            ArrayList<String> owners = new ArrayList<String>();
+                            for (int k = 0; k<tiles[i][j].settles.size(); k++) {
+                                if (tiles[i][j].settles.get(k).getOwner() != currentPlayer && owners.contains(tiles[i][j].settles.get(k).getOwner().toString()) == false && tiles[i][j].settles.get(k).getOwner().getInventorySize()>0) {
+                                    owners.add(tiles[i][j].settles.get(k).getOwner().toString());
+                                }
+                            }
+                            System.out.println("could steal from" + owners);
+                            if (owners.size()>0) {
+                                String[] owns = new String[owners.size()];
+                                for (int n = 0; n<owners.size(); n++) {
+                                    owns[n] = owners.get(n) + "(Inventory Size: " + pManage.toStringReverse(owners.get(n)).getInventorySize() + " Color: " + pManage.toStringReverse(owners.get(n)).color.toUpperCase() + ")";
+                                }
+                                System.out.println("choose player to steal");
+                                String picked = (String) JOptionPane.showInputDialog(null, "What player do you want to rob?", "Rob Player", JOptionPane.QUESTION_MESSAGE, null, owns, owns[0]);
+                                Player toSteal = pManage.get(Integer.parseInt("" + picked.charAt(7)));
+                                pManage.steal(currentPlayer, toSteal);
+                            }
+                            //discarding
+                            toDiscard = new ArrayList<Player>();
+                            numDiscard = new ArrayList<Integer>();
+                            for (int b= 0; b<pManage.size(); b++) {
+                                if (pManage.get(b).getInventorySize()>7 && pManage.get(b) != currentPlayer) {
+                                        toDiscard.add(pManage.get(b));
+                                        numDiscard.add((int)Math.floor(pManage.get(b).getInventorySize()/2.0));
+                                }
+                            }
+                            if (toDiscard.size()>0) {
+                                gs.setSubState("discard");
+                            }
+                        }
+                    }
+                }
+            }
+            else if (gs.getSubState().equals("discard")) {
+                if (numDiscard.get(0)>0) {
+                    Player temp = toDiscard.get(0);
+                    String resource = coordToResource(x, y);
+                    System.out.println("discarding " + resource);
+                    if (resource != null) {
+                        if (temp.getResourceCount(resource)>0) {
+                            temp.removeResource(resource, 1);
+                            numDiscard.set(0, numDiscard.get(0)-1);
+                            if (numDiscard.get(0)==0) {
+                                toDiscard.remove(0);
+                                numDiscard.remove(0);
+                                if (toDiscard.size() == 0) {
+                                    gs.setSubState("");
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    gs.setSubState("");
+                }
+            }
             repaint();
         }
 
     }
 
-
-    public void drawCards(Graphics g) {
-        double ratio = 454.0/296.0;
+    public String coordToResource(int x, int y) {
         HashMap<String, Integer> resources = pManage.curentPlayer().getResources();
+        Set<String> keys = resources.keySet();
+        if (keys != null) {
+            Iterator<String> iter = keys.iterator();
+            double ratio = 454.0/296.0;
+            int width = 100;
+            int height = (int) (width*ratio);
+            int count = 0;
+            int horDiff = width + 30;
+            while (iter.hasNext()) {
+                String resource = iter.next();
+                int amount = resources.get(resource);
+                if (x>=400+horDiff*count && x<=400+horDiff*count+width && y>=800 && y<=800+height) {
+                    return resource;
+                }
+                //g.drawImage(img, 400+horDiff*count, 800, width, height, null);
+                //changeColor(g);
+                //g.drawString(""+currentPlayer.getResourceCount(resource), 400+horDiff*count, 850);
+                count++;
+            }
+        }
+        return null;
+    }
+
+    public void drawCards(Graphics g, Player p) {
+        double ratio = 454.0/296.0;
+        HashMap<String, Integer> resources = p.getResources();
         Set<String> keys = resources.keySet();
         if (keys != null) {
             Iterator<String> iter = keys.iterator();
@@ -299,14 +443,14 @@ public class CatanPanel extends JPanel implements MouseListener{
                 int amount = resources.get(resource);
                 BufferedImage img = Cards.cardImages.get(resource);
                 g.drawImage(img, 400+horDiff*count, 800, width, height, null);
-                changeColor(g);
-                g.drawString(""+currentPlayer.getResourceCount(resource), 400+horDiff*count, 850);
+                changeColor(g, p);
+                g.drawString(""+p.getResourceCount(resource), 400+horDiff*count, 850);
                 count++;
             }
         }
 
     }
-    public void drawSetlements(Graphics g) {
+    public void drawSettlements(Graphics g) {
         for (int i = 0; i < pManage.size(); i++) {
             for (int j = 0; j < pManage.get(i).getSettlements().size(); j++) {
                 if (pManage.get(i).getColor().equals("red")) {
@@ -360,6 +504,20 @@ public class CatanPanel extends JPanel implements MouseListener{
             g.setColor(Color.WHITE);
         }
         else if (currentPlayer.getColor().equals("yellow")) {
+            g.setColor(Color.YELLOW);
+        }
+    }
+    public void changeColor(Graphics g, Player p) {
+        if (p.getColor().equals("red")) {
+            g.setColor(Color.RED);
+        }
+        else if (p.getColor().equals("blue")) {
+            g.setColor(new Color(31, 69, 252));
+        }
+        else if (p.getColor().equals("white")) {
+            g.setColor(Color.WHITE);
+        }
+        else if (p.getColor().equals("yellow")) {
             g.setColor(Color.YELLOW);
         }
     }
@@ -460,8 +618,15 @@ public class CatanPanel extends JPanel implements MouseListener{
         Graphics2D g2 = (Graphics2D) g;
         int x = 246;
         int y = 47;
-       /* g2.drawImage(portImages.get(0), x, y, 50, 50,  null);
-        g2.drawImage(portImages.get(1), x+100, y, 50, 50,  null);*/
+        g2.drawImage(portImages.get(0), x-50, y-50, 100, 100,  null);
+        g2.drawImage(portImages.get(1), 84-50, 273-30, 100, 100,  null);
+        g2.drawImage(portImages.get(2), 84-50, 534-50, 100, 100,  null);
+        g2.drawImage(portImages.get(3), 240-10, 760-50, 100, 100,  null);
+        g2.drawImage(portImages.get(4), 559-20, 760-50, 100, 100,  null);
+        g2.drawImage(portImages.get(5), 795-50, 639-35, 100, 100,  null);
+        g2.drawImage(portImages.get(6), 940-50, 404-50, 100, 100,  null);
+        g2.drawImage(portImages.get(7), 788-30, 162-50, 100, 100,  null);
+        g2.drawImage(portImages.get(8), 698-150, y-50, 100, 100,  null);
 
     }
 
@@ -483,16 +648,16 @@ public class CatanPanel extends JPanel implements MouseListener{
             //System.out.println("set color to yellow");
         }
         g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
-        g.drawString("Player " + pManage.currentPlayerIndex(), 30, 850);
+        g.drawString("Player " + p.playerIndex, 30, 850);
     }
 
     public void mouseReleased(MouseEvent m) {}
     public void mouseEntered(MouseEvent m) {}
     public void mouseExited(MouseEvent m) {}
     public void mouseClicked(MouseEvent m) {
-        int x = m.getX();
-        int y = m.getY();
-       System.out.println("click:" + x + " " + y);
+        //int x = m.getX();
+        //int y = m.getY();
+       //System.out.println("click:" + x + " " + y);
     }
 
 }

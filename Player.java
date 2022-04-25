@@ -14,8 +14,10 @@ public class Player {
     String color;
     ArrayList<Road> roads;
     Cards bank;
+    int playerIndex;
+
     //constructor
-    public Player(String name, Cards c) {
+    public Player(String name, Cards c, int i) {
         resources = new HashMap<String, Integer>();
         settlements = new ArrayList<Settlement>();
         KnightsUsed = 0;
@@ -32,6 +34,20 @@ public class Player {
         resources.put("sheep", 0);
         resources.put("wheat", 0);
         resources.put("wood", 0);
+        playerIndex = i;
+    }
+    public void setPlayerIndex(int i) {
+        playerIndex = i;
+    }
+    public String toString() {
+        return "Player " + playerIndex;
+    }
+    public int getInventorySize() {
+        int total = 0;
+        for (String resource : resources.keySet()) {
+            total += resources.get(resource);
+        }
+        return total;
     }
     public ArrayList<Road> getRoads(){
         return roads;
@@ -63,6 +79,8 @@ public class Player {
     public HashMap<String, Integer> getResources() {
         return resources;
     }
+
+
 
 }
 
