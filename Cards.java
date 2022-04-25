@@ -13,6 +13,17 @@ public class Cards {
             cardImages.put("sheep", ImageIO.read(Cards.class.getResource("/resourceCards/sheepCard.png")));
             cardImages.put("wheat", ImageIO.read(Cards.class.getResource("/resourceCards/wheatCard.png")));
             cardImages.put("wood", ImageIO.read(Cards.class.getResource("/resourceCards/woodCard.png")));
+
+            cardImages.put("longestRoad", ImageIO.read(Cards.class.getResource("/devCards/LongestRoadCard.png")));
+            cardImages.put("largestArmy", ImageIO.read(Cards.class.getResource("/devCards/LargestArmyCard.png")));
+
+            cardImages.put("knight", ImageIO.read(Cards.class.getResource("/devCards/knightCard.png")));
+            cardImages.put("roadBuilding", ImageIO.read(Cards.class.getResource("/devCards/RoadBuildingCard.png")));
+            cardImages.put("monopoly", ImageIO.read(Cards.class.getResource("/devCards/MonopolyCard.png")));
+            cardImages.put("yearOfPlenty", ImageIO.read(Cards.class.getResource("/devCards/YearOfPlentyCard.png")));
+
+            cardImages.put("university", ImageIO.read(Cards.class.getResource("/devCards/UniversityCard.png")));
+            cardImages.put("library", ImageIO.read(Cards.class.getResource("/devCards/LibraryCard.png")));
         }
         catch(Exception e){
             System.out.println("Error loading image");
@@ -25,11 +36,11 @@ public class Cards {
         numResourceCards.put("wood", 19);
 
         //victory point cards
-        numDevCards.put("university", 1);
-        numDevCards.put("chapel", 1);
-        numDevCards.put("library", 1);
-        numDevCards.put("greatHall", 1);
-        numDevCards.put("market", 1);
+        numDevCards.put("university", 3);
+        //numDevCards.put("chapel", 1);
+        numDevCards.put("library", 2);
+       // numDevCards.put("greatHall", 1);
+        //numDevCards.put("market", 1);
         //functional cards
         numDevCards.put("roadBuilding", 2);
         numDevCards.put("yearOfPlenty", 2);
