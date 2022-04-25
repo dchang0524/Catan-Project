@@ -387,6 +387,12 @@ public class CatanPanel extends JPanel implements MouseListener{
                     }
                 }
             }
+            else if (gs.getSubState().equals("")) {
+                if (x>=1500 && x<=1500+170 && y>=520 && y<=580) { //if next turn button (1500, 520, 170, 60)
+                    pManage.nextPlayer();
+                    rolledDice = false;
+                }
+            }
             else if (gs.getSubState().equals("robber")) {
                 for (int i = 0; i<tiles.length; i++) {
                     for (int j = 0; j<tiles[i].length; j++) {
