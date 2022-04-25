@@ -91,10 +91,14 @@ public class CatanPanel extends JPanel implements MouseListener{
                 drawIntersections(g);
                 drawPlayer(g, currentPlayer);
                 drawSettlements(g);
-                //drawGameLog(g);
+                drawGameLog(g);
                 drawRoads(g);
                 drawPorts(g);
                 drawRobber(g);
+                drawTrade(g);
+                drawBuild(g);
+                drawPlayerInfo(g);
+                drawNextTurnButton(g);
                 if (gs.getSubState().equals("settlement")) {
                     changeColor(g);
                     g.setFont(new Font("TimesRoman", Font.PLAIN, 45));
@@ -145,11 +149,13 @@ public class CatanPanel extends JPanel implements MouseListener{
             drawPorts(g);
             drawSettlements(g);
             drawRoads(g);
+            drawGameLog(g);
             drawRobber(g);
+            drawTrade(g);
+            drawBuild(g);
+            drawPlayerInfo(g);
+            drawNextTurnButton(g);
             //TODO: drawDevCards();
-            //TODO: drawTradeButton();
-            //TODO: drawLogButton();
-            //TODO: drawBuildButton();
             if (!gs.getSubState().equals("discard")) {
                 drawCards(g, currentPlayer);
             }
@@ -182,16 +188,46 @@ public class CatanPanel extends JPanel implements MouseListener{
         }
     }
 
-    private void drawRobber(Graphics g) {
+    public void drawTrade(Graphics g) {
+        changeColor(g);
+        g.fillRect(1500, 200, 170, 60);
+        g.setColor(Color.cyan);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString("Trade", 1505, 200+40);
+    }
+    public void drawGameLog(Graphics g) {
+        changeColor(g);
+        g.fillRect(1500, 280, 170, 60);
+        g.setColor(Color.cyan);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString("Game Log", 1505, 280+40);
+    }
+    public void drawBuild(Graphics g) {
+        changeColor(g);
+        g.fillRect(1500, 360, 170, 60);
+        g.setColor(Color.cyan);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString("Build", 1505, 360+40);
+    }
+    public void drawPlayerInfo(Graphics g) {
+        changeColor(g);
+        g.fillRect(1500, 440, 170, 60);
+        g.setColor(Color.cyan);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString("Inventories", 1505, 440+40);
+    }
+    public void drawNextTurnButton(Graphics g) {
+        changeColor(g);
+        g.fillRect(1500, 520, 170, 60);
+        g.setColor(Color.cyan);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString("Next Turn", 1505, 520+40);
+    }
+
+    public void drawRobber(Graphics g) {
         //g.drawImage(tiles[1][j].getNumImage(), (int)x+52, (int)y+50, 55, 55, null);
         g.drawImage(robberImg, robber.getPosition().getX()+53, robber.getPosition().getY()+30, 54, 111, null);
     }
-
-
-    private void drawGameLog(Graphics g) {
-    }
-
-
 
     public void mousePressed(MouseEvent m) {
         int x = m.getX();
@@ -446,6 +482,7 @@ public class CatanPanel extends JPanel implements MouseListener{
     }
 
     public void drawCards(Graphics g, Player p) {
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
         double ratio = 454.0/296.0;
         HashMap<String, Integer> resources = p.getResources();
         Set<String> keys = resources.keySet();
