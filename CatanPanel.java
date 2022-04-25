@@ -58,6 +58,13 @@ public class CatanPanel extends JPanel implements MouseListener{
         intersections = board.getIntersections();
         bank = new Cards();
         robber = new Robber();
+        for (int i = 0; i<tiles.length; i++) {
+            for (int j = 0; j<tiles[i].length; j++) {
+                if (tiles[i][j] != null && tiles[i][j].getResource().equals("desert")) {
+                    robber = new Robber(tiles[i][j]);
+                }
+            }
+        }
         addMouseListener(this);
         portImages.add(portBrick);
         portImages.add(portWood);
@@ -87,6 +94,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                 //drawGameLog(g);
                 drawRoads(g);
                 drawPorts(g);
+                drawRobber(g);
                 if (gs.getSubState().equals("settlement")) {
                     changeColor(g);
                     g.setFont(new Font("TimesRoman", Font.PLAIN, 45));
