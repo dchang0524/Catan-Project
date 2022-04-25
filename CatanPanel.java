@@ -356,6 +356,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                     for (int j = 0; j<tiles[i].length; j++) {
                         if (tiles[i][j] != null && x>= tiles[i][j].getX()+52 && x<= tiles[i][j].getX()+52+55 && y>= tiles[i][j].getY()+50 && y<= tiles[i][j].getY()+100) {
                             robber.setPosition(tiles[i][j]);
+                            gs.setSubState("");
                             System.out.println("robber moved to " + i + " " + j + " " + tiles[i][j].getResource());
                             //stealing
                             ArrayList<String> owners = new ArrayList<String>();
