@@ -8,18 +8,15 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.*;
-import java.nio.*;
+import java.nio.file.*;
 import java.io.*;
 
 public class CatanPanel extends JPanel implements MouseListener{
     private static final long serialVersionUID = 1L;
     GameState gs;
-    BufferedImage startBackground, logo, portBrick, portWood, portSheep, portWheat, portOre, portUnknown;
+    BufferedImage startBackground, logo, portBrick, portWood, portSheep, portWheat, portOre, portUnknown, dice, robberImg;
     Board board;
     PlayerManager pManage;
     Player currentPlayer;
@@ -35,21 +32,21 @@ public class CatanPanel extends JPanel implements MouseListener{
     Robber robber;
     ArrayList<Player> toDiscard = new ArrayList<Player>();
     ArrayList<Integer> numDiscard = new ArrayList<Integer>();
-
+    static int die1, die2, sum;
     public CatanPanel() {
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
         try{
             startBackground = ImageIO.read(CatanPanel.class.getResource("/misc/CatanBackground.png"));
             logo = ImageIO.read(CatanPanel.class.getResource("/misc/logo.png"));
-
+            dice = ImageIO.read(CatanPanel.class.getResource("/misc/dice.png"));
             portBrick = ImageIO.read(CatanPanel.class.getResource("/PortImages/port_brick.png"));
             portWood = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_lumber.png")));
             portSheep = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_sheep.png")));
             portWheat = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_wheat.png")));
             portOre = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_ore.png")));
             portUnknown = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_unknown.png")));
-
+            robberImg = (ImageIO.read(CatanPanel.class.getResource("/misc/robber.png")));
         }
         catch(Exception e){
             e.printStackTrace();
@@ -92,11 +89,12 @@ public class CatanPanel extends JPanel implements MouseListener{
                 drawPorts(g);
                 if (gs.getSubState().equals("settlement")) {
                     changeColor(g);
+                    g.setFont(new Font("TimesRoman", Font.PLAIN, 45));
                     if(adjacent == false){
                         g.drawString("Choose starting settlement", 800, 100);
                     } else{
-                        g.setFont(new Font("TimesRoman", Font.PLAIN, 45)); g.drawString("Cannot place settlement on adjacent intersection", 800, 100);
-                        g.drawString("Choose a different starting settlement", 800, 150); g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
+                        g.drawString("Cannot place settlement on adjacent intersection", 800, 50);
+                        g.drawString("Choose a different starting settlement", 800, 100);
                         adjacent = false;
                     }
                     if (currentPlayer.getSettlements().size() == 1) {
@@ -109,17 +107,19 @@ public class CatanPanel extends JPanel implements MouseListener{
                 }
                 else if (gs.getSubState().equals("settlement2")) {
                     changeColor(g);
+                    g.setFont(new Font("TimesRoman", Font.PLAIN, 45));
                     if(adjacent == false) {
                         g.drawString("Choose second settlement", 800, 100);
                     } else{
-                        g.setFont(new Font("TimesRoman", Font.PLAIN, 45)); g.drawString("Cannot place settlement on adjacent intersection", 800, 100);
-                        g.drawString("Choose a different second starting settlement", 800, 150); g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
+                        g.drawString("Cannot place settlement on adjacent intersection", 800, 50);
+                        g.drawString("Choose a different second starting settlement", 800, 100);
                         adjacent = false;
                     }
                 }
                 else if (gs.getSubState().equals("road2")) {
                     changeColor(g);
-                    g.setFont(new Font("TimesRoman", Font.PLAIN, 55)); g.drawString("Choose road for the second settlement", 800, 100); g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
+                    g.setFont(new Font("TimesRoman", Font.PLAIN, 45));
+                    g.drawString("Choose road for the second settlement", 800, 100);
                 }
             }
         }
@@ -137,7 +137,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             drawPorts(g);
             drawSettlements(g);
             drawRoads(g);
-            //TODO: drawRobber();
+            drawRobber(g);
             //TODO: drawDevCards();
             //TODO: drawTradeButton();
             //TODO: drawLogButton();
@@ -152,18 +152,20 @@ public class CatanPanel extends JPanel implements MouseListener{
 
             //System.out.println("current player: " + currentPlayer.getResources().keySet());
             changeColor(g);
-            //TODO: make a proper dice button
             g.fillRect(30,130,100,100); //dice button
-
+            g.drawImage(dice, 35, 135, 90, 90, null);
             if (rolledDice == false)  {
                 g.drawString("Roll Dice", 800, 100);
             }
             else {
-                //TODO: display sum of the dice rolls
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.drawString(die1 + " + " + die2 + " = " + sum, 20, 70);
             }
             if (gs.getSubState().equals("robber")) {
                 g.drawString("Choose tile to place robber", 800, 120);
+
                 //TODO: print all players' inventory counts
+
             }
         }
         //gameState = 2, buy phase
@@ -171,6 +173,12 @@ public class CatanPanel extends JPanel implements MouseListener{
 
         }
     }
+
+    private void drawRobber(Graphics g) {
+        //g.drawImage(tiles[1][j].getNumImage(), (int)x+52, (int)y+50, 55, 55, null);
+        g.drawImage(robberImg, robber.getPosition().getX()+53, robber.getPosition().getY()+30, 54, 111, null);
+    }
+
 
     private void drawGameLog(Graphics g) {
     }
@@ -323,9 +331,9 @@ public class CatanPanel extends JPanel implements MouseListener{
             if (rolledDice == false) {
                 if (x>=30 && x<=130 && y>=130 && y<=230) {
                     rolledDice = true;
-                    int die1 = (int)(Math.random()*6+1);
-                    int die2 = (int)(Math.random()*6+1);
-                    int sum = die1 + die2;
+                    die1 = (int)(Math.random()*6+1);
+                    die2 = (int)(Math.random()*6+1);
+                    sum = die1 + die2;
                     System.out.println("dice: " + die1 + " " + die2 + " sum: " + sum);
                     if (sum == 7) {
                         gs.setSubState("robber");
