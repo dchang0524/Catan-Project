@@ -8,6 +8,7 @@ public class Robber {
     }
     public void setPosition(Tile position) {
         this.position = position;
+        position.setRobber(true);
     }
     public Tile getPosition() {
         return position;
