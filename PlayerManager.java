@@ -4,6 +4,8 @@ public class PlayerManager {
     ArrayList<Player> players;
     int currentPlayer;
     Cards bank;
+    Player largestArmy;
+    Player longestRoad;
     public PlayerManager(int k, Cards cards) {
         bank = cards;
         players = new ArrayList<>();

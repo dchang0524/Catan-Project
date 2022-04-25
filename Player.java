@@ -8,8 +8,6 @@ public class Player {
     int KnightsUsed;
     HashMap<String, Integer> developmentCards;
     int victoryPoints;
-    boolean hasLargestArmy;
-    boolean hasLongestRoad;
     HashMap<String, Integer> shopRatio;
     String color;
     ArrayList<Road> roads;
@@ -23,8 +21,6 @@ public class Player {
         KnightsUsed = 0;
         developmentCards = new HashMap<String, Integer>();
         victoryPoints = 0;
-        hasLargestArmy = false;
-        hasLongestRoad = false;
         shopRatio = new HashMap<String, Integer>();
         color = name;
         roads = new ArrayList<Road>();
@@ -80,8 +76,34 @@ public class Player {
         return resources;
     }
 
+    public HashSet<Intersection> settleAble() { //returns all intersections that settlements can be placed on
+        HashSet<Intersection> settleAble = new HashSet<Intersection>();
+        for (int i = 0; i< roads.size(); i++) {
+            Intersection temp1 = roads.get(i).getI1();
+            Intersection temp2 = roads.get(i).getI2();
+            if (temp1 != null && temp1.hasSettlement() == false) {
+                settleAble.add(temp1);
+            }
+            if (temp2 != null && temp2.hasSettlement() == false) {
+                settleAble.add(temp2);
+            }
+        }
+        return settleAble;
+    }
 
-
+    //TODO: add method that returns all intersections of settlements that can be upgraded to cities
+    //TODO: add method that connects all roads to each other if it is supposed to be connected
+    //TODO: add method to return Intersections where new roads can branch out from
+    //TODO: add method to return Intersections for second endpoint of the selected intersection
+    public int longestRoadLength() {
+        int longest = 0;
+        for (Road r : roads) {
+            if (r.getHeight() > longest) {
+                longest = r.getHeight();
+            }
+        }
+        return longest;
+    }
 }
 
 

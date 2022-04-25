@@ -1,3 +1,5 @@
+import java.util.HashSet;
+
 public class Road {
     private Intersection i1;
     private Intersection i2;
@@ -137,6 +139,23 @@ public class Road {
             r4 = null;
         }
     }
+
+    public int getHeight() {
+        HashSet<Road> visited = new HashSet<>();
+        visited.add(this);
+        return 1+Math.max(Math.max(r1.getHeightHelper(visited), r2.getHeightHelper(visited)), Math.max(r4.getHeightHelper(visited), r4.getHeightHelper(visited)));
+    }
+    public int getHeightHelper(HashSet<Road> visited) {
+        if (this == null) {
+            return 0;
+        }
+        if (visited.contains(this)) {
+            return 0;
+        }
+        visited.add(this);
+        return 1+Math.max(Math.max(r1.getHeightHelper(visited), r2.getHeightHelper(visited)), Math.max(r4.getHeightHelper(visited), r4.getHeightHelper(visited)));
+    }
+
 }
 
 
