@@ -33,6 +33,12 @@ public class CatanPanel extends JPanel implements MouseListener{
     ArrayList<Player> toDiscard = new ArrayList<Player>();
     ArrayList<Integer> numDiscard = new ArrayList<Integer>();
     static int die1, die2, sum;
+    ArrayList<Player> tradeITOrder = new ArrayList<Player>();
+    ArrayList<HashMap<String, Integer>> offers = new ArrayList<>();
+    HashMap<String, Integer> currentPlayerWant = new HashMap<>();
+    ArrayList<HashMap<String, Integer>> finalOffers = new ArrayList<>();
+    ArrayList<Player> finalOfferPlayers = new ArrayList<>();
+
     public CatanPanel() {
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
@@ -193,35 +199,35 @@ public class CatanPanel extends JPanel implements MouseListener{
         g.fillRect(1500, 200, 170, 60);
         g.setColor(Color.cyan);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Trade", 1505, 200+40);
+        g.drawString("Trade", 1605, 200+40);
     }
     public void drawGameLog(Graphics g) {
         changeColor(g);
-        g.fillRect(1500, 280, 170, 60);
-        g.setColor(Color.cyan);
+        g.fillRect(1600, 280, 170, 60);
+        g.setColor(Color.black);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Game Log", 1505, 280+40);
+        g.drawString("Game Log", 1605, 280+40);
     }
     public void drawBuild(Graphics g) {
         changeColor(g);
-        g.fillRect(1500, 360, 170, 60);
-        g.setColor(Color.cyan);
+        g.fillRect(1600, 360, 170, 60);
+        g.setColor(Color.black);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Build", 1505, 360+40);
+        g.drawString("Build", 1605, 360+40);
     }
     public void drawPlayerInfo(Graphics g) {
         changeColor(g);
-        g.fillRect(1500, 440, 170, 60);
-        g.setColor(Color.cyan);
+        g.fillRect(1600, 440, 170, 60);
+        g.setColor(Color.black);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Inventories", 1505, 440+40);
+        g.drawString("Inventories", 1605, 440+40);
     }
     public void drawNextTurnButton(Graphics g) {
         changeColor(g);
-        g.fillRect(1500, 520, 170, 60);
-        g.setColor(Color.cyan);
+        g.fillRect(1600, 520, 170, 60);
+        g.setColor(Color.black);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Next Turn", 1505, 520+40);
+        g.drawString("Next Turn", 1605, 520+40);
     }
 
     public void drawRobber(Graphics g) {
@@ -391,6 +397,85 @@ public class CatanPanel extends JPanel implements MouseListener{
                 if (x>=1500 && x<=1500+170 && y>=520 && y<=580) { //if next turn button (1500, 520, 170, 60)
                     pManage.nextPlayer();
                     rolledDice = false;
+                }
+                if (x>=1600 && x<=1600+170 && y>=200 && y<=200+60) { //if trade button
+                    String[] tradeTypes = new String[2];
+                    tradeTypes[0] = "Trade With Players";
+                    tradeTypes[1] = "Trade With Bank or Ports";
+                    String picked = (String) JOptionPane.showInputDialog(null, "Which type of trade do you want?", "Trade Type", JOptionPane.QUESTION_MESSAGE, null, tradeTypes, tradeTypes[0]);
+                    if (picked.equals("Trade With Players"))    {
+                        gs.setSubState("domesticWant"); //current player adds items he wants to trade
+                        tradeITOrder.add(currentPlayer);
+                        HashMap<String, Integer> temp = new HashMap<String, Integer>();
+                        temp.put("wood", 0);
+                        temp.put("brick", 0);
+                        temp.put("sheep", 0);
+                        temp.put("wheat", 0);
+                        temp.put("ore", 0);
+                        offers.add(temp);
+                    }
+                    else if (picked.equals("Trade With Bank or Ports")) {
+                        gs.setSubState("maritime");
+                    }
+                }
+
+            }
+            else if (gs.getSubState().equals("domesticWant")) {
+                if (x>=1600 && x<=1600+170 && y>=520 && y<=580) { //if done button
+                    tradeITOrder.remove(0);
+                    currentPlayerWant = offers.remove(0);
+                    if (tradeITOrder.size() == 0) {
+                        gs.setSubState("domesticPlayers");
+                        for (int i=0; i<pManage.players.size(); i++) {
+                            if (pManage.players.get(i) != currentPlayer) {
+                                if (pManage.players.get(i).getResources().get("wood") >= currentPlayerWant.get("wood") &&
+                                pManage.players.get(i).getResources().get("brick") >= currentPlayerWant.get("brick") && pManage.players.get(i).getResources().get("sheep") >= currentPlayerWant.get("sheep") && pManage.players.get(i).getResources().get("wheat") >= currentPlayerWant.get("wheat") && pManage.players.get(i).getResources().get("ore") >= currentPlayerWant.get("ore")) {
+                                   //if enough resources to trade
+                                    tradeITOrder.add(pManage.players.get(i));
+                                    HashMap<String, Integer>  temp = new HashMap<String, Integer>();
+                                    temp.put("wood", 0);
+                                    temp.put("brick", 0);
+                                    temp.put("sheep", 0);
+                                    temp.put("wheat", 0);
+                                    temp.put("ore", 0);
+                                    offers.add(temp);
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (offers.size()>0 && tradeITOrder.size()>0) {
+                    String resource = coordToResource(x, y);
+                    HashMap<String, Integer> currentOffer = offers.get(0);
+                    if (resource != null) {
+                        if (tradeITOrder.get(0).getResourceCount(resource) > currentOffer.get(resource)){
+                            currentOffer.put(resource, currentOffer.get(resource)+1);
+                        }
+                    }
+                }
+            }
+            else if (gs.getSubState().equals("domesticPlayers")) {
+                if (x>=1600 && x<=1600+170 && y>=520 && y<=580) { //if done button
+                    HashMap<String, Integer> currentOffer = offers.remove(0);
+                    Player currentTradePlayer = tradeITOrder.remove(0);
+
+                    int sum = 0;
+                    for (String r : currentOffer.keySet()) {
+                        sum+= currentOffer.get(r);
+                    }
+
+                    if (sum > 0) {
+                        //check if trade is valid
+                    }
+                }
+                else if (offers.size()>0 && tradeITOrder.size()>0) {
+                    String resource = coordToResource(x, y);
+                    HashMap<String, Integer> currentOffer = offers.get(0);
+                    if (resource != null) {
+                        if (tradeITOrder.get(0).getResourceCount(resource) > currentOffer.get(resource)){
+                            currentOffer.put(resource, currentOffer.get(resource)+1);
+                        }
+                    }
                 }
             }
             else if (gs.getSubState().equals("robber")) {
