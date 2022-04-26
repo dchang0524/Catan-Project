@@ -45,7 +45,6 @@ public class Cards {
         numDevCards.put("roadBuilding", 2);
         numDevCards.put("yearOfPlenty", 2);
         numDevCards.put("monopoly", 2);
-        numDevCards.put("yearOfPlenty", 2);
         numDevCards.put("knight", 14);
     }
 
