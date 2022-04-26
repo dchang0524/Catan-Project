@@ -2,230 +2,108 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 public class Player {
-    HashMap<String, Integer> inventory;
+    HashMap<String, Integer> resources = new HashMap<String, Integer>();
+    HashMap<String, Integer> devCards = new HashMap<String, Integer>();
     ArrayList<Settlement> settlements;
     int KnightsUsed;
     HashMap<String, Integer> developmentCards;
     int victoryPoints;
-    boolean hasLargestArmy;
-    boolean hasLongestRoad;
     HashMap<String, Integer> shopRatio;
     String color;
     ArrayList<Road> roads;
+    Cards bank;
+    int playerIndex;
 
     //constructor
-    public Player(String name) {
-        inventory = new HashMap<String, Integer>();
+    public Player(String name, Cards c, int i) {
+        resources = new HashMap<String, Integer>();
         settlements = new ArrayList<Settlement>();
         KnightsUsed = 0;
         developmentCards = new HashMap<String, Integer>();
         victoryPoints = 0;
-        hasLargestArmy = false;
-        hasLongestRoad = false;
         shopRatio = new HashMap<String, Integer>();
         color = name;
         roads = new ArrayList<Road>();
+        bank = c;
+        resources.put("brick", 0);
+        resources.put("ore", 0);
+        resources.put("sheep", 0);
+        resources.put("wheat", 0);
+        resources.put("wood", 0);
+        playerIndex = i;
+    }
+    public void setPlayerIndex(int i) {
+        playerIndex = i;
+    }
+    public String toString() {
+        return "Player " + playerIndex;
+    }
+    public int getInventorySize() {
+        int total = 0;
+        for (String resource : resources.keySet()) {
+            total += resources.get(resource);
+        }
+        return total;
     }
     public ArrayList<Road> getRoads(){
         return roads;
     }
 
-    public void addToInventory(String resource, int amount) {
-        if (resource == "Desert") {
-            return;
-        }
-        inventory.put(resource, inventory.get(resource) + amount);
-    }
-
-    public void removeFromInventory(String resource, int amount) {
-        inventory.put(resource, inventory.get(resource) - amount);
-    }
-
-    public void addSettlement(Settlement settlement) {
-        settlements.add(settlement);
-    }
-
-    public void addToDevelopmentCards(String card, int amount) {
-        developmentCards.put(card, developmentCards.get(card) + amount);
-    }
-
-    public void removeFromDevelopmentCards(String card, int amount) {
-        developmentCards.put(card, developmentCards.get(card) - amount);
-    }
-
-    public int getInventory(String resource) {
-        return inventory.get(resource);
-    }
-
-    public int getKnightsUsed() {
-        return KnightsUsed;
-    }
-
-    public int getVictoryPoints() {
-        return victoryPoints;
-    }
-
-    public int getDevelopmentCards(String card) {
-        return developmentCards.get(card);
-    }
-
-    public int getShopRatio(String resource) {
-        return shopRatio.get(resource);
-    }
-
-    public boolean hasLargestArmy() {
-        return hasLargestArmy;
-    }
-
-    public boolean hasLongestRoad() {
-        return hasLongestRoad;
-    }
-
-    public void setLargestArmy(boolean largestArmy) {
-        hasLargestArmy = largestArmy;
-    }
-
-    public void setLongestRoad(boolean longestRoad) {
-        hasLongestRoad = longestRoad;
-    }
-
-    public void setKnightCount(int knights) {
-        KnightsUsed = knights;
-    }
-
-    public void setVictoryPoints(int points) {
-        victoryPoints = points;
-    }
-
-    public void setDevelopmentCards(String card, int amount) {
-        developmentCards.put(card, amount);
-    }
-
-    public void addKnight() {
-        KnightsUsed++;
-    }
-
-    public void addVictoryPoints(int points) {
-        victoryPoints += points;
-    }
-
-    public void addDevelopmentCard(String card) {
-        developmentCards.put(card, developmentCards.get(card) + 1);
-    }
-
-    public void addToKnightsUsed(int amount) {
-        KnightsUsed += amount;
-    }
-
-    public void removeVictoryPoints(int amount) {
-        victoryPoints -= amount;
-    }
-
-    public void setHasLargestArmy(boolean hasLargestArmy) {
-        this.hasLargestArmy = hasLargestArmy;
-    }
-
-    public void setHasLongestRoad(boolean hasLongestRoad) {
-        this.hasLongestRoad = hasLongestRoad;
-    }
-
-    public HashMap<String, Integer> getInventory() {
-        return inventory;
-    }
-
-    public ArrayList<Settlement> getSettlements() {
+    public ArrayList<Settlement> getSettlements(){
         return settlements;
     }
-
-    public HashMap<String, Integer> getDevelopmentCards() {
-        return developmentCards;
-    }
-
-    public HashMap<String, Integer> getShopRatio() {
-        return shopRatio;
-    }
-
-    public int getResourceCount(String resource) {
-        return inventory.get(resource);
-    }
-
-    public int getDevelopmentCardCount(String card) {
-        return developmentCards.get(card);
-    }
-
-    public int getTotalResourceCount() {
-        int total = 0;
-        for (String resource : inventory.keySet()) {
-            total += inventory.get(resource);
-        }
-        return total;
-    }
-
-    public int getTotalDevelopmentCardCount() {
-        int total = 0;
-        for (String card : developmentCards.keySet()) {
-            total += developmentCards.get(card);
-        }
-        return total;
-    }
-    //set
-    public void setInventory(HashMap<String, Integer> inventory) {
-        this.inventory = inventory;
-    }
-    //set
-    public void setSettlements(ArrayList<Settlement> settlements) {
-        this.settlements = settlements;
-    }
-    //set
-    public void setDevelopmentCards(HashMap<String, Integer> developmentCards) {
-        this.developmentCards = developmentCards;
-    }
-    public int getTotalKnightsUsed() {
-        return KnightsUsed;
-    }
-
-    public int getTotalVictoryPoints() {
-        return victoryPoints;
-    }
-
-    public int getNumSettlements() {
-        return settlements.size();
-    }
-
     public void addResource(String resource, int amount) {
-        inventory.put(resource, inventory.get(resource) + amount);
-    }
-
-    public void removeResource(String resource, int amount) {
-        inventory.put(resource, inventory.get(resource) - amount);
-    }
-
-    public void addDevelopmentCard(String card, int amount) {
-        developmentCards.put(card, developmentCards.get(card) + amount);
-    }
-
-    public void removeDevelopmentCard(String card, int amount) {
-        developmentCards.put(card, developmentCards.get(card) - amount);
-    }
-
-    public void useKnight(int amount) {
-        developmentCards.put("knight", developmentCards.get("knight") - amount);
-        KnightsUsed += amount;
-    }
-
-    public boolean hasDevCard(String card) {
-        for (String cardName : developmentCards.keySet()) {
-            if (cardName.equals(card)) {
-                return true;
-            }
+        if (amount > bank.resourceLeft(resource)) {
+            resources.put(resource, resources.get(resource) + bank.resourceLeft(resource));
         }
-        return false;
-    }
+        else {
+            resources.put(resource, resources.get(resource) + amount);
+        }
 
+    }
+    public void removeResource(String resource, int amount) {
+        resources.put(resource, resources.get(resource) - amount);
+        bank.putResource(resource, amount);
+    }
     public String getColor() {
         return color;
     }
 
+    public int getResourceCount(String resource) {
+        return resources.get(resource);
+    }
+    public HashMap<String, Integer> getResources() {
+        return resources;
+    }
+
+    public HashSet<Intersection> settleAble() { //returns all intersections that settlements can be placed on
+        HashSet<Intersection> settleAble = new HashSet<Intersection>();
+        for (int i = 0; i< roads.size(); i++) {
+            Intersection temp1 = roads.get(i).getI1();
+            Intersection temp2 = roads.get(i).getI2();
+            if (temp1 != null && temp1.hasSettlement() == false) {
+                settleAble.add(temp1);
+            }
+            if (temp2 != null && temp2.hasSettlement() == false) {
+                settleAble.add(temp2);
+            }
+        }
+        return settleAble;
+    }
+
+    //TODO: add method that returns all intersections of settlements that can be upgraded to cities
+    //TODO: add method that connects all roads to each other if it is supposed to be connected
+    //TODO: add method to return Intersections where new roads can branch out from
+    //TODO: add method to return Intersections for second endpoint of the selected intersection
+    public int longestRoadLength() {
+        int longest = 0;
+        for (Road r : roads) {
+            if (r.getHeight() > longest) {
+                longest = r.getHeight();
+            }
+        }
+        return longest;
+    }
 }
 
 
