@@ -33,11 +33,12 @@ public class CatanPanel extends JPanel implements MouseListener{
     ArrayList<Player> toDiscard = new ArrayList<Player>();
     ArrayList<Integer> numDiscard = new ArrayList<Integer>();
     static int die1, die2, sum;
-    ArrayList<Player> tradeITOrder = new ArrayList<Player>();
-    ArrayList<HashMap<String, Integer>> offers = new ArrayList<>();
-    HashMap<String, Integer> currentPlayerWant = new HashMap<>();
-    ArrayList<HashMap<String, Integer>> finalOffers = new ArrayList<>();
-    ArrayList<Player> finalOfferPlayers = new ArrayList<>();
+
+    ArrayList<Player> tradeITOrder = new ArrayList<Player>(); //order to iterate thru the players when trading
+    ArrayList<HashMap<String, Integer>> offers = new ArrayList<>(); //offers for the players when trading
+    HashMap<String, Integer> currentPlayerWant = new HashMap<>(); //offered by the current player
+    ArrayList<HashMap<String, Integer>> finalOffers = new ArrayList<>(); //offers that will be offered to the current player
+    ArrayList<Player> finalOfferPlayers = new ArrayList<>(); //the players for each offer in final offers
 
     public CatanPanel() {
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -405,6 +406,10 @@ public class CatanPanel extends JPanel implements MouseListener{
                     String picked = (String) JOptionPane.showInputDialog(null, "Which type of trade do you want?", "Trade Type", JOptionPane.QUESTION_MESSAGE, null, tradeTypes, tradeTypes[0]);
                     if (picked.equals("Trade With Players"))    {
                         gs.setSubState("domesticWant"); //current player adds items he wants to trade
+                        finalOffers = new ArrayList<HashMap<String, Integer>>();
+                        finalOfferPlayers = new ArrayList<Player>();
+                        tradeITOrder = new ArrayList<Player>();
+                        offers = new ArrayList<HashMap<String, Integer>>();
                         tradeITOrder.add(currentPlayer);
                         HashMap<String, Integer> temp = new HashMap<String, Integer>();
                         temp.put("wood", 0);
@@ -424,7 +429,14 @@ public class CatanPanel extends JPanel implements MouseListener{
                 if (x>=1600 && x<=1600+170 && y>=520 && y<=580) { //if done button
                     tradeITOrder.remove(0);
                     currentPlayerWant = offers.remove(0);
-                    if (tradeITOrder.size() == 0) {
+                    int sum = 0;
+                    for (String s : currentPlayerWant.keySet()) {
+                        sum += currentPlayerWant.get(s);
+                    }
+                    if (sum == 0) {
+                        gs.setSubState("");
+                    }
+                    else if (sum > 0) {
                         gs.setSubState("domesticPlayers");
                         for (int i=0; i<pManage.players.size(); i++) {
                             if (pManage.players.get(i) != currentPlayer) {
@@ -461,11 +473,25 @@ public class CatanPanel extends JPanel implements MouseListener{
 
                     int sum = 0;
                     for (String r : currentOffer.keySet()) {
-                        sum+= currentOffer.get(r);
+                        sum += currentOffer.get(r);
                     }
-
                     if (sum > 0) {
                         //check if trade is valid
+                        int diff1 = currentOffer.get("wood") - currentPlayerWant.get("wood");
+                        int diff2 = currentOffer.get("brick") - currentPlayerWant.get("brick");
+                        int diff3 = currentOffer.get("sheep") - currentPlayerWant.get("sheep");
+                        int diff4 = currentOffer.get("wheat") - currentPlayerWant.get("wheat");
+                        int diff5 = currentOffer.get("ore") - currentPlayerWant.get("ore");
+                        if (!(diff1>=0 && diff2>=0 && diff3>=0 && diff4>=0 && diff5>=0)) {
+                            if (!(diff1<=0 && diff2<=0 && diff3<=0 && diff4<=0 && diff5<=0)) {
+                                finalOfferPlayers.add(currentTradePlayer);
+                                finalOffers.add(currentOffer);
+                            }
+                        }
+                    }
+
+                    if (tradeITOrder.size() == 0) {
+                        gs.setSubState("domesticFinal");
                     }
                 }
                 else if (offers.size()>0 && tradeITOrder.size()>0) {
@@ -477,6 +503,9 @@ public class CatanPanel extends JPanel implements MouseListener{
                         }
                     }
                 }
+            }
+            else if (gs.getSubState().equals("domesticFinal")) {
+                //joptionpanel to select which offer to accept
             }
             else if (gs.getSubState().equals("robber")) {
                 for (int i = 0; i<tiles.length; i++) {
