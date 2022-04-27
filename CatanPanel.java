@@ -192,6 +192,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                 g.drawString("Current chooser " + tradeITOrder.get(0), 900, 150);
                 drawCards(g, tradeITOrder.get(0));
                 drawTradeNums(g, offers.get(0), tradeITOrder.get(0));
+                g.setColor(Color.white);
                 g.fillRect(300, 900, 60, 30);
                 g.setColor(Color.black);
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
@@ -321,37 +322,37 @@ public class CatanPanel extends JPanel implements MouseListener{
         System.out.println("mousePresed: gameState: " + gs.getGameState() + " " + "subState: " + gs.getSubState());
         // menu screen
         if (gs.getGameState() == 0 && startGame == false) {
-        if(x > 800 && x < 1100 && y > 500 && y < 600) {
-            pManage = new PlayerManager(Integer.parseInt(JOptionPane.showInputDialog(null,
-                    "Please enter the number of players(3-4):",
-                    "Number of Players", JOptionPane.QUESTION_MESSAGE)), bank);
-            startGame = true;
-            gs.setSubState("settlement");
-        }
-        if(x > 800 && x < 1100 && y > 650 && y < 750) {
-            if (Desktop.isDesktopSupported()) {
-                try {
-                    InputStream manualAsStream = getClass().getClassLoader().getResourceAsStream("misc/CatanRules.pdf");
+            if(x > 800 && x < 1100 && y > 500 && y < 600) {
+                pManage = new PlayerManager(Integer.parseInt(JOptionPane.showInputDialog(null,
+                        "Please enter the number of players(3-4):",
+                        "Number of Players", JOptionPane.QUESTION_MESSAGE)), bank);
+                startGame = true;
+                gs.setSubState("settlement");
+            }
+            if(x > 800 && x < 1100 && y > 650 && y < 750) {
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        InputStream manualAsStream = getClass().getClassLoader().getResourceAsStream("misc/CatanRules.pdf");
 
-                    Path tempOutput = Files.createTempFile("TempManual", ".pdf");
-                    tempOutput.toFile().deleteOnExit();
+                        Path tempOutput = Files.createTempFile("TempManual", ".pdf");
+                        tempOutput.toFile().deleteOnExit();
 
-                    Files.copy(manualAsStream, tempOutput, StandardCopyOption.REPLACE_EXISTING);
+                        Files.copy(manualAsStream, tempOutput, StandardCopyOption.REPLACE_EXISTING);
 
-                    File userManual = new File(tempOutput.toFile().getPath());
-                    if (userManual.exists()) {
-                        Desktop.getDesktop().open(userManual);
+                        File userManual = new File(tempOutput.toFile().getPath());
+                        if (userManual.exists()) {
+                            Desktop.getDesktop().open(userManual);
+                        }
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                        System.out.println("Error opening file");
                     }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    System.out.println("Error opening file");
                 }
             }
-        }
-        if(x > 800 && x < 1100 && y > 800 && y < 900) {
-            System.exit(0);
-        }
-        repaint();
+            if(x > 800 && x < 1100 && y > 800 && y < 900) {
+                System.exit(0);
+            }
+            repaint();
         }
         //choose starting settlements
         else if (gs.getGameState() == 0 && startGame) {
@@ -524,8 +525,8 @@ public class CatanPanel extends JPanel implements MouseListener{
                         for (int i=0; i<pManage.players.size(); i++) {
                             if (pManage.players.get(i) != currentPlayer) {
                                 if (pManage.players.get(i).getResources().get("wood") >= currentPlayerWant.get("wood") &&
-                                pManage.players.get(i).getResources().get("brick") >= currentPlayerWant.get("brick") && pManage.players.get(i).getResources().get("sheep") >= currentPlayerWant.get("sheep") && pManage.players.get(i).getResources().get("wheat") >= currentPlayerWant.get("wheat") && pManage.players.get(i).getResources().get("ore") >= currentPlayerWant.get("ore")) {
-                                   //if enough resources to trade
+                                        pManage.players.get(i).getResources().get("brick") >= currentPlayerWant.get("brick") && pManage.players.get(i).getResources().get("sheep") >= currentPlayerWant.get("sheep") && pManage.players.get(i).getResources().get("wheat") >= currentPlayerWant.get("wheat") && pManage.players.get(i).getResources().get("ore") >= currentPlayerWant.get("ore")) {
+                                    //if enough resources to trade
                                     tradeITOrder.add(pManage.players.get(i));
                                     HashMap<String, Integer>  temp = new HashMap<String, Integer>();
                                     temp.put("brick", 0);
@@ -627,8 +628,8 @@ public class CatanPanel extends JPanel implements MouseListener{
                             numDiscard = new ArrayList<Integer>();
                             for (int b= 0; b<pManage.size(); b++) {
                                 if (pManage.get(b).getInventorySize()>7 && pManage.get(b) != currentPlayer) {
-                                        toDiscard.add(pManage.get(b));
-                                        numDiscard.add((int)Math.floor(pManage.get(b).getInventorySize()/2.0));
+                                    toDiscard.add(pManage.get(b));
+                                    numDiscard.add((int)Math.floor(pManage.get(b).getInventorySize()/2.0));
                                 }
                             }
                             if (toDiscard.size()>0) {
@@ -921,7 +922,7 @@ public class CatanPanel extends JPanel implements MouseListener{
     public void mouseClicked(MouseEvent m) {
         //int x = m.getX();
         //int y = m.getY();
-       //System.out.println("click:" + x + " " + y);
+        //System.out.println("click:" + x + " " + y);
     }
 
 }
