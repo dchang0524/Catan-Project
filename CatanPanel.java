@@ -179,10 +179,10 @@ public class CatanPanel extends JPanel implements MouseListener{
                     drawTradeNums(g, offers.get(0), currentPlayer);
                 }
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
-                changeColor(g);
+                g.setColor(Color.white);
                 g.fillRect(300, 900, 60, 30);
                 g.setColor(Color.black);
-                g.drawString("Done", 300, 930);
+                g.drawString("Done", 300, 925);
             }
             else if (gs.getSubState().equals("domesticPlayers")) {
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
@@ -196,6 +196,39 @@ public class CatanPanel extends JPanel implements MouseListener{
                 g.setColor(Color.black);
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
                 g.drawString("Done", 300, 930);
+            }
+            else if(gs.getSubState().equals("domesticFinal")) {
+                drawCards(g, currentPlayer);
+                String[] options = new String[finalOffers.size()+1];
+                for (int i = 0; i < finalOffers.size(); i++) {
+                    options[i] = finalOfferPlayers.get(i) + ": " + finalOffers.get(i);
+                }
+                options[options.length-1] = "Decline All";
+                String picked = (String) JOptionPane.showInputDialog(null, "Choose offer to accept for " + currentPlayerWant, "Offers", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                if (picked != null) {
+                    if (!picked.equals("Decline All")) {
+                        int playerNum = Integer.parseInt("" + picked.charAt(7));
+                        Player tradingPlayer = pManage.get(playerNum);
+                        int index = 0;
+                        for (int i = 0; i<finalOfferPlayers.size(); i++) {
+                            if (finalOfferPlayers.get(i).equals(tradingPlayer)) {
+                                index = i;
+                            }
+                        }
+                        pManage.trade(currentPlayer, tradingPlayer, finalOffers.get(index) , currentPlayerWant);
+                    }
+                }
+                ArrayList<Player> tradeITOrder = new ArrayList<Player>(); //order to iterate thru the players when trading
+                ArrayList<HashMap<String, Integer>> offers = new ArrayList<>(); //offers for the players when trading
+                HashMap<String, Integer> currentPlayerWant = new HashMap<>(); //offered by the current player
+                ArrayList<HashMap<String, Integer>> finalOffers = new ArrayList<>(); //offers that will be offered to the current player
+                ArrayList<Player> finalOfferPlayers = new ArrayList<>(); //the players for each offer in final offers
+                gs.setSubState("domesticFinal2");
+                repaint();
+            }
+            else if (gs.getSubState().equals("domesticFinal2")) {
+                gs.setSubState("");
+                repaint();
             }
             //System.out.println("current player: " + currentPlayer.getResources().keySet());
             changeColor(g);
@@ -214,6 +247,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                 //TODO: print all players' inventory counts
 
             }
+
         }
         //gameState = 2, buy phase
         else if(gs.getGameState() == 2) {
@@ -233,8 +267,8 @@ public class CatanPanel extends JPanel implements MouseListener{
                 String resource = iter.next();
                 System.out.println("drawing " + resource);
                 int amount = temp.get(resource);
-                g.setColor(Color.cyan);
-                g.drawString("" + amount, 450 + horDiff * count, 850);
+                g.setColor(Color.black);
+                g.drawString("" + amount, 461 + horDiff * count, 852);
                 count++;
             }
         }
@@ -503,6 +537,9 @@ public class CatanPanel extends JPanel implements MouseListener{
                                 }
                             }
                         }
+                        if (tradeITOrder.size() == 0) {
+                            gs.setSubState("domesticFinal");
+                        }
                     }
                 }
                 else if (offers.size()>0 && tradeITOrder.size()>0) {
@@ -556,15 +593,9 @@ public class CatanPanel extends JPanel implements MouseListener{
                     String resource = coordToResource(x, y);
                     HashMap<String, Integer> currentOffer = offers.get(0);
                     if (resource != null) {
-                        if (tradeITOrder.get(0).getResourceCount(resource) > currentOffer.get(resource)){
-                            currentOffer.put(resource, currentOffer.get(resource)+1);
-                        }
+                        currentOffer.put(resource, currentOffer.get(resource)+1);
                     }
                 }
-            }
-            else if (gs.getSubState().equals("domesticFinal")) {
-                //joptionpanel to select which offer to accept
-
             }
             else if (gs.getSubState().equals("robber")) {
                 for (int i = 0; i<tiles.length; i++) {
@@ -677,7 +708,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                 BufferedImage img = Cards.cardImages.get(resource);
                 g.drawImage(img, 400+horDiff*count, 800, width, height, null);
                 changeColor(g, p);
-                g.drawString(""+p.getResourceCount(resource), 400+horDiff*count, 850);
+                g.drawString(""+p.getResourceCount(resource), 400+horDiff*count, 852);
                 count++;
             }
         }

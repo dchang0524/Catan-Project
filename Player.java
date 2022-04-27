@@ -65,6 +65,8 @@ public class Player {
         resources.put(resource, resources.get(resource) - amount);
         bank.putResource(resource, amount);
     }
+
+
     public String getColor() {
         return color;
     }

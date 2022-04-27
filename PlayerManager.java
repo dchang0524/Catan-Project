@@ -67,4 +67,24 @@ public class PlayerManager {
         }
         return null;
     }
+
+    public void trade(Player A, Player B, HashMap<String, Integer> resource, HashMap<String, Integer> resource2) {
+        for (String resourceName : resource.keySet()) {
+            int quantity = resource.get(resourceName);
+            A.removeResource(resourceName, quantity);
+        }
+        for (String resourceName : resource2.keySet()) {
+            int quantity = resource2.get(resourceName);
+            B.removeResource(resourceName, quantity);
+        }
+
+        for (String resourceName : resource.keySet()) {
+            int quantity = resource.get(resourceName);
+            B.addResource(resourceName, quantity);
+        }
+        for (String resourceName : resource2.keySet()) {
+            int quantity = resource2.get(resourceName);
+            A.addResource(resourceName, quantity);
+        }
+    }
 }
