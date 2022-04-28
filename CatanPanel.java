@@ -200,6 +200,10 @@ public class CatanPanel extends JPanel implements MouseListener{
             }
             else if(gs.getSubState().equals("domesticFinal")) {
                 drawCards(g, currentPlayer);
+                gs.setSubState("domesticFinal2");
+                repaint();
+            }
+            else if (gs.getSubState().equals("domesticFinal2")) {
                 String[] options = new String[finalOffers.size()+1];
                 for (int i = 0; i < finalOffers.size(); i++) {
                     options[i] = finalOfferPlayers.get(i) + ": " + finalOffers.get(i);
@@ -224,11 +228,8 @@ public class CatanPanel extends JPanel implements MouseListener{
                 HashMap<String, Integer> currentPlayerWant = new HashMap<>(); //offered by the current player
                 ArrayList<HashMap<String, Integer>> finalOffers = new ArrayList<>(); //offers that will be offered to the current player
                 ArrayList<Player> finalOfferPlayers = new ArrayList<>(); //the players for each offer in final offers
-                gs.setSubState("domesticFinal2");
-                repaint();
-            }
-            else if (gs.getSubState().equals("domesticFinal2")) {
                 gs.setSubState("");
+                drawCards(g, currentPlayer);
                 repaint();
             }
             //System.out.println("current player: " + currentPlayer.getResources().keySet());
@@ -474,7 +475,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                 }
             }
             else if (gs.getSubState().equals("")) {
-                if (x>=1500 && x<=1500+170 && y>=520 && y<=580) { //if next turn button (1500, 520, 170, 60)
+                if (x>=1600 && x<=1600+170 && y>=520 && y<=580) { //if next turn button (1500, 520, 170, 60)
                     pManage.nextPlayer();
                     rolledDice = false;
                 }
