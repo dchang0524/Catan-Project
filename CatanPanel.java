@@ -13,7 +13,7 @@ import java.util.*;
 import java.nio.file.*;
 import java.io.*;
 
-public class CatanPanel extends JPanel implements MouseListener{
+public class CatanPanel extends JPanel implements MouseListener {
     private static final long serialVersionUID = 1L;
     GameState gs;
     BufferedImage startBackground, logo, portBrick, portWood, portSheep, portWheat, portOre, portUnknown, dice, robberImg;
@@ -43,7 +43,7 @@ public class CatanPanel extends JPanel implements MouseListener{
     public CatanPanel() {
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
-        try{
+        try {
             startBackground = ImageIO.read(CatanPanel.class.getResource("/misc/CatanBackground.png"));
             logo = ImageIO.read(CatanPanel.class.getResource("/misc/logo.png"));
             dice = ImageIO.read(CatanPanel.class.getResource("/misc/dice.png"));
@@ -54,8 +54,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             portOre = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_ore.png")));
             portUnknown = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_unknown.png")));
             robberImg = (ImageIO.read(CatanPanel.class.getResource("/misc/robber.png")));
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error loading image");
             return;
@@ -65,8 +64,8 @@ public class CatanPanel extends JPanel implements MouseListener{
         intersections = board.getIntersections();
         bank = new Cards();
         robber = new Robber();
-        for (int i = 0; i<tiles.length; i++) {
-            for (int j = 0; j<tiles[i].length; j++) {
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[i].length; j++) {
                 if (tiles[i][j] != null && tiles[i][j].getResource().equals("desert")) {
                     robber = new Robber(tiles[i][j]);
                 }
@@ -88,9 +87,9 @@ public class CatanPanel extends JPanel implements MouseListener{
 
     public void paint(Graphics g) {
         //gameState = 0, menuscreen, choose starting settlements
-        if(gs.getGameState() == 0) {
+        if (gs.getGameState() == 0) {
             menuScreen(g);
-            if(startGame == true){
+            if (startGame == true) {
                 currentPlayer = pManage.curentPlayer();
                 System.out.println("game state " + gs.getGameState() + " subState " + gs.getSubState() + " startgame " + startGame);
                 //do not paint anything before drawTiles
@@ -109,9 +108,9 @@ public class CatanPanel extends JPanel implements MouseListener{
                 if (gs.getSubState().equals("settlement")) {
                     changeColor(g);
                     g.setFont(new Font("TimesRoman", Font.PLAIN, 45));
-                    if(adjacent == false){
+                    if (adjacent == false) {
                         g.drawString("Choose starting settlement", 800, 100);
-                    } else{
+                    } else {
                         g.drawString("Cannot place settlement on adjacent intersection", 800, 50);
                         g.drawString("Choose a different starting settlement", 800, 100);
                         adjacent = false;
@@ -119,23 +118,22 @@ public class CatanPanel extends JPanel implements MouseListener{
                     if (currentPlayer.getSettlements().size() == 1) {
                         gs.setSubState("road");
                     }
-                }
-                else if (gs.getSubState().equals("road")) {
+                } else if (gs.getSubState().equals("road")) {
                     changeColor(g);
-                    g.setFont(new Font("TimesRoman", Font.PLAIN, 55)); g.drawString("Choose endpoint of road for the settlement", 800, 100); g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
-                }
-                else if (gs.getSubState().equals("settlement2")) {
+                    g.setFont(new Font("TimesRoman", Font.PLAIN, 55));
+                    g.drawString("Choose endpoint of road for the settlement", 800, 100);
+                    g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
+                } else if (gs.getSubState().equals("settlement2")) {
                     changeColor(g);
                     g.setFont(new Font("TimesRoman", Font.PLAIN, 45));
-                    if(adjacent == false) {
+                    if (adjacent == false) {
                         g.drawString("Choose second settlement", 800, 100);
-                    } else{
+                    } else {
                         g.drawString("Cannot place settlement on adjacent intersection", 800, 50);
                         g.drawString("Choose a different second starting settlement", 800, 100);
                         adjacent = false;
                     }
-                }
-                else if (gs.getSubState().equals("road2")) {
+                } else if (gs.getSubState().equals("road2")) {
                     changeColor(g);
                     g.setFont(new Font("TimesRoman", Font.PLAIN, 45));
                     g.drawString("Choose road for the second settlement", 800, 100);
@@ -143,14 +141,14 @@ public class CatanPanel extends JPanel implements MouseListener{
             }
         }
         //gameState = 1, game loop and trade phase
-        else if(gs.getGameState() == 1) {
+        else if (gs.getGameState() == 1) {
             System.out.println();
             System.out.println("Paint: game state " + gs.getGameState() + " subState " + gs.getSubState() + " startgame " + startGame);
             g.setColor(Color.darkGray);
-            g.fillRect(790,0,1900,220);
+            g.fillRect(790, 0, 1900, 220);
             firstTimeGameState1 = false;
             currentPlayer = pManage.curentPlayer();
-            System.out.println("game state " + gs.getGameState() + " " +"subState " + gs.getSubState());
+            System.out.println("game state " + gs.getGameState() + " " + "subState " + gs.getSubState());
             drawTiles(g);
             drawPlayer(g, currentPlayer);
             drawIntersections(g);
@@ -166,8 +164,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             //TODO: drawDevCards();
             if (!gs.getSubState().equals("discard")) {
                 drawCards(g, currentPlayer);
-            }
-            else if (gs.getSubState().equals("discard")) {
+            } else if (gs.getSubState().equals("discard")) {
                 drawCards(g, toDiscard.get(0));
                 g.drawString("Player " + toDiscard.get(0).playerIndex + " must discard " + numDiscard.get(0) + " cards", 500, 100);
             }
@@ -183,8 +180,7 @@ public class CatanPanel extends JPanel implements MouseListener{
                 g.fillRect(300, 900, 60, 30);
                 g.setColor(Color.black);
                 g.drawString("Done", 300, 925);
-            }
-            else if (gs.getSubState().equals("domesticPlayers")) {
+            } else if (gs.getSubState().equals("domesticPlayers")) {
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
                 changeColor(g);
                 g.drawString("Choose cards you want for " + currentPlayerWant, 800, 100);
@@ -197,30 +193,28 @@ public class CatanPanel extends JPanel implements MouseListener{
                 g.setColor(Color.black);
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
                 g.drawString("Done", 300, 930);
-            }
-            else if(gs.getSubState().equals("domesticFinal")) {
+            } else if (gs.getSubState().equals("domesticFinal")) {
                 drawCards(g, currentPlayer);
                 gs.setSubState("domesticFinal2");
                 repaint();
-            }
-            else if (gs.getSubState().equals("domesticFinal2")) {
-                String[] options = new String[finalOffers.size()+1];
+            } else if (gs.getSubState().equals("domesticFinal2")) {
+                String[] options = new String[finalOffers.size() + 1];
                 for (int i = 0; i < finalOffers.size(); i++) {
                     options[i] = finalOfferPlayers.get(i) + ": " + finalOffers.get(i);
                 }
-                options[options.length-1] = "Decline All";
+                options[options.length - 1] = "Decline All";
                 String picked = (String) JOptionPane.showInputDialog(null, "Choose offer to accept for " + currentPlayerWant, "Offers", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                 if (picked != null) {
                     if (!picked.equals("Decline All")) {
                         int playerNum = Integer.parseInt("" + picked.charAt(7));
                         Player tradingPlayer = pManage.get(playerNum);
                         int index = 0;
-                        for (int i = 0; i<finalOfferPlayers.size(); i++) {
+                        for (int i = 0; i < finalOfferPlayers.size(); i++) {
                             if (finalOfferPlayers.get(i).equals(tradingPlayer)) {
                                 index = i;
                             }
                         }
-                        pManage.trade(currentPlayer, tradingPlayer, finalOffers.get(index) , currentPlayerWant);
+                        pManage.trade(currentPlayer, tradingPlayer, finalOffers.get(index), currentPlayerWant);
                     }
                 }
                 ArrayList<Player> tradeITOrder = new ArrayList<Player>(); //order to iterate thru the players when trading
@@ -234,12 +228,11 @@ public class CatanPanel extends JPanel implements MouseListener{
             }
             //System.out.println("current player: " + currentPlayer.getResources().keySet());
             changeColor(g);
-            g.fillRect(30,130,100,100); //dice button
+            g.fillRect(30, 130, 100, 100); //dice button
             g.drawImage(dice, 35, 135, 90, 90, null);
-            if (rolledDice == false)  {
+            if (rolledDice == false) {
                 g.drawString("Roll Dice", 800, 100);
-            }
-            else {
+            } else {
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
                 g.drawString(die1 + " + " + die2 + " = " + sum, 20, 70);
             }
@@ -252,64 +245,12 @@ public class CatanPanel extends JPanel implements MouseListener{
 
         }
         //gameState = 2, buy phase
-        else if(gs.getGameState() == 2) {
+        else if (gs.getGameState() == 2) {
 
         }
     }
-    public void drawTradeNums(Graphics g, HashMap<String, Integer> temp, Player p) {
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
-        Set<String> keys = temp.keySet();
-        if (keys != null) {
-            System.out.println("found requested resources from " + temp);
-            Iterator<String> iter = keys.iterator();
-            int width = 100;
-            int count = 0;
-            int horDiff = width + 30;
-            while (iter.hasNext()) {
-                String resource = iter.next();
-                System.out.println("drawing " + resource);
-                int amount = temp.get(resource);
-                g.setColor(Color.black);
-                g.drawString("" + amount, 461 + horDiff * count, 852);
-                count++;
-            }
-        }
-    }
-    public void drawTrade(Graphics g) {
-        changeColor(g);
-        g.fillRect(1600, 200, 170, 60);
-        g.setColor(Color.black);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Trade", 1605, 200+40);
-    }
-    public void drawGameLog(Graphics g) {
-        changeColor(g);
-        g.fillRect(1600, 280, 170, 60);
-        g.setColor(Color.black);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Game Log", 1605, 280+40);
-    }
-    public void drawBuild(Graphics g) {
-        changeColor(g);
-        g.fillRect(1600, 360, 170, 60);
-        g.setColor(Color.black);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Build", 1605, 360+40);
-    }
-    public void drawPlayerInfo(Graphics g) {
-        changeColor(g);
-        g.fillRect(1600, 440, 170, 60);
-        g.setColor(Color.black);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Inventories", 1605, 440+40);
-    }
-    public void drawNextTurnButton(Graphics g) {
-        changeColor(g);
-        g.fillRect(1600, 520, 170, 60);
-        g.setColor(Color.black);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Next Turn", 1605, 520+40);
-    }
+
+
 
     public void drawRobber(Graphics g) {
         //g.drawImage(tiles[1][j].getNumImage(), (int)x+52, (int)y+50, 55, 55, null);
@@ -323,14 +264,14 @@ public class CatanPanel extends JPanel implements MouseListener{
         System.out.println("mousePresed: gameState: " + gs.getGameState() + " " + "subState: " + gs.getSubState());
         // menu screen
         if (gs.getGameState() == 0 && startGame == false) {
-            if(x > 800 && x < 1100 && y > 500 && y < 600) {
+            if (x > 800 && x < 1100 && y > 500 && y < 600) {
                 pManage = new PlayerManager(Integer.parseInt(JOptionPane.showInputDialog(null,
                         "Please enter the number of players(3-4):",
                         "Number of Players", JOptionPane.QUESTION_MESSAGE)), bank);
                 startGame = true;
                 gs.setSubState("settlement");
             }
-            if(x > 800 && x < 1100 && y > 650 && y < 750) {
+            if (x > 800 && x < 1100 && y > 650 && y < 750) {
                 if (Desktop.isDesktopSupported()) {
                     try {
                         InputStream manualAsStream = getClass().getClassLoader().getResourceAsStream("misc/CatanRules.pdf");
@@ -350,100 +291,90 @@ public class CatanPanel extends JPanel implements MouseListener{
                     }
                 }
             }
-            if(x > 800 && x < 1100 && y > 800 && y < 900) {
+            if (x > 800 && x < 1100 && y > 800 && y < 900) {
                 System.exit(0);
             }
             repaint();
         }
         //choose starting settlements
         else if (gs.getGameState() == 0 && startGame) {
-            if(gs.getSubState().equals("settlement")) {
+            if (gs.getSubState().equals("settlement")) {
                 for (int i = 0; i < intersections.length; i++) {
                     for (int j = 0; j < intersections[i].length; j++) {
                         if (intersections[i][j] != null && intersections[i][j].noAdjacentSettlement() && !intersections[i][j].hasSettlement()
-                                && intersections[i][j].getX()-14<=x && x<=intersections[i][j].getX()+14 && intersections[i][j].getY()-14<=y && y<=intersections[i][j].getY()+14) {
+                                && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
                             System.out.println("intersection: " + intersections[i][j].getX() + " " + intersections[i][j].getY());
                             intersections[i][j].setSettlement(currentPlayer);
                             gs.setSubState("road");
-                        }
-                        else if(intersections[i][j] != null && !intersections[i][j].noAdjacentSettlement() && !intersections[i][j].hasSettlement()
-                                && intersections[i][j].getX()-14<=x && x<=intersections[i][j].getX()+14 && intersections[i][j].getY()-14<=y && y<=intersections[i][j].getY()+14){
+                        } else if (intersections[i][j] != null && !intersections[i][j].noAdjacentSettlement() && !intersections[i][j].hasSettlement()
+                                && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
                             adjacent = true;
                         }
                     }
                 }
-            }
-            else if(gs.getSubState().equals("road")) {
+            } else if (gs.getSubState().equals("road")) {
                 Intersection temp = currentPlayer.getSettlements().get(0).getPosition();
                 ArrayList<Intersection> tempList = temp.getAdjacentIntersections();
                 for (int i = 0; i < tempList.size(); i++) {
-                    if (tempList.get(i).getX()-14<=x && x<=tempList.get(i).getX()+14 && tempList.get(i).getY()-14<=y && y<=tempList.get(i).getY()+14) {
+                    if (tempList.get(i).getX() - 14 <= x && x <= tempList.get(i).getX() + 14 && tempList.get(i).getY() - 14 <= y && y <= tempList.get(i).getY() + 14) {
                         Road tempRoad = new Road(temp, tempList.get(i), currentPlayer);
                         if (temp.i1 == tempList.get(i)) {
                             temp.setR1(tempRoad);
                             tempList.get(i).setR1(tempRoad);
-                        }
-                        else if (temp.i2 == tempList.get(i)) {
+                        } else if (temp.i2 == tempList.get(i)) {
                             temp.setR2(tempRoad);
                             tempList.get(i).setR2(tempRoad);
-                        }
-                        else if (temp.i3 == tempList.get(i)) {
+                        } else if (temp.i3 == tempList.get(i)) {
                             temp.setR3(tempRoad);
                             tempList.get(i).setR3(tempRoad);
                         }
 
-                        if (pManage.currentPlayerIndex()<pManage.size()-1) {
+                        if (pManage.currentPlayerIndex() < pManage.size() - 1) {
                             pManage.nextPlayer();
                             gs.setSubState("settlement");
-                        }
-                        else if (pManage.currentPlayerIndex()==pManage.size()-1) {
+                        } else if (pManage.currentPlayerIndex() == pManage.size() - 1) {
                             gs.setSubState("settlement2");
                         }
                     }
                 }
-            }
-            else if(gs.getSubState().equals("settlement2")) {
+            } else if (gs.getSubState().equals("settlement2")) {
                 for (int i = 0; i < intersections.length; i++) {
                     for (int j = 0; j < intersections[i].length; j++) {
                         if (intersections[i][j] != null && intersections[i][j].noAdjacentSettlement() && !intersections[i][j].hasSettlement()
-                                && intersections[i][j].getX()-14<=x && x<=intersections[i][j].getX()+14 && intersections[i][j].getY()-14<=y && y<=intersections[i][j].getY()+14) {
+                                && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
                             System.out.println("intersection: " + intersections[i][j].getX() + " " + intersections[i][j].getY());
                             intersections[i][j].setSettlement(currentPlayer);
                             intersections[i][j].s.giveAllResource();
                             gs.setSubState("road2");
                         }
                         if (intersections[i][j] != null && !intersections[i][j].noAdjacentSettlement() && !intersections[i][j].hasSettlement()
-                                && intersections[i][j].getX()-14<=x && x<=intersections[i][j].getX()+14 && intersections[i][j].getY()-14<=y && y<=intersections[i][j].getY()+14) {
+                                && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
                             adjacent = true;
                         }
                     }
                 }
-            }
-            else if (gs.getSubState().equals("road2")) {
+            } else if (gs.getSubState().equals("road2")) {
                 Intersection temp = currentPlayer.getSettlements().get(1).getPosition();
                 ArrayList<Intersection> tempList = temp.getAdjacentIntersections();
                 for (int i = 0; i < tempList.size(); i++) {
-                    if (tempList.get(i).getX()-14<=x && x<=tempList.get(i).getX()+14 && tempList.get(i).getY()-14<=y && y<=tempList.get(i).getY()+14) {
+                    if (tempList.get(i).getX() - 14 <= x && x <= tempList.get(i).getX() + 14 && tempList.get(i).getY() - 14 <= y && y <= tempList.get(i).getY() + 14) {
                         Road tempRoad = new Road(temp, tempList.get(i), currentPlayer);
                         if (temp.i1 == tempList.get(i)) {
                             temp.setR1(tempRoad);
                             tempList.get(i).setR1(tempRoad);
-                        }
-                        else if (temp.i2 == tempList.get(i)) {
+                        } else if (temp.i2 == tempList.get(i)) {
                             temp.setR2(tempRoad);
                             tempList.get(i).setR2(tempRoad);
-                        }
-                        else if (temp.i3 == tempList.get(i)) {
+                        } else if (temp.i3 == tempList.get(i)) {
                             temp.setR3(tempRoad);
                             tempList.get(i).setR3(tempRoad);
                         }
 
 
-                        if (pManage.currentPlayerIndex()>0) {
+                        if (pManage.currentPlayerIndex() > 0) {
                             pManage.prevPlayer();
                             gs.setSubState("settlement2");
-                        }
-                        else if (pManage.currentPlayerIndex()==0) {
+                        } else if (pManage.currentPlayerIndex() == 0) {
                             gs.setGameState(1);
                             gs.setSubState("");
 /*
@@ -458,51 +389,51 @@ public class CatanPanel extends JPanel implements MouseListener{
             }
             repaint();
         }
-        else if (gs.getGameState()==1) {
+        else if (gs.getGameState() == 1) {
             if (rolledDice == false) {
-                if (x>=30 && x<=130 && y>=130 && y<=230) {
+                if (x >= 30 && x <= 130 && y >= 130 && y <= 230) {
                     rolledDice = true;
-                    die1 = (int)(Math.random()*6+1);
-                    die2 = (int)(Math.random()*6+1);
+                    die1 = (int) (Math.random() * 6 + 1);
+                    die2 = (int) (Math.random() * 6 + 1);
                     sum = die1 + die2;
                     System.out.println("dice: " + die1 + " " + die2 + " sum: " + sum);
                     if (sum == 7) {
                         gs.setSubState("robber");
-                    }
-                    else {
+                    } else {
                         board.distributeResources(sum);
                     }
                 }
-            }
-            else if (gs.getSubState().equals("")) {
-                if (x>=1600 && x<=1600+170 && y>=520 && y<=580) { //if next turn button (1500, 520, 170, 60)
+            } else if (gs.getSubState().equals("")) {
+                if (x >= 1600 && x <= 1600 + 170 && y >= 520 && y <= 580) { //if next turn button (1500, 520, 170, 60)
                     pManage.nextPlayer();
                     rolledDice = false;
                 }
-                if (x>=1600 && x<=1600+170 && y>=200 && y<=200+60) { //if trade button
+                if (x >= 1600 && x <= 1600 + 170 && y >= 200 && y <= 200 + 60) { //if trade button
                     String[] tradeTypes = new String[2];
                     tradeTypes[0] = "Trade With Players";
                     tradeTypes[1] = "Trade With Bank or Ports";
                     String picked = (String) JOptionPane.showInputDialog(null, "Which type of trade do you want?", "Trade Type", JOptionPane.QUESTION_MESSAGE, null, tradeTypes, tradeTypes[0]);
-                    if (picked.equals("Trade With Players"))    {
-                        gs.setSubState("domesticWant"); //current player adds items he wants to trade
-                        finalOffers = new ArrayList<HashMap<String, Integer>>();
-                        finalOfferPlayers = new ArrayList<Player>();
-                        tradeITOrder = new ArrayList<Player>();
-                        offers = new ArrayList<HashMap<String, Integer>>();
-                        tradeITOrder.add(currentPlayer);
-                        HashMap<String, Integer> temp = new HashMap<String, Integer>();
-                        temp.put("brick", 0);
-                        temp.put("ore", 0);
-                        temp.put("sheep", 0);
-                        temp.put("wheat", 0);
-                        temp.put("wood", 0);
-                        offers.add(temp);
-                        System.out.println("order " + tradeITOrder);
-                        System.out.println("offers " + offers);
-                    }
-                    else if (picked.equals("Trade With Bank or Ports")) {
-                        gs.setSubState("maritime");
+                    if (picked != null) {
+                        if (picked.equals("Trade With Players")) {
+                            gs.setSubState("domesticWant"); //current player adds items he wants to trade
+                            finalOffers = new ArrayList<HashMap<String, Integer>>();
+                            finalOfferPlayers = new ArrayList<Player>();
+                            tradeITOrder = new ArrayList<Player>();
+                            offers = new ArrayList<HashMap<String, Integer>>();
+                            tradeITOrder.add(currentPlayer);
+                            HashMap<String, Integer> temp = new HashMap<String, Integer>();
+                            temp.put("brick", 0);
+                            temp.put("ore", 0);
+                            temp.put("sheep", 0);
+                            temp.put("wheat", 0);
+                            temp.put("wood", 0);
+                            offers.add(temp);
+                            System.out.println("order " + tradeITOrder);
+                            System.out.println("offers " + offers);
+                        }
+                        else if (picked.equals("Trade With Bank or Ports")) {
+                            gs.setSubState("maritime");
+                        }
                     }
                 }
 
@@ -510,7 +441,7 @@ public class CatanPanel extends JPanel implements MouseListener{
             else if (gs.getSubState().equals("domesticWant")) {
                 System.out.println("order " + tradeITOrder);
                 System.out.println("offers " + offers);
-                if (x>=300 && x<=300+60 && y>=900 && y<=900+30) { //if done button 300, 900, 60, 30
+                if (x >= 300 && x <= 300 + 60 && y >= 900 && y <= 900 + 30) { //if done button 300, 900, 60, 30
                     tradeITOrder.remove(0);
                     currentPlayerWant = offers.remove(0);
                     int sum = 0;
@@ -520,16 +451,15 @@ public class CatanPanel extends JPanel implements MouseListener{
                     if (sum == 0) {
                         gs.setSubState("");
                         currentPlayerWant = null;
-                    }
-                    else if (sum > 0) {
+                    } else if (sum > 0) {
                         gs.setSubState("domesticPlayers");
-                        for (int i=0; i<pManage.players.size(); i++) {
+                        for (int i = 0; i < pManage.players.size(); i++) {
                             if (pManage.players.get(i) != currentPlayer) {
                                 if (pManage.players.get(i).getResources().get("wood") >= currentPlayerWant.get("wood") &&
                                         pManage.players.get(i).getResources().get("brick") >= currentPlayerWant.get("brick") && pManage.players.get(i).getResources().get("sheep") >= currentPlayerWant.get("sheep") && pManage.players.get(i).getResources().get("wheat") >= currentPlayerWant.get("wheat") && pManage.players.get(i).getResources().get("ore") >= currentPlayerWant.get("ore")) {
                                     //if enough resources to trade
                                     tradeITOrder.add(pManage.players.get(i));
-                                    HashMap<String, Integer>  temp = new HashMap<String, Integer>();
+                                    HashMap<String, Integer> temp = new HashMap<String, Integer>();
                                     temp.put("brick", 0);
                                     temp.put("ore", 0);
                                     temp.put("sheep", 0);
@@ -543,22 +473,21 @@ public class CatanPanel extends JPanel implements MouseListener{
                             gs.setSubState("domesticFinal");
                         }
                     }
-                }
-                else if (offers.size()>0 && tradeITOrder.size()>0) {
+                } else if (offers.size() > 0 && tradeITOrder.size() > 0) {
                     String resource = coordToResource(x, y);
                     System.out.println("adding " + resource + " to want");
                     HashMap<String, Integer> currentOffer = offers.get(0);
                     if (resource != null) {
-                        currentOffer.put(resource, currentOffer.get(resource)+1);
+                        currentOffer.put(resource, currentOffer.get(resource) + 1);
                     }
                     System.out.println("updated want " + currentOffer);
                 }
             }
             else if (gs.getSubState().equals("domesticPlayers")) {
-                if (tradeITOrder.size() == 0){
+                if (tradeITOrder.size() == 0) {
                     gs.setSubState("domesticFinal");
                 }
-                if (x>=300 && x<=300+60 && y>=900 && y<=900+30) { //if done button
+                if (x >= 300 && x <= 300 + 60 && y >= 900 && y <= 900 + 30) { //if done button
                     HashMap<String, Integer> currentOffer = offers.remove(0);
                     Player currentTradePlayer = tradeITOrder.remove(0);
 
@@ -573,8 +502,8 @@ public class CatanPanel extends JPanel implements MouseListener{
                         int diff3 = currentOffer.get("sheep") - currentPlayerWant.get("sheep");
                         int diff4 = currentOffer.get("wheat") - currentPlayerWant.get("wheat");
                         int diff5 = currentOffer.get("ore") - currentPlayerWant.get("ore");
-                        if (!(diff1>=0 && diff2>=0 && diff3>=0 && diff4>=0 && diff5>=0)) {
-                            if (!(diff1<=0 && diff2<=0 && diff3<=0 && diff4<=0 && diff5<=0)) {
+                        if (!(diff1 >= 0 && diff2 >= 0 && diff3 >= 0 && diff4 >= 0 && diff5 >= 0)) {
+                            if (!(diff1 <= 0 && diff2 <= 0 && diff3 <= 0 && diff4 <= 0 && diff5 <= 0)) {
                                 if (currentPlayer.getResourceCount("wood") >= currentOffer.get("wood") &&
                                         currentPlayer.getResourceCount("brick") >= currentOffer.get("brick") &&
                                         currentPlayer.getResourceCount("sheep") >= currentOffer.get("sheep") &&
@@ -590,50 +519,57 @@ public class CatanPanel extends JPanel implements MouseListener{
                     if (tradeITOrder.size() == 0) {
                         gs.setSubState("domesticFinal");
                     }
-                }
-                else if (offers.size()>0 && tradeITOrder.size()>0) {
+                } else if (offers.size() > 0 && tradeITOrder.size() > 0) {
                     String resource = coordToResource(x, y);
                     HashMap<String, Integer> currentOffer = offers.get(0);
                     if (resource != null) {
-                        currentOffer.put(resource, currentOffer.get(resource)+1);
+                        currentOffer.put(resource, currentOffer.get(resource) + 1);
                     }
                 }
             }
             else if (gs.getSubState().equals("robber")) {
-                for (int i = 0; i<tiles.length; i++) {
-                    for (int j = 0; j<tiles[i].length; j++) {
-                        if (tiles[i][j] != null && x>= tiles[i][j].getX()+52 && x<= tiles[i][j].getX()+52+55 && y>= tiles[i][j].getY()+50 && y<= tiles[i][j].getY()+100) {
+                for (int i = 0; i < tiles.length; i++) {
+                    for (int j = 0; j < tiles[i].length; j++) {
+                        if (tiles[i][j] != null && x >= tiles[i][j].getX() + 52 && x <= tiles[i][j].getX() + 52 + 55 && y >= tiles[i][j].getY() + 50 && y <= tiles[i][j].getY() + 100 && tiles[i][j] != robber.getPosition()) {
                             robber.setPosition(tiles[i][j]);
                             gs.setSubState("");
                             System.out.println("robber moved to " + i + " " + j + " " + tiles[i][j].getResource());
+                            boolean movedRobber = false;
                             //stealing
                             ArrayList<String> owners = new ArrayList<String>();
-                            for (int k = 0; k<tiles[i][j].settles.size(); k++) {
-                                if (tiles[i][j].settles.get(k).getOwner() != currentPlayer && owners.contains(tiles[i][j].settles.get(k).getOwner().toString()) == false && tiles[i][j].settles.get(k).getOwner().getInventorySize()>0) {
+                            for (int k = 0; k < tiles[i][j].settles.size(); k++) {
+                                if (tiles[i][j].settles.get(k).getOwner() != currentPlayer && owners.contains(tiles[i][j].settles.get(k).getOwner().toString()) == false && tiles[i][j].settles.get(k).getOwner().getInventorySize() > 0) {
                                     owners.add(tiles[i][j].settles.get(k).getOwner().toString());
                                 }
                             }
                             System.out.println("could steal from" + owners);
-                            if (owners.size()>0) {
+                            if (owners.size() > 0) {
                                 String[] owns = new String[owners.size()];
-                                for (int n = 0; n<owners.size(); n++) {
+                                for (int n = 0; n < owners.size(); n++) {
                                     owns[n] = owners.get(n) + "(Inventory Size: " + pManage.toStringReverse(owners.get(n)).getInventorySize() + " Color: " + pManage.toStringReverse(owners.get(n)).color.toUpperCase() + ")";
                                 }
                                 System.out.println("choose player to steal");
-                                String picked = (String) JOptionPane.showInputDialog(null, "What player do you want to rob?", "Rob Player", JOptionPane.QUESTION_MESSAGE, null, owns, owns[0]);
-                                Player toSteal = pManage.get(Integer.parseInt("" + picked.charAt(7)));
-                                pManage.steal(currentPlayer, toSteal);
+                                while (movedRobber == false) {
+                                    String picked = (String) JOptionPane.showInputDialog(null, "What player do you want to rob?", "Rob Player", JOptionPane.QUESTION_MESSAGE, null, owns, owns[0]);
+                                    if (picked != null) {
+                                        Player toSteal = pManage.get(Integer.parseInt("" + picked.charAt(7)));
+                                        pManage.steal(currentPlayer, toSteal);
+                                        movedRobber = true;
+                                    }
+                                }
+
+
                             }
                             //discarding
                             toDiscard = new ArrayList<Player>();
                             numDiscard = new ArrayList<Integer>();
-                            for (int b= 0; b<pManage.size(); b++) {
-                                if (pManage.get(b).getInventorySize()>7 && pManage.get(b) != currentPlayer) {
+                            for (int b = 0; b < pManage.size(); b++) {
+                                if (pManage.get(b).getInventorySize() > 7 && pManage.get(b) != currentPlayer) {
                                     toDiscard.add(pManage.get(b));
-                                    numDiscard.add((int)Math.floor(pManage.get(b).getInventorySize()/2.0));
+                                    numDiscard.add((int) Math.floor(pManage.get(b).getInventorySize() / 2.0));
                                 }
                             }
-                            if (toDiscard.size()>0) {
+                            if (toDiscard.size() > 0) {
                                 gs.setSubState("discard");
                             }
                         }
@@ -641,15 +577,15 @@ public class CatanPanel extends JPanel implements MouseListener{
                 }
             }
             else if (gs.getSubState().equals("discard")) {
-                if (numDiscard.get(0)>0) {
+                if (numDiscard.get(0) > 0) {
                     Player temp = toDiscard.get(0);
                     String resource = coordToResource(x, y);
                     System.out.println("discarding " + resource);
                     if (resource != null) {
-                        if (temp.getResourceCount(resource)>0) {
+                        if (temp.getResourceCount(resource) > 0) {
                             temp.removeResource(resource, 1);
-                            numDiscard.set(0, numDiscard.get(0)-1);
-                            if (numDiscard.get(0)==0) {
+                            numDiscard.set(0, numDiscard.get(0) - 1);
+                            if (numDiscard.get(0) == 0) {
                                 toDiscard.remove(0);
                                 numDiscard.remove(0);
                                 if (toDiscard.size() == 0) {
@@ -659,13 +595,9 @@ public class CatanPanel extends JPanel implements MouseListener{
                         }
                     }
                 }
-                else {
-                    gs.setSubState("");
-                }
-            }
-            repaint();
         }
-
+        }
+        repaint();
     }
 
     public String coordToResource(int x, int y) {

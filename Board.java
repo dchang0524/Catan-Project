@@ -10,7 +10,7 @@ public class Board{
     public Board() {
         setUpTiles();
         setUpIntersections();
-        //setPorts();
+        setPorts();
     }
     public Intersection[][] getIntersections() {
         return intersections;
