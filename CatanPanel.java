@@ -960,15 +960,25 @@ public class CatanPanel extends JPanel implements MouseListener {
         Graphics2D g2 = (Graphics2D) g;
         int x = 246;
         int y = 47;
+        g2.setStroke(new BasicStroke(5));
+        g2.setColor(new Color(103, 52, 1));
         g2.drawImage(portImages.get(0), x-50, y-50, 100, 100,  null);
-        g2.drawImage(portImages.get(1), 84-50, 273-30, 100, 100,  null);
-        g2.drawImage(portImages.get(2), 84-50, 534-50, 100, 100,  null);
+        g2.drawLine(250, 120, 250, 80);
+        g2.drawLine(320, 84, 277, 75);
+        g2.drawImage(portImages.get(1), 84-30, 273-30, 100, 100,  null);
+        g2.drawLine(163, 250, 133, 270);
+        g2.drawLine(162, 325, 138, 315);
+        g2.drawImage(portImages.get(2), 84-30, 534-50, 100, 100,  null);
+        g2.drawLine(163, 490, 133, 510);
+        g2.drawLine(162, 565, 138, 555);
         g2.drawImage(portImages.get(3), 240-10, 760-50, 100, 100,  null);
-        g2.drawImage(portImages.get(4), 559-20, 760-50, 100, 100,  null);
+        g2.drawImage(portImages.get(4), 559-40, 760-50, 100, 100,  null);
         g2.drawImage(portImages.get(5), 795-50, 639-35, 100, 100,  null);
         g2.drawImage(portImages.get(6), 940-50, 404-50, 100, 100,  null);
-        g2.drawImage(portImages.get(7), 788-30, 162-50, 100, 100,  null);
-        g2.drawImage(portImages.get(8), 698-150, y-50, 100, 100,  null);
+        g2.drawImage(portImages.get(7), 788-50, 162-50, 100, 100,  null);
+        g2.drawImage(portImages.get(8), 698-190, y-50, 100, 100,  null);
+        g2.drawLine(564, 120, 564, 80);
+        g2.drawLine(485, 83, 525, 75);
 
     }
 
