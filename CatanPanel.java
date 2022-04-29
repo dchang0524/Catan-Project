@@ -226,6 +226,49 @@ public class CatanPanel extends JPanel implements MouseListener {
                 drawCards(g, currentPlayer);
                 repaint();
             }
+            else if(gs.getSubState().equals("maritime")){
+                if (currentPlayer.getResourceCount("wheat") >= currentPlayer.shopRatio.get("wheat") ||
+                        currentPlayer.getResourceCount("sheep") >= currentPlayer.shopRatio.get("sheep") ||
+                        currentPlayer.getResourceCount("wood") >= currentPlayer.shopRatio.get("wood") ||
+                        currentPlayer.getResourceCount("brick") >= currentPlayer.shopRatio.get("brick") ||
+                        currentPlayer.getResourceCount("ore") >= currentPlayer.shopRatio.get("ore")) {
+                    String[] options = new String[5];
+                    options[0] = "Ore"; options[1] = "Wheat"; options[2] = "Wood"; options[3] = "Brick"; options[4] = "Sheep";;
+                    String picked = (String) JOptionPane.showInputDialog(null, "What one resource do you want from this trade?", "Choose Resource", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (picked != null && bank.resourceLeft(picked) > 0) {
+                        ArrayList<String> potentialOptions = new ArrayList<>();
+                        for (String resource : currentPlayer.shopRatio.keySet()) {
+                            if (currentPlayer.getResourceCount(resource) >= currentPlayer.shopRatio.get(resource)) {
+                                potentialOptions.add(resource);
+                            }
+                        }
+                        String[] options2 = new String[potentialOptions.size()];
+                        for (int i = 0; i < potentialOptions.size(); i++) {
+                            options2[i] = potentialOptions.get(i) + ": " + currentPlayer.shopRatio.get(potentialOptions.get(i));
+                        }
+                        String picked2 = (String) JOptionPane.showInputDialog(null, "What resource will you pay with?", "Choose Resource", JOptionPane.QUESTION_MESSAGE, null, options2, options2[0]);
+                        if (picked2 != null) {
+                            int index = picked2.indexOf(":");
+                            String toPay = picked2.substring(0, index);
+                            int amountToPay = currentPlayer.shopRatio.get(toPay);
+                            currentPlayer.removeResource(toPay, amountToPay);
+                            currentPlayer.addResource(picked.toLowerCase(), 1);
+                        }
+                        else {
+                            gs.setSubState("");
+                        }
+                    }
+                    else {
+                        gs.setSubState("");
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "You do not have enough resources to make any maritime trades.", "NOTICE", JOptionPane.ERROR_MESSAGE);
+                }
+
+
+
+            }
             //System.out.println("current player: " + currentPlayer.getResources().keySet());
             changeColor(g);
             g.fillRect(30, 130, 100, 100); //dice button
@@ -252,10 +295,6 @@ public class CatanPanel extends JPanel implements MouseListener {
 
 
 
-    public void drawRobber(Graphics g) {
-        //g.drawImage(tiles[1][j].getNumImage(), (int)x+52, (int)y+50, 55, 55, null);
-        g.drawImage(robberImg, robber.getPosition().getX()+53, robber.getPosition().getY()+30, 54, 111, null);
-    }
 
     public void mousePressed(MouseEvent m) {
         int x = m.getX();
@@ -623,6 +662,65 @@ public class CatanPanel extends JPanel implements MouseListener {
             }
         }
         return null;
+    }
+    public void drawTradeNums(Graphics g, HashMap<String, Integer> temp, Player p) {
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
+        Set<String> keys = temp.keySet();
+        if (keys != null) {
+            System.out.println("found requested resources from " + temp);
+            Iterator<String> iter = keys.iterator();
+            int width = 100;
+            int count = 0;
+            int horDiff = width + 30;
+            while (iter.hasNext()) {
+                String resource = iter.next();
+                System.out.println("drawing " + resource);
+                int amount = temp.get(resource);
+                g.setColor(Color.black);
+                g.drawString("" + amount, 461 + horDiff * count, 852);
+                count++;
+            }
+        }
+    }
+    public void drawTrade(Graphics g) {
+        changeColor(g);
+        g.fillRect(1600, 200, 170, 60);
+        g.setColor(Color.black);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString("Trade", 1605, 200+40);
+    }
+    public void drawGameLog(Graphics g) {
+        changeColor(g);
+        g.fillRect(1600, 280, 170, 60);
+        g.setColor(Color.black);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString("Game Log", 1605, 280+40);
+    }
+    public void drawBuild(Graphics g) {
+        changeColor(g);
+        g.fillRect(1600, 360, 170, 60);
+        g.setColor(Color.black);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString("Build", 1605, 360+40);
+    }
+    public void drawPlayerInfo(Graphics g) {
+        changeColor(g);
+        g.fillRect(1600, 440, 170, 60);
+        g.setColor(Color.black);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString("Inventories", 1605, 440+40);
+    }
+    public void drawNextTurnButton(Graphics g) {
+        changeColor(g);
+        g.fillRect(1600, 520, 170, 60);
+        g.setColor(Color.black);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString("Next Turn", 1605, 520+40);
+    }
+
+    public void drawRobber(Graphics g) {
+        //g.drawImage(tiles[1][j].getNumImage(), (int)x+52, (int)y+50, 55, 55, null);
+        g.drawImage(robberImg, robber.getPosition().getX()+53, robber.getPosition().getY()+30, 54, 111, null);
     }
 
     public void drawCards(Graphics g, Player p) {
