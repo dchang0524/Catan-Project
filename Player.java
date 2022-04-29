@@ -31,6 +31,11 @@ public class Player {
         resources.put("wheat", 0);
         resources.put("wood", 0);
         playerIndex = i;
+        shopRatio.put("brick", 4);
+        shopRatio.put("ore", 4);
+        shopRatio.put("sheep", 4);
+        shopRatio.put("wheat", 4);
+        shopRatio.put("wood", 4);
     }
     public void setPlayerIndex(int i) {
         playerIndex = i;

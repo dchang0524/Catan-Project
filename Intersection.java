@@ -28,7 +28,14 @@ public class Intersection {
         t2 = null;
         t3 = null;
         portTrade = 0;
-        portResource = "";
+        portResource = null;
+    }
+
+    public void setPortTrade(int trade) {
+        portTrade = trade;
+    }
+    public void setPortResource(String resource) {
+        portResource = resource;
     }
 
     public void setI1(Intersection i) {

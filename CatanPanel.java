@@ -82,8 +82,50 @@ public class CatanPanel extends JPanel implements MouseListener {
         portImages.add(portUnknown);
         portImages.add(portUnknown);
         Collections.shuffle(portImages);
+        setPort(intersections[0][0], portImages.get(0));
+        setPort(intersections[1][0], portImages.get(0));
+        setPort(intersections[3][0], portImages.get(1));
+        setPort(intersections[4][0], portImages.get(1));
+        setPort(intersections[7][0], portImages.get(2));
+        setPort(intersections[8][0], portImages.get(2));
+        setPort(intersections[10][0], portImages.get(3));
+        setPort(intersections[11][0], portImages.get(3));
+        setPort(intersections[10][2], portImages.get(4));
+        setPort(intersections[11][1], portImages.get(4));
+        setPort(intersections[9][3], portImages.get(5));
+        setPort(intersections[8][4], portImages.get(5));
+        setPort(intersections[5][5], portImages.get(6));
+        setPort(intersections[6][5], portImages.get(6));
+        setPort(intersections[2][3], portImages.get(7));
+        setPort(intersections[3][4], portImages.get(7));
+        setPort(intersections[0][1], portImages.get(8));
+        setPort(intersections[1][2], portImages.get(8));
     }
-
+    public void setPort (Intersection i, BufferedImage img) {
+        if (img == portBrick) {
+            i.setPortResource("brick");
+            i.setPortTrade(2);
+        }
+        else if (img == portWood) {
+            i.setPortResource("wood");
+            i.setPortTrade(2);
+        }
+        else if (img == portSheep) {
+            i.setPortResource("sheep");
+            i.setPortTrade(2);
+        }
+        else if (img == portWheat) {
+            i.setPortResource("wheat");
+            i.setPortTrade(2);
+        }
+        else if (img == portOre) {
+            i.setPortResource("ore");
+            i.setPortTrade(2);
+        }
+        else if (img == portUnknown) {
+            i.setPortTrade(3);
+        }
+    }
 
     public void paint(Graphics g) {
         //gameState = 0, menuscreen, choose starting settlements
@@ -227,6 +269,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 repaint();
             }
             else if(gs.getSubState().equals("maritime")){
+                System.out.println("shopRatio: " + currentPlayer.shopRatio);
                 if (currentPlayer.getResourceCount("wheat") >= currentPlayer.shopRatio.get("wheat") ||
                         currentPlayer.getResourceCount("sheep") >= currentPlayer.shopRatio.get("sheep") ||
                         currentPlayer.getResourceCount("wood") >= currentPlayer.shopRatio.get("wood") ||
@@ -235,7 +278,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                     String[] options = new String[5];
                     options[0] = "Ore"; options[1] = "Wheat"; options[2] = "Wood"; options[3] = "Brick"; options[4] = "Sheep";;
                     String picked = (String) JOptionPane.showInputDialog(null, "What one resource do you want from this trade?", "Choose Resource", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                    if (picked != null && bank.resourceLeft(picked) > 0) {
+                    if (picked != null && bank.resourceLeft(picked.toLowerCase()) > 0) {
                         ArrayList<String> potentialOptions = new ArrayList<>();
                         for (String resource : currentPlayer.shopRatio.keySet()) {
                             if (currentPlayer.getResourceCount(resource) >= currentPlayer.shopRatio.get(resource)) {
@@ -253,6 +296,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                             int amountToPay = currentPlayer.shopRatio.get(toPay);
                             currentPlayer.removeResource(toPay, amountToPay);
                             currentPlayer.addResource(picked.toLowerCase(), 1);
+                            drawCards(g, currentPlayer);
                         }
                         else {
                             gs.setSubState("");
@@ -264,6 +308,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "You do not have enough resources to make any maritime trades.", "NOTICE", JOptionPane.ERROR_MESSAGE);
+                    gs.setSubState("");
                 }
 
 
@@ -277,7 +322,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 g.drawString("Roll Dice", 800, 100);
             } else {
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
-                g.drawString(die1 + " + " + die2 + " = " + sum, 20, 70);
+                g.drawString(die1 + " + " + die2 + " = " + sum, 20, 100);
             }
             if (gs.getSubState().equals("robber")) {
                 g.drawString("Choose tile to place robber", 800, 120);
@@ -442,7 +487,8 @@ public class CatanPanel extends JPanel implements MouseListener {
                         board.distributeResources(sum);
                     }
                 }
-            } else if (gs.getSubState().equals("")) {
+            }
+            else if (gs.getSubState().equals("")) {
                 if (x >= 1600 && x <= 1600 + 170 && y >= 520 && y <= 580) { //if next turn button (1500, 520, 170, 60)
                     pManage.nextPlayer();
                     rolledDice = false;
