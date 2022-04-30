@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 public class Settlement {
     boolean isCity;
     Intersection position;
@@ -5,6 +7,8 @@ public class Settlement {
     Player owner;
     int xCoord;
     int yCoord;
+    int tradeRatio;
+    String tradeResource;
 
     public Settlement(Intersection pos, Player p) {
         position = pos;
@@ -25,6 +29,9 @@ public class Settlement {
         if (t3 != null) {
             t3.settles.add(this);
         }
+        setTradeResource(pos.portResource);
+        setTradeRatio(pos.portTrade);
+        updatePlayerShop();
     }
     public void upgrade() {
         isCity = true;
@@ -82,6 +89,25 @@ public class Settlement {
         }
         else if (t3 != null) {
             owner.addResource(t3.getResource(), 1);
+        }
+    }
+    public void setTradeRatio(int ratio) {
+        tradeRatio = ratio;
+    }
+    public void setTradeResource(String resource) {
+        this.tradeResource = resource;
+    }
+    public void updatePlayerShop() {
+        HashMap<String, Integer> sr = owner.shopRatio;
+        if (tradeResource != null) {
+            sr.put(tradeResource, tradeRatio);
+        }
+        else {
+            for (String resource : sr.keySet()) {
+                if (sr.get(resource) > 3) {
+                    sr.put(resource, 3);
+                }
+            }
         }
     }
 }

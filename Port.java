@@ -69,6 +69,9 @@ public class Port {
     public void setTradeRatio(int tradeRatio) {
         this.tradeRatio = tradeRatio;
     }
+    public void setTradeResource(String tradeResource) {
+        this.portResource = tradeResource;
+    }
 
 
 
