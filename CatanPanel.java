@@ -40,6 +40,8 @@ public class CatanPanel extends JPanel implements MouseListener {
     ArrayList<HashMap<String, Integer>> finalOffers = new ArrayList<>(); //offers that will be offered to the current player
     ArrayList<Player> finalOfferPlayers = new ArrayList<>(); //the players for each offer in final offers
 
+    Player toViewInven;
+
     public CatanPanel() {
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
@@ -134,6 +136,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             if (startGame == true) {
                 currentPlayer = pManage.curentPlayer();
                 System.out.println("game state " + gs.getGameState() + " subState " + gs.getSubState() + " startgame " + startGame);
+
                 //do not paint anything before drawTiles
                 drawTiles(g);
                 drawIntersections(g);
@@ -186,6 +189,7 @@ public class CatanPanel extends JPanel implements MouseListener {
         else if (gs.getGameState() == 1) {
             System.out.println();
             System.out.println("Paint: game state " + gs.getGameState() + " subState " + gs.getSubState() + " startgame " + startGame);
+            System.out.println("current player: " + currentPlayer);
             g.setColor(Color.darkGray);
             g.fillRect(790, 0, 1900, 220);
             firstTimeGameState1 = false;
@@ -210,7 +214,16 @@ public class CatanPanel extends JPanel implements MouseListener {
                 drawCards(g, toDiscard.get(0));
                 g.drawString("Player " + toDiscard.get(0).playerIndex + " must discard " + numDiscard.get(0) + " cards", 500, 100);
             }
-
+            if (gs.getSubState().equals("showInventory")) {
+                drawCards(g, toViewInven);
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
+                g.setColor(Color.white);
+                g.fillRect(300, 900, 60, 30);
+                g.setColor(Color.black);
+                g.drawString("Back", 300, 925);
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.drawString("Click back to return", 800, 100);
+            }
             if (gs.getSubState().equals("domesticWant")) {
                 g.drawString("Choose cards you want", 800, 100);
                 System.out.println("currently wants " + currentPlayerWant);
@@ -521,6 +534,28 @@ public class CatanPanel extends JPanel implements MouseListener {
                         }
                     }
                 }
+                if (x>=1600 && y>=440 && x<=1600+170 && y<=440+60)  { //inventories button 1600, 440, 170, 60
+                    String[] toView = new String[pManage.size()-1];
+                    int count = 0;
+                    for (int i = 0; i< pManage.size(); i++) {
+                        if (pManage.get(i) != currentPlayer) {
+                            toView[count] = pManage.get(i).toString() + "(" + pManage.get(i).getColor() + ")";
+                            count++;
+                        }
+                    }
+                    String picked = (String) JOptionPane.showInputDialog(null, "Which Player's inventory do you want to view", "Players", JOptionPane.QUESTION_MESSAGE, null, toView, toView[0]);
+                    if (picked != null) {
+                        gs.setSubState("showInventory");
+                        int playerIndex = Integer.parseInt("" + picked.charAt(7));
+                        toViewInven = pManage.get(playerIndex);
+                    }
+                }
+            }
+            else if (gs.getSubState().equals("showInventory")) {
+                if (x >= 300 && x <= 300 + 60 && y >= 900 && y <= 900 + 30) { //back button
+                    gs.setSubState("");
+                    toViewInven = null;
+                }
 
             }
             else if (gs.getSubState().equals("domesticWant")) {
@@ -559,13 +594,24 @@ public class CatanPanel extends JPanel implements MouseListener {
                         }
                     }
                 } else if (offers.size() > 0 && tradeITOrder.size() > 0) {
-                    String resource = coordToResource(x, y);
-                    System.out.println("adding " + resource + " to want");
-                    HashMap<String, Integer> currentOffer = offers.get(0);
-                    if (resource != null) {
-                        currentOffer.put(resource, currentOffer.get(resource) + 1);
+                    //if MouseEvent m left click
+                    if (m.getButton() == MouseEvent.BUTTON1) {
+                        String resource = coordToResource(x, y);
+                        System.out.println("adding " + resource + " to want");
+                        HashMap<String, Integer> currentOffer = offers.get(0);
+                        if (resource != null) {
+                            currentOffer.put(resource, currentOffer.get(resource) + 1);
+                        }
+                        System.out.println("updated want " + currentOffer);
                     }
-                    System.out.println("updated want " + currentOffer);
+                   else if (m.getButton() == MouseEvent.BUTTON3) {
+                        String resource = coordToResource(x, y);
+                        System.out.println("removing " + resource + " from want");
+                        HashMap<String, Integer> currentOffer = offers.get(0);
+                        if (resource != null && currentOffer.get(resource) > 0) {
+                            currentOffer.put(resource, currentOffer.get(resource) - 1);
+                        }
+                    }
                 }
             }
             else if (gs.getSubState().equals("domesticPlayers")) {
@@ -605,10 +651,21 @@ public class CatanPanel extends JPanel implements MouseListener {
                         gs.setSubState("domesticFinal");
                     }
                 } else if (offers.size() > 0 && tradeITOrder.size() > 0) {
-                    String resource = coordToResource(x, y);
-                    HashMap<String, Integer> currentOffer = offers.get(0);
-                    if (resource != null) {
-                        currentOffer.put(resource, currentOffer.get(resource) + 1);
+                    if (m.getButton() == MouseEvent.BUTTON1) {
+                        String resource = coordToResource(x, y);
+                        HashMap<String, Integer> currentOffer = offers.get(0);
+                        if (resource != null) {
+                            currentOffer.put(resource, currentOffer.get(resource) + 1);
+                        }
+                    }
+                    else if (m.getButton() == MouseEvent.BUTTON3) {
+                        String resource = coordToResource(x, y);
+                        HashMap<String, Integer> currentOffer = offers.get(0);
+                        if (resource != null) {
+                            if (currentOffer.get(resource) > 0) {
+                                currentOffer.put(resource, currentOffer.get(resource) - 1);
+                            }
+                        }
                     }
                 }
             }
