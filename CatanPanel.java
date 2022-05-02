@@ -40,6 +40,8 @@ public class CatanPanel extends JPanel implements MouseListener {
     ArrayList<HashMap<String, Integer>> finalOffers = new ArrayList<>(); //offers that will be offered to the current player
     ArrayList<Player> finalOfferPlayers = new ArrayList<>(); //the players for each offer in final offers
 
+    Player toViewInven;
+
     public CatanPanel() {
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
@@ -82,8 +84,50 @@ public class CatanPanel extends JPanel implements MouseListener {
         portImages.add(portUnknown);
         portImages.add(portUnknown);
         Collections.shuffle(portImages);
+        setPort(intersections[0][0], portImages.get(0));
+        setPort(intersections[1][0], portImages.get(0));
+        setPort(intersections[3][0], portImages.get(1));
+        setPort(intersections[4][0], portImages.get(1));
+        setPort(intersections[7][0], portImages.get(2));
+        setPort(intersections[8][0], portImages.get(2));
+        setPort(intersections[10][0], portImages.get(3));
+        setPort(intersections[11][0], portImages.get(3));
+        setPort(intersections[10][2], portImages.get(4));
+        setPort(intersections[11][1], portImages.get(4));
+        setPort(intersections[9][3], portImages.get(5));
+        setPort(intersections[8][4], portImages.get(5));
+        setPort(intersections[5][5], portImages.get(6));
+        setPort(intersections[6][5], portImages.get(6));
+        setPort(intersections[2][3], portImages.get(7));
+        setPort(intersections[3][4], portImages.get(7));
+        setPort(intersections[0][1], portImages.get(8));
+        setPort(intersections[1][2], portImages.get(8));
     }
-
+    public void setPort (Intersection i, BufferedImage img) {
+        if (img == portBrick) {
+            i.setPortResource("brick");
+            i.setPortTrade(2);
+        }
+        else if (img == portWood) {
+            i.setPortResource("wood");
+            i.setPortTrade(2);
+        }
+        else if (img == portSheep) {
+            i.setPortResource("sheep");
+            i.setPortTrade(2);
+        }
+        else if (img == portWheat) {
+            i.setPortResource("wheat");
+            i.setPortTrade(2);
+        }
+        else if (img == portOre) {
+            i.setPortResource("ore");
+            i.setPortTrade(2);
+        }
+        else if (img == portUnknown) {
+            i.setPortTrade(3);
+        }
+    }
 
     public void paint(Graphics g) {
         //gameState = 0, menuscreen, choose starting settlements
@@ -92,6 +136,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             if (startGame == true) {
                 currentPlayer = pManage.curentPlayer();
                 System.out.println("game state " + gs.getGameState() + " subState " + gs.getSubState() + " startgame " + startGame);
+
                 //do not paint anything before drawTiles
                 drawTiles(g);
                 drawIntersections(g);
@@ -144,6 +189,7 @@ public class CatanPanel extends JPanel implements MouseListener {
         else if (gs.getGameState() == 1) {
             System.out.println();
             System.out.println("Paint: game state " + gs.getGameState() + " subState " + gs.getSubState() + " startgame " + startGame);
+            System.out.println("current player: " + currentPlayer);
             g.setColor(Color.darkGray);
             g.fillRect(790, 0, 1900, 220);
             firstTimeGameState1 = false;
@@ -168,7 +214,16 @@ public class CatanPanel extends JPanel implements MouseListener {
                 drawCards(g, toDiscard.get(0));
                 g.drawString("Player " + toDiscard.get(0).playerIndex + " must discard " + numDiscard.get(0) + " cards", 500, 100);
             }
-
+            if (gs.getSubState().equals("showInventory")) {
+                drawCards(g, toViewInven);
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
+                g.setColor(Color.white);
+                g.fillRect(300, 900, 60, 30);
+                g.setColor(Color.black);
+                g.drawString("Back", 300, 925);
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.drawString("Click back to return", 800, 100);
+            }
             if (gs.getSubState().equals("domesticWant")) {
                 g.drawString("Choose cards you want", 800, 100);
                 System.out.println("currently wants " + currentPlayerWant);
@@ -227,6 +282,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 repaint();
             }
             else if(gs.getSubState().equals("maritime")){
+                System.out.println("shopRatio: " + currentPlayer.shopRatio);
                 if (currentPlayer.getResourceCount("wheat") >= currentPlayer.shopRatio.get("wheat") ||
                         currentPlayer.getResourceCount("sheep") >= currentPlayer.shopRatio.get("sheep") ||
                         currentPlayer.getResourceCount("wood") >= currentPlayer.shopRatio.get("wood") ||
@@ -235,7 +291,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                     String[] options = new String[5];
                     options[0] = "Ore"; options[1] = "Wheat"; options[2] = "Wood"; options[3] = "Brick"; options[4] = "Sheep";;
                     String picked = (String) JOptionPane.showInputDialog(null, "What one resource do you want from this trade?", "Choose Resource", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                    if (picked != null && bank.resourceLeft(picked) > 0) {
+                    if (picked != null && bank.resourceLeft(picked.toLowerCase()) > 0) {
                         ArrayList<String> potentialOptions = new ArrayList<>();
                         for (String resource : currentPlayer.shopRatio.keySet()) {
                             if (currentPlayer.getResourceCount(resource) >= currentPlayer.shopRatio.get(resource)) {
@@ -253,6 +309,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                             int amountToPay = currentPlayer.shopRatio.get(toPay);
                             currentPlayer.removeResource(toPay, amountToPay);
                             currentPlayer.addResource(picked.toLowerCase(), 1);
+                            drawCards(g, currentPlayer);
                         }
                         else {
                             gs.setSubState("");
@@ -264,6 +321,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "You do not have enough resources to make any maritime trades.", "NOTICE", JOptionPane.ERROR_MESSAGE);
+                    gs.setSubState("");
                 }
 
 
@@ -277,7 +335,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 g.drawString("Roll Dice", 800, 100);
             } else {
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
-                g.drawString(die1 + " + " + die2 + " = " + sum, 20, 70);
+                g.drawString(die1 + " + " + die2 + " = " + sum, 20, 100);
             }
             if (gs.getSubState().equals("robber")) {
                 g.drawString("Choose tile to place robber", 800, 120);
@@ -442,7 +500,8 @@ public class CatanPanel extends JPanel implements MouseListener {
                         board.distributeResources(sum);
                     }
                 }
-            } else if (gs.getSubState().equals("")) {
+            }
+            else if (gs.getSubState().equals("")) {
                 if (x >= 1600 && x <= 1600 + 170 && y >= 520 && y <= 580) { //if next turn button (1500, 520, 170, 60)
                     pManage.nextPlayer();
                     rolledDice = false;
@@ -474,6 +533,28 @@ public class CatanPanel extends JPanel implements MouseListener {
                             gs.setSubState("maritime");
                         }
                     }
+                }
+                if (x>=1600 && y>=440 && x<=1600+170 && y<=440+60)  { //inventories button 1600, 440, 170, 60
+                    String[] toView = new String[pManage.size()-1];
+                    int count = 0;
+                    for (int i = 0; i< pManage.size(); i++) {
+                        if (pManage.get(i) != currentPlayer) {
+                            toView[count] = pManage.get(i).toString() + "(" + pManage.get(i).getColor() + ")";
+                            count++;
+                        }
+                    }
+                    String picked = (String) JOptionPane.showInputDialog(null, "Which Player's inventory do you want to view", "Players", JOptionPane.QUESTION_MESSAGE, null, toView, toView[0]);
+                    if (picked != null) {
+                        gs.setSubState("showInventory");
+                        int playerIndex = Integer.parseInt("" + picked.charAt(7));
+                        toViewInven = pManage.get(playerIndex);
+                    }
+                }
+            }
+            else if (gs.getSubState().equals("showInventory")) {
+                if (x >= 300 && x <= 300 + 60 && y >= 900 && y <= 900 + 30) { //back button
+                    gs.setSubState("");
+                    toViewInven = null;
                 }
 
             }
@@ -513,13 +594,24 @@ public class CatanPanel extends JPanel implements MouseListener {
                         }
                     }
                 } else if (offers.size() > 0 && tradeITOrder.size() > 0) {
-                    String resource = coordToResource(x, y);
-                    System.out.println("adding " + resource + " to want");
-                    HashMap<String, Integer> currentOffer = offers.get(0);
-                    if (resource != null) {
-                        currentOffer.put(resource, currentOffer.get(resource) + 1);
+                    //if MouseEvent m left click
+                    if (m.getButton() == MouseEvent.BUTTON1) {
+                        String resource = coordToResource(x, y);
+                        System.out.println("adding " + resource + " to want");
+                        HashMap<String, Integer> currentOffer = offers.get(0);
+                        if (resource != null) {
+                            currentOffer.put(resource, currentOffer.get(resource) + 1);
+                        }
+                        System.out.println("updated want " + currentOffer);
                     }
-                    System.out.println("updated want " + currentOffer);
+                   else if (m.getButton() == MouseEvent.BUTTON3) {
+                        String resource = coordToResource(x, y);
+                        System.out.println("removing " + resource + " from want");
+                        HashMap<String, Integer> currentOffer = offers.get(0);
+                        if (resource != null && currentOffer.get(resource) > 0) {
+                            currentOffer.put(resource, currentOffer.get(resource) - 1);
+                        }
+                    }
                 }
             }
             else if (gs.getSubState().equals("domesticPlayers")) {
@@ -559,10 +651,21 @@ public class CatanPanel extends JPanel implements MouseListener {
                         gs.setSubState("domesticFinal");
                     }
                 } else if (offers.size() > 0 && tradeITOrder.size() > 0) {
-                    String resource = coordToResource(x, y);
-                    HashMap<String, Integer> currentOffer = offers.get(0);
-                    if (resource != null) {
-                        currentOffer.put(resource, currentOffer.get(resource) + 1);
+                    if (m.getButton() == MouseEvent.BUTTON1) {
+                        String resource = coordToResource(x, y);
+                        HashMap<String, Integer> currentOffer = offers.get(0);
+                        if (resource != null) {
+                            currentOffer.put(resource, currentOffer.get(resource) + 1);
+                        }
+                    }
+                    else if (m.getButton() == MouseEvent.BUTTON3) {
+                        String resource = coordToResource(x, y);
+                        HashMap<String, Integer> currentOffer = offers.get(0);
+                        if (resource != null) {
+                            if (currentOffer.get(resource) > 0) {
+                                currentOffer.put(resource, currentOffer.get(resource) - 1);
+                            }
+                        }
                     }
                 }
             }
@@ -914,15 +1017,25 @@ public class CatanPanel extends JPanel implements MouseListener {
         Graphics2D g2 = (Graphics2D) g;
         int x = 246;
         int y = 47;
+        g2.setStroke(new BasicStroke(5));
+        g2.setColor(new Color(103, 52, 1));
         g2.drawImage(portImages.get(0), x-50, y-50, 100, 100,  null);
-        g2.drawImage(portImages.get(1), 84-50, 273-30, 100, 100,  null);
-        g2.drawImage(portImages.get(2), 84-50, 534-50, 100, 100,  null);
+        g2.drawLine(250, 120, 250, 80);
+        g2.drawLine(320, 84, 277, 75);
+        g2.drawImage(portImages.get(1), 84-30, 273-30, 100, 100,  null);
+        g2.drawLine(163, 250, 133, 270);
+        g2.drawLine(162, 325, 138, 315);
+        g2.drawImage(portImages.get(2), 84-30, 534-50, 100, 100,  null);
+        g2.drawLine(163, 490, 133, 510);
+        g2.drawLine(162, 565, 138, 555);
         g2.drawImage(portImages.get(3), 240-10, 760-50, 100, 100,  null);
-        g2.drawImage(portImages.get(4), 559-20, 760-50, 100, 100,  null);
+        g2.drawImage(portImages.get(4), 559-40, 760-50, 100, 100,  null);
         g2.drawImage(portImages.get(5), 795-50, 639-35, 100, 100,  null);
         g2.drawImage(portImages.get(6), 940-50, 404-50, 100, 100,  null);
-        g2.drawImage(portImages.get(7), 788-30, 162-50, 100, 100,  null);
-        g2.drawImage(portImages.get(8), 698-150, y-50, 100, 100,  null);
+        g2.drawImage(portImages.get(7), 788-50, 162-50, 100, 100,  null);
+        g2.drawImage(portImages.get(8), 698-190, y-50, 100, 100,  null);
+        g2.drawLine(564, 120, 564, 80);
+        g2.drawLine(485, 83, 525, 75);
 
     }
 

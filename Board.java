@@ -669,6 +669,7 @@ public class Board{
         //connect with intersections
         ports[0].setI1(intersections[1][0]);
         ports[0].setI2(intersections[0][0]);
+        // intersections[0][0].;
         ports[1].setI1(intersections[0][1]);
         ports[1].setI2(intersections[1][2]);
         ports[2].setI1(intersections[2][3]);
