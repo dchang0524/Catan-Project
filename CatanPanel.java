@@ -550,6 +550,9 @@ public class CatanPanel extends JPanel implements MouseListener {
                         toViewInven = pManage.get(playerIndex);
                     }
                 }
+                if (x>=1600 && y>=360 && x<=1600+170 && y<=500+60)  { //build button 1600, 360, 170, 60
+
+                }
             }
             else if (gs.getSubState().equals("showInventory")) {
                 if (x >= 300 && x <= 300 + 60 && y >= 900 && y <= 900 + 30) { //back button
@@ -672,7 +675,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             else if (gs.getSubState().equals("robber")) {
                 for (int i = 0; i < tiles.length; i++) {
                     for (int j = 0; j < tiles[i].length; j++) {
-                        if (tiles[i][j] != null && x >= tiles[i][j].getX() + 52 && x <= tiles[i][j].getX() + 52 + 55 && y >= tiles[i][j].getY() + 50 && y <= tiles[i][j].getY() + 100 && tiles[i][j] != robber.getPosition()) {
+                        if (tiles[i][j] != null && x >= tiles[i][j].getX() + 52 && x <= tiles[i][j].getX() + 52 + 55 && y >= tiles[i][j].getY() + 50 && y <= tiles[i][j].getY() + 100 && tiles[i][j] != robber.getPosition() && tiles[i][j].getResource() != "desert") {
                             robber.setPosition(tiles[i][j]);
                             gs.setSubState("");
                             System.out.println("robber moved to " + i + " " + j + " " + tiles[i][j].getResource());
