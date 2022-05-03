@@ -88,17 +88,25 @@ public class Player {
         for (int i = 0; i< roads.size(); i++) {
             Intersection temp1 = roads.get(i).getI1();
             Intersection temp2 = roads.get(i).getI2();
-            if (temp1 != null && temp1.hasSettlement() == false) {
+            if (temp1 != null && temp1.hasSettlement() == false && temp1.noAdjacentSettlement() == false) {
                 settleAble.add(temp1);
             }
-            if (temp2 != null && temp2.hasSettlement() == false) {
+            if (temp2 != null && temp2.hasSettlement() == false && temp2.noAdjacentSettlement() == false) {
                 settleAble.add(temp2);
             }
         }
         return settleAble;
     }
 
-    //TODO: add method that returns all intersections of settlements that can be upgraded to cities
+    public HashSet<Intersection> upgradeAble() {
+        HashSet<Intersection> upgradeAble = new HashSet<Intersection>();
+        for (int i = 0; i< settlements.size(); i++) {
+            if (settlements.get(i).isCity == false) {
+                upgradeAble.add(settlements.get(i).getPosition());
+            }
+        }
+        return upgradeAble;
+    }
     //TODO: add method that connects all roads to each other if it is supposed to be connected
     //TODO: add method to return Intersections where new roads can branch out from
     //TODO: add method to return Intersections for second endpoint of the selected intersection
