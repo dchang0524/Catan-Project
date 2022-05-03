@@ -204,7 +204,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             drawGameLog(g);
             drawRobber(g);
             drawTrade(g);
-            drawBuild(g);
+            drawBuild1(g);
             drawPlayerInfo(g);
             drawNextTurnButton(g);
             //TODO: drawDevCards();
@@ -346,6 +346,7 @@ public class CatanPanel extends JPanel implements MouseListener {
 
         }
         //gameState = 2, buy phase
+
         else if (gs.getGameState() == 2) {
 
         }
@@ -505,8 +506,10 @@ public class CatanPanel extends JPanel implements MouseListener {
                 if (x >= 1600 && x <= 1600 + 170 && y >= 520 && y <= 580) { //if next turn button (1500, 520, 170, 60)
                     pManage.nextPlayer();
                     rolledDice = false;
+                    gs.setSubState("");
+                    gs.setGameState(1);
                 }
-                if (x >= 1600 && x <= 1600 + 170 && y >= 200 && y <= 200 + 60) { //if trade button
+                else if (x >= 1600 && x <= 1600 + 170 && y >= 200 && y <= 200 + 60) { //if trade button
                     String[] tradeTypes = new String[2];
                     tradeTypes[0] = "Trade With Players";
                     tradeTypes[1] = "Trade With Bank or Ports";
@@ -534,7 +537,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                         }
                     }
                 }
-                if (x>=1600 && y>=440 && x<=1600+170 && y<=440+60)  { //inventories button 1600, 440, 170, 60
+                else if (x>=1600 && y>=440 && x<=1600+170 && y<=440+60)  { //inventories button 1600, 440, 170, 60
                     String[] toView = new String[pManage.size()-1];
                     int count = 0;
                     for (int i = 0; i< pManage.size(); i++) {
@@ -550,8 +553,8 @@ public class CatanPanel extends JPanel implements MouseListener {
                         toViewInven = pManage.get(playerIndex);
                     }
                 }
-                if (x>=1600 && y>=360 && x<=1600+170 && y<=500+60)  { //build button 1600, 360, 170, 60
-
+                else if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60)  { //build button 1600, 360, 170, 60
+                    gs.setGameState(2);
                 }
             }
             else if (gs.getSubState().equals("showInventory")) {
@@ -808,6 +811,13 @@ public class CatanPanel extends JPanel implements MouseListener {
         g.setColor(Color.black);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
         g.drawString("Build", 1605, 360+40);
+    }
+    public void drawBuild1(Graphics g) {
+        changeColor(g);
+        g.fillRect(1600, 360, 170, 60);
+        g.setColor(Color.black);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString("Enter Build", 1605, 360+40);
     }
     public void drawPlayerInfo(Graphics g) {
         changeColor(g);

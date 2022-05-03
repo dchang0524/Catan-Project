@@ -119,6 +119,36 @@ public class Player {
         }
         return longest;
     }
+
+
+
+
+    public boolean enoughResourcesRoad() {
+        if (resources.get("brick") >= 1 && resources.get("wood") >= 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean enoughResourcesSettlement() {
+        if (resources.get("brick") >= 1 && resources.get("wood") >= 1 && resources.get("wheat") >= 1 && resources.get("sheep") >= 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean enoughResourcesCity() {
+        if (resources.get("ore") >= 3 && resources.get("wheat") >= 2) {
+            return true;
+        }
+        return false;
+    }
+    public boolean enoughResourcesCard() {
+        if (resources.get("wheat") >= 1 && resources.get("sheep") >= 1 && resources.get("wood") >= 1) {
+            return true;
+        }
+        return false;
+    }
 }
 
 
