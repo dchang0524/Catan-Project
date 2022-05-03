@@ -369,11 +369,23 @@ public class CatanPanel extends JPanel implements MouseListener {
             drawPlayerInfo(g);
             drawNextTurnButton(g);
             drawCards(g, currentPlayer);
-
+            if (gs.getSubState().equals("showInventory")) {
+                drawCards(g, toViewInven);
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
+                g.setColor(Color.white);
+                g.fillRect(300, 900, 60, 30);
+                g.setColor(Color.black);
+                g.drawString("Back", 300, 925);
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.drawString("Click back to return", 800, 100);
+            }
+            else if (gs.getSubState().equals("settlement")) {
+                highlightSettleAble(g);
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.drawString("Click on highlighted intersection to build a settlment", 800, 100);
+            }
         }
     }
-
-
 
 
     public void mousePressed(MouseEvent m) {
@@ -722,7 +734,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                                     String picked = (String) JOptionPane.showInputDialog(null, "What player do you want to rob?", "Rob Player", JOptionPane.QUESTION_MESSAGE, null, owns, owns[0]);
                                     if (picked != null) {
                                         Player toSteal = pManage.get(Integer.parseInt("" + picked.charAt(7)));
-                                        pManage.steal(currentPlayer, toSteal);
+                                        System.out.println("stole " + pManage.steal(currentPlayer, toSteal));;
                                         movedRobber = true;
                                     }
                                 }
@@ -768,59 +780,117 @@ public class CatanPanel extends JPanel implements MouseListener {
             repaint();
         }
         if(gs.getGameState() == 2){
-            if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60)  { //build button 1600, 360, 170, 60
-                ArrayList<String> possibleOptions = new ArrayList<>();
-                if (currentPlayer.enoughResourcesCard()) {
-                    possibleOptions.add("Development Card");
-                }
-                else if (currentPlayer.enoughResourcesSettlement()) {
-                    possibleOptions.add("Settlement");
-                }
-                else if (currentPlayer.enoughResourcesRoad()) {
-                    possibleOptions.add("Road");
-                }
-                else if (currentPlayer.enoughResourcesCity()) {
-                    possibleOptions.add("City");
-                }
-                String[] options = new String[possibleOptions.size()];
-                for (int i = 0; i < possibleOptions.size(); i++) {
-                    options[i] = possibleOptions.get(i);
-                }
-                if (options.length > 0) {
-                    String picked = (String) JOptionPane.showInputDialog(null, "Choose what you want to build or buy", "Building and Buying", JOptionPane.QUESTION_MESSAGE,null, options, options[0]);
-                    if (picked != null) {
-                        if (picked.equals("Settlement")) {
-                            gs.setSubState("settlement");
+            if (gs.getSubState().equals("")) {
+                if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60)  { //build button 1600, 360, 170, 60
+                    ArrayList<String> possibleOptions = new ArrayList<>();
+                    if (currentPlayer.enoughResourcesCard()) {
+                        possibleOptions.add("Development Card");
+                    }
+                    if (currentPlayer.enoughResourcesSettlement()) {
+                        possibleOptions.add("Settlement");
+                    }
+                    if (currentPlayer.enoughResourcesRoad()) {
+                        possibleOptions.add("Road");
+                    }
+                    if (currentPlayer.enoughResourcesCity()) {
+                        possibleOptions.add("City");
+                    }
+                    String[] options = new String[possibleOptions.size()];
+                    for (int i = 0; i < possibleOptions.size(); i++) {
+                        options[i] = possibleOptions.get(i);
+                    }
+                    if (options.length > 0) {
+                        String picked = (String) JOptionPane.showInputDialog(null, "Choose what you want to build or buy", "Building and Buying", JOptionPane.QUESTION_MESSAGE,null, options, options[0]);
+                        if (picked != null) {
+                            if (picked.equals("Settlement")) {
+                                gs.setSubState("settlement");
+                            }
+                            else if (picked.equals("Road")) {
+                                gs.setSubState("road");
+                            }
+                            else if (picked.equals("City")) {
+                                gs.setSubState("city");
+                            }
+                            else if (picked.equals("Development Card")) {
+                                gs.setSubState("development");
+                            }
                         }
-                        else if (picked.equals("Road")) {
-                            gs.setSubState("road");
-                        }
-                        else if (picked.equals("City")) {
-                            gs.setSubState("city");
-                        }
-                        else if (picked.equals("Development Card")) {
-                            gs.setSubState("development");
+                        else {
+                            gs.setSubState("");
                         }
                     }
                     else {
+                        JOptionPane.showMessageDialog(null, "You do not have enough resources to build anything.", "NOTICE", JOptionPane.ERROR_MESSAGE);
                         gs.setSubState("");
                     }
                 }
-                else {
-                    JOptionPane.showMessageDialog(null, "You do not have enough resources to build anything.", "NOTICE", JOptionPane.ERROR_MESSAGE);
+                else if (x>=1600 && y>=440 && x<=1600+170 && y<=440+60)  { //inventories button 1600, 440, 170, 60
+                    String[] toView = new String[pManage.size()-1];
+                    int count = 0;
+                    for (int i = 0; i< pManage.size(); i++) {
+                        if (pManage.get(i) != currentPlayer) {
+                            toView[count] = pManage.get(i).toString() + "(" + pManage.get(i).getColor() + ")";
+                            count++;
+                        }
+                    }
+                    String picked = (String) JOptionPane.showInputDialog(null, "Which Player's inventory do you want to view", "Players", JOptionPane.QUESTION_MESSAGE, null, toView, toView[0]);
+                    if (picked != null) {
+                        gs.setSubState("showInventory");
+                        int playerIndex = Integer.parseInt("" + picked.charAt(7));
+                        toViewInven = pManage.get(playerIndex);
+                    }
+                }
+                else if (x >= 1600 && x <= 1600 + 170 && y >= 520 && y <= 580) { //if next turn button (1500, 520, 170, 60)
+                    pManage.nextPlayer();
+                    rolledDice = false;
                     gs.setSubState("");
+                    gs.setGameState(1);
                 }
             }
-            else if (x >= 1600 && x <= 1600 + 170 && y >= 520 && y <= 580) { //if next turn button (1500, 520, 170, 60)
-                pManage.nextPlayer();
-                rolledDice = false;
-                gs.setSubState("");
-                gs.setGameState(1);
+            else if (gs.getSubState().equals("showInventory")) {
+                if (x >= 300 && x <= 300 + 60 && y >= 900 && y <= 900 + 30) { //back button
+                    gs.setSubState("");
+                    toViewInven = null;
+                }
             }
+            else if (gs.getSubState().equals("settlement")) {
+                if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60) {//cancel(build) button
+                    gs.setSubState("");
+                }
+
+                for (int i = 0; i < intersections.length; i++) {
+                    for (int j = 0; j < intersections[i].length; j++) {
+                        if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
+                            if (currentPlayer.settleAble().contains(intersections[i][j])) {
+                                intersections[i][j].setSettlement(currentPlayer);
+                                currentPlayer.removeResource("brick", 1);
+                                currentPlayer.removeResource("wood", 1);
+                                currentPlayer.removeResource("sheep", 1);
+                                currentPlayer.removeResource("wheat", 1);
+                                gs.setSubState("");
+                            }
+                        }
+                    }
+                }
+
+            }
+
+
         }
         repaint();
     }
 
+    public void highlightSettleAble(Graphics g) {
+        g.setColor(new Color(229, 0, 0, 100));
+        for (int i = 0; i < intersections.length; i++) {
+            for (int j = 0; j < intersections[i].length; j++) {
+                if (intersections[i][j] != null && currentPlayer.settleAble().contains(intersections[i][j])) {
+                    g.fillRect(intersections[i][j].getX()-10, intersections[i][j].getY()-10, 10, 10);
+                }
+            }
+        }
+        g.setColor(Color.cyan);
+    }
     public String coordToResource(int x, int y) {
         HashMap<String, Integer> resources = pManage.curentPlayer().getResources();
         Set<String> keys = resources.keySet();
@@ -883,7 +953,13 @@ public class CatanPanel extends JPanel implements MouseListener {
         g.fillRect(1600, 360, 170, 60);
         g.setColor(Color.black);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Build", 1605, 360+40);
+        if (gs.getGameState() == 2 && (gs.getSubState().equals("settlement"))||gs.getSubState().equals("road") || gs.getSubState().equals("city")) {
+            g.drawString("Cancel", 1605, 360+40);
+        }
+        else {
+            g.drawString("Build", 1605, 360+40);
+        }
+
     }
     public void drawBuild1(Graphics g) {
         changeColor(g);

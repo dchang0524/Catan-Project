@@ -59,7 +59,8 @@ public class PlayerManager {
         int current = 0;
         for (String resource : toSteal.getResources().keySet()) {
             int quantity = toSteal.getResources().get(resource);
-            if (current + quantity > rand) {
+            current = current + quantity;
+            if (current >= rand) {
                 toSteal.removeResource(resource, 1);
                 A.addResource(resource, 1);
                 return resource;
