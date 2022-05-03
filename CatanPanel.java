@@ -1041,8 +1041,10 @@ public class CatanPanel extends JPanel implements MouseListener {
         g2.drawLine(727,610,770,620);
         g2.drawLine(800,573,800,622);
         g2.drawImage(portImages.get(6), 940-50, 404-50, 100, 100,  null);
+        g2.drawLine(885, 370, 912, 370);
+        g2.drawLine(885, 450, 912, 440);
         g2.drawImage(portImages.get(7), 788-50, 162-50, 100, 100,  null);
-        g2.drawLine(730,205,760,200);
+        g2.drawLine(730,207,760,197);
         g2.drawLine(800,198,800,242);
         g2.drawImage(portImages.get(8), 698-190, y-50, 100, 100,  null);
         g2.drawLine(564, 120, 564, 80);
