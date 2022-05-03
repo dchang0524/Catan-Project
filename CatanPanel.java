@@ -348,6 +348,27 @@ public class CatanPanel extends JPanel implements MouseListener {
         //gameState = 2, buy phase
 
         else if (gs.getGameState() == 2) {
+            System.out.println();
+            System.out.println("Paint: game state " + gs.getGameState() + " subState " + gs.getSubState() + " startgame " + startGame);
+            System.out.println("current player: " + currentPlayer);
+            g.setColor(Color.darkGray);
+            g.fillRect(790, 0, 1900, 220);
+            firstTimeGameState1 = false;
+            currentPlayer = pManage.curentPlayer();
+            System.out.println("game state " + gs.getGameState() + " " + "subState " + gs.getSubState());
+            drawTiles(g);
+            drawPlayer(g, currentPlayer);
+            drawIntersections(g);
+            drawPorts(g);
+            drawSettlements(g);
+            drawRoads(g);
+            drawGameLog(g);
+            drawRobber(g);
+            drawTrade(g);
+            drawBuild(g);
+            drawPlayerInfo(g);
+            drawNextTurnButton(g);
+            drawCards(g, currentPlayer);
 
         }
     }
@@ -743,7 +764,59 @@ public class CatanPanel extends JPanel implements MouseListener {
                         }
                     }
                 }
+            }
+            repaint();
         }
+        if(gs.getGameState() == 2){
+            if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60)  { //build button 1600, 360, 170, 60
+                ArrayList<String> possibleOptions = new ArrayList<>();
+                if (currentPlayer.enoughResourcesCard()) {
+                    possibleOptions.add("Development Card");
+                }
+                else if (currentPlayer.enoughResourcesSettlement()) {
+                    possibleOptions.add("Settlement");
+                }
+                else if (currentPlayer.enoughResourcesRoad()) {
+                    possibleOptions.add("Road");
+                }
+                else if (currentPlayer.enoughResourcesCity()) {
+                    possibleOptions.add("City");
+                }
+                String[] options = new String[possibleOptions.size()];
+                for (int i = 0; i < possibleOptions.size(); i++) {
+                    options[i] = possibleOptions.get(i);
+                }
+                if (options.length > 0) {
+                    String picked = (String) JOptionPane.showInputDialog(null, "Choose what you want to build or buy", "Building and Buying", JOptionPane.QUESTION_MESSAGE,null, options, options[0]);
+                    if (picked != null) {
+                        if (picked.equals("Settlement")) {
+                            gs.setSubState("settlement");
+                        }
+                        else if (picked.equals("Road")) {
+                            gs.setSubState("road");
+                        }
+                        else if (picked.equals("City")) {
+                            gs.setSubState("city");
+                        }
+                        else if (picked.equals("Development Card")) {
+                            gs.setSubState("development");
+                        }
+                    }
+                    else {
+                        gs.setSubState("");
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "You do not have enough resources to build anything.", "NOTICE", JOptionPane.ERROR_MESSAGE);
+                    gs.setSubState("");
+                }
+            }
+            else if (x >= 1600 && x <= 1600 + 170 && y >= 520 && y <= 580) { //if next turn button (1500, 520, 170, 60)
+                pManage.nextPlayer();
+                rolledDice = false;
+                gs.setSubState("");
+                gs.setGameState(1);
+            }
         }
         repaint();
     }
