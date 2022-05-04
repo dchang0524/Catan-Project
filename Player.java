@@ -88,10 +88,10 @@ public class Player {
         for (int i = 0; i< roads.size(); i++) {
             Intersection temp1 = roads.get(i).getI1();
             Intersection temp2 = roads.get(i).getI2();
-            if (temp1 != null && temp1.hasSettlement() == false && temp1.noAdjacentSettlement() == false) {
+            if (temp1 != null && temp1.hasSettlement() == false && temp1.noAdjacentSettlement() == true) {
                 settleAble.add(temp1);
             }
-            if (temp2 != null && temp2.hasSettlement() == false && temp2.noAdjacentSettlement() == false) {
+            if (temp2 != null && temp2.hasSettlement() == false && temp2.noAdjacentSettlement() == true) {
                 settleAble.add(temp2);
             }
         }

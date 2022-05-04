@@ -364,7 +364,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             drawRoads(g);
             drawGameLog(g);
             drawRobber(g);
-            drawTrade(g);
+            drawTradeGray(g);
             drawBuild(g);
             drawPlayerInfo(g);
             drawNextTurnButton(g);
@@ -381,6 +381,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             }
             else if (gs.getSubState().equals("settlement")) {
                 highlightSettleAble(g);
+                g.setColor(Color.cyan);
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
                 g.drawString("Click on highlighted intersection to build a settlment", 800, 100);
             }
@@ -579,7 +580,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                             count++;
                         }
                     }
-                    String picked = (String) JOptionPane.showInputDialog(null, "Which Player's inventory do you want to view", "Players", JOptionPane.QUESTION_MESSAGE, null, toView, toView[0]);
+                    String picked = (String) JOptionPane.showInputDialog(null, "Which Player's inventory do you want to view(only click if you are the corresponding player)", "Players", JOptionPane.QUESTION_MESSAGE, null, toView, toView[0]);
                     if (picked != null) {
                         gs.setSubState("showInventory");
                         int playerIndex = Integer.parseInt("" + picked.charAt(7));
@@ -587,7 +588,26 @@ public class CatanPanel extends JPanel implements MouseListener {
                     }
                 }
                 else if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60)  { //build button 1600, 360, 170, 60
-                    gs.setGameState(2);
+                    ArrayList<String> possibleOptions = new ArrayList<>();
+                    if (currentPlayer.enoughResourcesCard()) {
+                        possibleOptions.add("Development Card");
+                    }
+                    if (currentPlayer.enoughResourcesSettlement()) {
+                        possibleOptions.add("Settlement");
+                    }
+                    if (currentPlayer.enoughResourcesRoad()) {
+                        possibleOptions.add("Road");
+                    }
+                    if (currentPlayer.enoughResourcesCity()) {
+                        possibleOptions.add("City");
+                    }
+                    if (possibleOptions.size()>0) {
+                        gs.setGameState(2);
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "You do not have enough resources to build anything. You can either trade or end your turn.", "NOTICE", JOptionPane.ERROR_MESSAGE);
+                        gs.setSubState("");
+                    }
                 }
             }
             else if (gs.getSubState().equals("showInventory")) {
@@ -820,7 +840,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                         }
                     }
                     else {
-                        JOptionPane.showMessageDialog(null, "You do not have enough resources to build anything.", "NOTICE", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "You do not have enough resources to build anything. You can either trade or end your turn.", "NOTICE", JOptionPane.ERROR_MESSAGE);
                         gs.setSubState("");
                     }
                 }
@@ -833,7 +853,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                             count++;
                         }
                     }
-                    String picked = (String) JOptionPane.showInputDialog(null, "Which Player's inventory do you want to view", "Players", JOptionPane.QUESTION_MESSAGE, null, toView, toView[0]);
+                    String picked = (String) JOptionPane.showInputDialog(null, "Which Player's inventory do you want to view(only click if you are the corresponding player)", "Players", JOptionPane.QUESTION_MESSAGE, null, toView, toView[0]);
                     if (picked != null) {
                         gs.setSubState("showInventory");
                         int playerIndex = Integer.parseInt("" + picked.charAt(7));
@@ -881,7 +901,7 @@ public class CatanPanel extends JPanel implements MouseListener {
     }
 
     public void highlightSettleAble(Graphics g) {
-        g.setColor(new Color(229, 0, 0, 100));
+        g.setColor(Color.cyan);
         for (int i = 0; i < intersections.length; i++) {
             for (int j = 0; j < intersections[i].length; j++) {
                 if (intersections[i][j] != null && currentPlayer.settleAble().contains(intersections[i][j])) {
@@ -889,7 +909,6 @@ public class CatanPanel extends JPanel implements MouseListener {
                 }
             }
         }
-        g.setColor(Color.cyan);
     }
     public String coordToResource(int x, int y) {
         HashMap<String, Integer> resources = pManage.curentPlayer().getResources();
@@ -953,8 +972,8 @@ public class CatanPanel extends JPanel implements MouseListener {
         g.fillRect(1600, 360, 170, 60);
         g.setColor(Color.black);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        if (gs.getGameState() == 2 && (gs.getSubState().equals("settlement"))||gs.getSubState().equals("road") || gs.getSubState().equals("city")) {
-            g.drawString("Cancel", 1605, 360+40);
+        if (gs.getGameState() == 2 && ((gs.getSubState().equals("settlement"))||gs.getSubState().equals("road") || gs.getSubState().equals("city"))) {
+            g.drawString("Cancel Build", 1605, 360+40);
         }
         else {
             g.drawString("Build", 1605, 360+40);
@@ -1166,7 +1185,7 @@ public class CatanPanel extends JPanel implements MouseListener {
         }
     }
     public void drawIntersections(Graphics g) {
-        g.setColor(Color.CYAN);
+        g.setColor(Color.green);
         for (int i = 0; i < intersections.length; i++) {
             for (int j = 0; j < intersections[i].length; j++) {
                 if (intersections[i][j] != null) {

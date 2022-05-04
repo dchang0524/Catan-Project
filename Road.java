@@ -77,7 +77,8 @@ public class Road {
     }
 
     public void connect(Road r) {
-        if (this.i1 == r.getI1() || this.i1 == r.getI2() || this.i2 == r.getI1() || this.i2 == r.getI2()) {
+        Intersection commonPoint = this.commonPoint(r);
+        if (commonPoint != null) {
             if (r.getR1() != r && r.getR2() != r && r.getR3() != r && r.getR4() != r) {
                 if (r1 == null) {
                     r1 = r;
@@ -95,7 +96,15 @@ public class Road {
             }
         }
     } //connects two roads if they should be connected
-
+    public Intersection commonPoint(Road r) {
+        if (this.i1 == r.i1 || this.i1 == r.i2) {
+            return this.i1;
+        }
+        else if (this.i2 == r.i1 || this.i2 == r.i2) {
+            return this.i2;
+        }
+        return null;
+    }
     public void connectHelper(Road r) {
         if (r.getR1() != r && r.getR2() != r && r.getR3() != r && r.getR4() != r) {
             if (r1 == null) {
