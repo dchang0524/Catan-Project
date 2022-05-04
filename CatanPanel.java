@@ -16,7 +16,7 @@ import java.io.*;
 public class CatanPanel extends JPanel implements MouseListener {
     private static final long serialVersionUID = 1L;
     GameState gs;
-    BufferedImage startBackground, logo, portBrick, portWood, portSheep, portWheat, portOre, portUnknown, dice, robberImg;
+    BufferedImage startBackground, logo, portBrick, portWood, portSheep, portWheat, portOre, portUnknown, dice, robberImg, buildCosts;
     Board board;
     PlayerManager pManage;
     Player currentPlayer;
@@ -56,6 +56,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             portOre = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_ore.png")));
             portUnknown = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_unknown.png")));
             robberImg = (ImageIO.read(CatanPanel.class.getResource("/misc/robber.png")));
+            buildCosts = ImageIO.read(CatanPanel.class.getResource("/misc/build costs.png"));
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error loading image");
@@ -136,7 +137,6 @@ public class CatanPanel extends JPanel implements MouseListener {
             if (startGame == true) {
                 currentPlayer = pManage.curentPlayer();
                 System.out.println("game state " + gs.getGameState() + " subState " + gs.getSubState() + " startgame " + startGame);
-
                 //do not paint anything before drawTiles
                 drawTiles(g);
                 drawIntersections(g);
@@ -150,6 +150,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 drawBuild(g);
                 drawPlayerInfo(g);
                 drawNextTurnButton(g);
+
                 if (gs.getSubState().equals("settlement")) {
                     changeColor(g);
                     g.setFont(new Font("TimesRoman", Font.PLAIN, 45));
@@ -346,7 +347,6 @@ public class CatanPanel extends JPanel implements MouseListener {
 
         }
         //gameState = 2, buy phase
-
         else if (gs.getGameState() == 2) {
             System.out.println();
             System.out.println("Paint: game state " + gs.getGameState() + " subState " + gs.getSubState() + " startgame " + startGame);
@@ -955,6 +955,13 @@ public class CatanPanel extends JPanel implements MouseListener {
     }
     public void drawTrade(Graphics g) {
         changeColor(g);
+        g.fillRoundRect(1600, 200, 170, 60, 20, 20);
+        g.setColor(Color.black);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString("Trade", 1605, 200+40);
+    }
+    public void drawTradeGray(Graphics g) {
+        g.setColor(Color.lightGray);
         g.fillRect(1600, 200, 170, 60);
         g.setColor(Color.black);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
@@ -985,7 +992,7 @@ public class CatanPanel extends JPanel implements MouseListener {
         g.fillRect(1600, 360, 170, 60);
         g.setColor(Color.black);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Enter Build", 1605, 360+40);
+        g.drawString("Build", 1605, 360+40);
     }
     public void drawPlayerInfo(Graphics g) {
         changeColor(g);
@@ -1183,6 +1190,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 g.drawImage(tiles[4][j].getNumImage(), (int)x+52, (int)y+50, 55, 55, null);
             }
         }
+        g.drawImage(buildCosts, 1300, 400, 276, 334, null);
     }
     public void drawIntersections(Graphics g) {
         g.setColor(Color.green);
