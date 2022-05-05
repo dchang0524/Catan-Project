@@ -31,7 +31,9 @@ public class Settlement {
         }
         setTradeResource(pos.portResource);
         setTradeRatio(pos.portTrade);
-        updatePlayerShop();
+        if (pos.portTrade != 0) {
+            updatePlayerShop();
+        }
     }
     public void upgrade() {
         isCity = true;

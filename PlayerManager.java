@@ -60,12 +60,14 @@ public class PlayerManager {
         int rand = (int)(Math.random() * toSteal.getInventorySize());
         int current = 0;
         for (String resource : toSteal.getResources().keySet()) {
-            int quantity = toSteal.getResources().get(resource);
-            current = current + quantity;
-            if (current >= rand) {
-                toSteal.removeResource(resource, 1);
-                A.addResource(resource, 1);
-                return resource;
+            if  (toSteal.getResources().get(resource) > 0) {
+                int quantity = toSteal.getResources().get(resource);
+                current = current + quantity;
+                if (current >= rand) {
+                    toSteal.removeResource(resource, 1);
+                    A.addResource(resource, 1);
+                    return resource;
+                }
             }
         }
         return null;
