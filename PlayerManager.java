@@ -33,6 +33,8 @@ public class PlayerManager {
     }
     public void nextPlayer() {
         currentPlayer = (currentPlayer + 1) % players.size();
+        this.get(currentPlayer).manageRoads();
+        this.get(currentPlayer).manageDevCards();
     }
     public void prevPlayer() {
         currentPlayer = (currentPlayer - 1 + players.size()) % players.size();

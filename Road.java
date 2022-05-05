@@ -79,19 +79,21 @@ public class Road {
     public void connect(Road r) {
         Intersection commonPoint = this.commonPoint(r);
         if (commonPoint != null) {
-            if (r.getR1() != r && r.getR2() != r && r.getR3() != r && r.getR4() != r) {
-                if (r1 == null) {
-                    r1 = r;
-                    r.connectHelper(this);
-                } else if (r2 == null) {
-                    r2 = r;
-                    r.connectHelper(this);
-                } else if (r3 == null) {
-                    r3 = r;
-                    r.connectHelper(this);
-                } else if (r4 == null) {
-                    r4 = r;
-                    r.connectHelper(this);
+            if (commonPoint.hasSettlement() && commonPoint.getSettlement().getOwner() == owner) {
+                if (r.getR1() != r && r.getR2() != r && r.getR3() != r && r.getR4() != r) {
+                    if (r1 == null) {
+                        r1 = r;
+                        r.connectHelper(this);
+                    } else if (r2 == null) {
+                        r2 = r;
+                        r.connectHelper(this);
+                    } else if (r3 == null) {
+                        r3 = r;
+                        r.connectHelper(this);
+                    } else if (r4 == null) {
+                        r4 = r;
+                        r.connectHelper(this);
+                    }
                 }
             }
         }
@@ -122,18 +124,23 @@ public class Road {
     }
 
     public void disconnect(Road r) {
-        if (r1 == r) {
-            r1 = null;
-            r.disconnectHelper(this);
-        } else if (r2 == r) {
-            r2 = null;
-            r.disconnectHelper(this);
-        } else if (r3 == r) {
-            r3 = null;
-            r.disconnectHelper(this);
-        } else if (r4 == r) {
-            r4 = null;
-            r.disconnectHelper(this);
+        Intersection commonPoint = this.commonPoint(r);
+        if (commonPoint != null) {
+            if (commonPoint.hasSettlement() && commonPoint.getSettlement().getOwner() != owner) {
+                if (r1 == r) {
+                    r1 = null;
+                    r.disconnectHelper(this);
+                } else if (r2 == r) {
+                    r2 = null;
+                    r.disconnectHelper(this);
+                } else if (r3 == r) {
+                    r3 = null;
+                    r.disconnectHelper(this);
+                } else if (r4 == r) {
+                    r4 = null;
+                    r.disconnectHelper(this);
+                }
+            }
         }
     }
 

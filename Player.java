@@ -4,6 +4,7 @@ import java.util.*;
 public class Player {
     HashMap<String, Integer> resources = new HashMap<String, Integer>();
     HashMap<String, Integer> devCards = new HashMap<String, Integer>();
+    HashMap<String, Integer> newDevCards = new HashMap<>();
     ArrayList<Settlement> settlements;
     int KnightsUsed;
     HashMap<String, Integer> developmentCards;
@@ -107,7 +108,25 @@ public class Player {
         }
         return upgradeAble;
     }
-    //TODO: add method that connects all roads to each other if it is supposed to be connected
+    public void manageRoads() {
+        for (int i = 0; i< roads.size(); i++) {
+            for (int j = 0; j< roads.size(); j++) {
+                if (roads.get(i) != roads.get(j)) {
+                    roads.get(i).connect(roads.get(j));
+                    roads.get(i).disconnect(roads.get(j));
+                }
+            }
+        }
+    }
+
+    public void manageDevCards() {
+        for (String card : newDevCards.keySet()) {
+            if (newDevCards.get(card) > 0) {
+                devCards.put(card, devCards.get(card) + newDevCards.get(card));
+            }
+        }
+        newDevCards = new HashMap<String, Integer>();
+    }
     //TODO: add method to return Intersections where new roads can branch out from
     //TODO: add method to return Intersections for second endpoint of the selected intersection
     public int longestRoadLength() {
