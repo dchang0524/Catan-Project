@@ -138,7 +138,19 @@ public class Intersection {
     public Intersection getI1() {return i1;}
     public Intersection getI2() {return i2;}
     public Intersection getI3() {return i3;}
-
+    public int getNumRoads() {
+        int num = 0;
+        if (r1 != null) {
+            num++;
+        }
+        if (r2 != null) {
+            num++;
+        }
+        if (r3 != null) {
+            num++;
+        }
+        return num;
+    }
     public String toString() {
         return x + " " + y;
     }

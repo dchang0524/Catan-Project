@@ -42,6 +42,7 @@ public class CatanPanel extends JPanel implements MouseListener {
 
     Player toViewInven;
 
+    Intersection roadBuildI1;
     public CatanPanel() {
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
@@ -384,6 +385,18 @@ public class CatanPanel extends JPanel implements MouseListener {
                 g.setColor(Color.cyan);
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
                 g.drawString("Click on highlighted intersection to build a settlment", 800, 100);
+            }
+            else if (gs.getSubState().equals("road")) {
+               highlightRoadAble1(g);
+                g.setColor(Color.cyan);
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.drawString("Click on first intersection to build the road", 800, 100);
+            }
+            else if (gs.getSubState().equals("road1")) {
+                highlightRoadAble2(g);
+                g.setColor(Color.cyan);
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.drawString("Click on second intersection to build the road", 800, 100);
             }
         }
     }
@@ -894,8 +907,40 @@ public class CatanPanel extends JPanel implements MouseListener {
                 }
 
             }
-
-
+            else if (gs.getSubState().equals("road")) {
+                if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60) {//cancel(build) button
+                    gs.setSubState("");
+                }
+                for (int i = 0; i < intersections.length; i++) {
+                    for (int j = 0; j < intersections[i].length; j++) {
+                        if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
+                            if (currentPlayer.possibleRoadI1().contains(intersections[i][j])) {
+                                gs.setSubState("road1");
+                                roadBuildI1 = intersections[i][j];
+                            }
+                        }
+                    }
+                }
+            }
+            else if (gs.getSubState().equals("road1")) {
+                if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60) {//cancel(build) button
+                    gs.setSubState("");
+                    roadBuildI1 = null;
+                }
+                for (int i = 0; i < intersections.length; i++) {
+                    for (int j = 0; j < intersections[i].length; j++) {
+                        if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
+                            if (currentPlayer.possibleRoadI2(roadBuildI1).contains(intersections[i][j])) {
+                                new Road(roadBuildI1, intersections[i][j], currentPlayer);
+                                currentPlayer.removeResource("brick", 1);
+                                currentPlayer.removeResource("wood", 1);
+                                gs.setSubState("");
+                                roadBuildI1 = null;
+                            }
+                        }
+                    }
+                }
+            }
         }
         repaint();
     }
@@ -905,6 +950,26 @@ public class CatanPanel extends JPanel implements MouseListener {
         for (int i = 0; i < intersections.length; i++) {
             for (int j = 0; j < intersections[i].length; j++) {
                 if (intersections[i][j] != null && currentPlayer.settleAble().contains(intersections[i][j])) {
+                    g.fillRect(intersections[i][j].getX()-10, intersections[i][j].getY()-10, 10, 10);
+                }
+            }
+        }
+    }
+    public void highlightRoadAble1(Graphics g) {
+        g.setColor(Color.cyan);
+        for (int i = 0; i < intersections.length; i++) {
+            for (int j = 0; j < intersections[i].length; j++) {
+                if (intersections[i][j] != null && currentPlayer.possibleRoadI1().contains(intersections[i][j])) {
+                    g.fillRect(intersections[i][j].getX()-10, intersections[i][j].getY()-10, 10, 10);
+                }
+            }
+        }
+    }
+    public void highlightRoadAble2(Graphics g) {
+        g.setColor(Color.cyan);
+        for (int i = 0; i < intersections.length; i++) {
+            for (int j = 0; j < intersections[i].length; j++) {
+                if (intersections[i][j] != null && currentPlayer.possibleRoadI2(roadBuildI1).contains(intersections[i][j])) {
                     g.fillRect(intersections[i][j].getX()-10, intersections[i][j].getY()-10, 10, 10);
                 }
             }

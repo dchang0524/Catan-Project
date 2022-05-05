@@ -127,8 +127,38 @@ public class Player {
         }
         newDevCards = new HashMap<String, Integer>();
     }
-    //TODO: add method to return Intersections where new roads can branch out from
-    //TODO: add method to return Intersections for second endpoint of the selected intersection
+    public HashSet<Intersection> possibleRoadI1() {
+        HashSet<Intersection> possibleRoadI1 = new HashSet<Intersection>();
+        for (int i = 0; i< roads.size(); i++) {
+            if (roads.get(i).getI1() != null && roads.get(i).getI1().getNumRoads() <3 &&(
+                    roads.get(i).getI1().hasSettlement() == false ||
+                    roads.get(i).getI1().getSettlement().getOwner() == this)) {
+                possibleRoadI1.add(roads.get(i).getI1());
+            }
+            if (roads.get(i).getI2() != null && roads.get(i).getI2().getNumRoads() <3 &&(
+                    roads.get(i).getI2().hasSettlement() == false ||
+                    roads.get(i).getI2().getSettlement().getOwner() == this)) {
+                possibleRoadI1.add(roads.get(i).getI2());
+            }
+        }
+        return possibleRoadI1;
+    }
+
+    public HashSet<Intersection> possibleRoadI2(Intersection i) {
+        HashSet<Intersection> possibleRoadI2 = new HashSet<Intersection>();
+        if (i.r1 == null ) {
+            possibleRoadI2.add(i.i1);
+        }
+        if (i.r2 == null) {
+            possibleRoadI2.add(i.i2);
+        }
+        if (i.r3 == null) {
+            possibleRoadI2.add(i.i3);
+        }
+        return possibleRoadI2;
+    }
+
+
     public int longestRoadLength() {
         int longest = 0;
         for (Road r : roads) {

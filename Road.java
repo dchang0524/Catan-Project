@@ -16,7 +16,18 @@ public class Road {
         this.i2 = i2;
         this.owner = owner;
         owner.getRoads().add(this);
-
+        if (i1.getI1() == i2) {
+            i1.setR1(this);
+            i2.setR1(this);
+        }
+        else if (i1.getI2() == i2) {
+            i1.setR2(this);
+            i2.setR2(this);
+        }
+        else if (i1.getI3() == i2) {
+            i1.setR3(this);
+            i2.setR3(this);
+        }
     }
 
     public void setOwner(Road road, Player player) {
