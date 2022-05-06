@@ -312,18 +312,22 @@ public class CatanPanel extends JPanel implements MouseListener {
                             currentPlayer.removeResource(toPay, amountToPay);
                             currentPlayer.addResource(picked.toLowerCase(), 1);
                             drawCards(g, currentPlayer);
+                            repaint();
                         }
                         else {
                             gs.setSubState("");
+                            repaint();
                         }
                     }
                     else {
                         gs.setSubState("");
+                        repaint();
                     }
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "You do not have enough resources to make any maritime trades.", "NOTICE", JOptionPane.ERROR_MESSAGE);
                     gs.setSubState("");
+                    repaint();
                 }
 
 
@@ -752,7 +756,8 @@ public class CatanPanel extends JPanel implements MouseListener {
                             //stealing
                             ArrayList<String> owners = new ArrayList<String>();
                             for (int k = 0; k < tiles[i][j].settles.size(); k++) {
-                                if (tiles[i][j].settles.get(k).getOwner() != currentPlayer && owners.contains(tiles[i][j].settles.get(k).getOwner().toString()) == false && tiles[i][j].settles.get(k).getOwner().getInventorySize() > 0) {
+                                Player currentOwner = tiles[i][j].settles.get(k).getOwner();
+                                if (currentOwner != currentPlayer && owners.contains(currentOwner.toString()) == false && currentOwner.getInventorySize() > 0) {
                                     owners.add(tiles[i][j].settles.get(k).getOwner().toString());
                                 }
                             }
