@@ -1302,7 +1302,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 g.drawImage(tiles[4][j].getNumImage(), (int)x+52, (int)y+50, 55, 55, null);
             }
         }
-        g.drawImage(buildCosts, 1300, 400, 276, 334, null);
+        g.drawImage(buildCosts, 1150, 210, 276, 370, null);
     }
     public void drawIntersections(Graphics g) {
         g.setColor(Color.green);
