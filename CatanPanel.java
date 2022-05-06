@@ -104,6 +104,9 @@ public class CatanPanel extends JPanel implements MouseListener {
         setPort(intersections[3][4], portImages.get(7));
         setPort(intersections[0][1], portImages.get(8));
         setPort(intersections[1][2], portImages.get(8));
+        System.out.println(intersections[8][1].t1);
+        System.out.println(intersections[8][1].t2);
+        System.out.println(intersections[8][1].t3);
     }
     public void setPort (Intersection i, BufferedImage img) {
         if (img == portBrick) {
@@ -401,6 +404,12 @@ public class CatanPanel extends JPanel implements MouseListener {
                 g.setColor(Color.cyan);
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
                 g.drawString("Click on second intersection to build the road", 800, 100);
+            }
+            else if (gs.getSubState().equals("city")) {
+                highlightUpgradeAble(g);
+                g.setColor(Color.cyan);
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.drawString("Click on highlighted intersection to build a city", 800, 100);
             }
         }
     }
@@ -755,7 +764,9 @@ public class CatanPanel extends JPanel implements MouseListener {
                             boolean movedRobber = false;
                             //stealing
                             ArrayList<String> owners = new ArrayList<String>();
+                            System.out.println(tiles[i][j].settles.size());
                             for (int k = 0; k < tiles[i][j].settles.size(); k++) {
+                                System.out.println("settlement at " + tiles[i][j].settles.get(k) + " " + tiles[i][j].settles.get(k).getOwner());
                                 Player currentOwner = tiles[i][j].settles.get(k).getOwner();
                                 if (currentOwner != currentPlayer && owners.contains(currentOwner.toString()) == false && currentOwner.getInventorySize() > 0) {
                                     owners.add(tiles[i][j].settles.get(k).getOwner().toString());
@@ -850,7 +861,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                                 gs.setSubState("city");
                             }
                             else if (picked.equals("Development Card")) {
-                                gs.setSubState("development");
+                                Cards.giveDevCard(currentPlayer);
                             }
                         }
                         else {
@@ -946,10 +957,37 @@ public class CatanPanel extends JPanel implements MouseListener {
                     }
                 }
             }
+            else if (gs.getSubState().equals("city")) {
+                if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60) {//cancel(build) button
+                    gs.setSubState("");
+                }
+                for (int i = 0; i < intersections.length; i++) {
+                    for (int j = 0; j < intersections[i].length; j++) {
+                        if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
+                            if (currentPlayer.upgradeAble().contains(intersections[i][j])) {
+                                currentPlayer.removeResource("wheat", 2);
+                                currentPlayer.removeResource("ore", 3);
+                                intersections[i][j].getSettlement().upgrade();
+                                gs.setSubState("");
+                            }
+                        }
+                    }
+                }
+            }
         }
         repaint();
     }
 
+    public void highlightUpgradeAble(Graphics g) {
+        g.setColor(Color.cyan);
+        for (int i = 0; i < intersections.length; i++) {
+            for (int j = 0; j < intersections[i].length; j++) {
+                if (intersections[i][j] != null && currentPlayer.upgradeAble().contains(intersections[i][j])) {
+                    g.fillRect(intersections[i][j].getX()-10, intersections[i][j].getY()-10, 10, 10);
+                }
+            }
+        }
+    }
     public void highlightSettleAble(Graphics g) {
         g.setColor(Color.cyan);
         for (int i = 0; i < intersections.length; i++) {
@@ -1049,7 +1087,7 @@ public class CatanPanel extends JPanel implements MouseListener {
         g.fillRect(1600, 360, 170, 60);
         g.setColor(Color.black);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        if (gs.getGameState() == 2 && ((gs.getSubState().equals("settlement"))||gs.getSubState().equals("road") || gs.getSubState().equals("city"))) {
+        if (gs.getGameState() == 2 && ((gs.getSubState().equals("settlement"))||gs.getSubState().equals("road") || gs.getSubState().equals("city")) || gs.getSubState().equals("road1")) {
             g.drawString("Cancel Build", 1605, 360+40);
         }
         else {
@@ -1123,8 +1161,12 @@ public class CatanPanel extends JPanel implements MouseListener {
                     g.setColor(Color.YELLOW);
                 }
                 //System.out.println("Will Highlight: " + pManage.get(i).getSettlements().get(j));
-
-                g.fillRect(pManage.get(i).getSettlements().get(j).getX()-10, pManage.get(i).getSettlements().get(j).getY()-10, 20, 20);
+                if (!pManage.get(i).getSettlements().get(j).isCity()) {
+                    g.fillRect(pManage.get(i).getSettlements().get(j).getX()-10, pManage.get(i).getSettlements().get(j).getY()-10, 20, 20);
+                }
+                else {
+                    g.fillRoundRect(pManage.get(i).getSettlements().get(j).getX()-10, pManage.get(i).getSettlements().get(j).getY()-10, 20, 20, 20, 20);
+                }
             }
         }
     }

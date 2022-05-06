@@ -61,9 +61,11 @@ public class Player {
     public void addResource(String resource, int amount) {
         if (amount > bank.resourceLeft(resource)) {
             resources.put(resource, resources.get(resource) + bank.resourceLeft(resource));
+            bank.removeResource(resource, bank.resourceLeft(resource));
         }
         else {
             resources.put(resource, resources.get(resource) + amount);
+            bank.removeResource(resource, amount);
         }
 
     }

@@ -581,7 +581,7 @@ public class Board{
                 } else if (i == 8) {
                     if (j < 5) {
                         if (j < 4) {
-                            intersections[i][j].setT2(tiles[3][j + 1]);
+                            intersections[i][j].setT2(tiles[3][j]);
                         }
                         if (j > 0) {
                             intersections[i][j].setT1(tiles[3][j - 1]);

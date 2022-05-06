@@ -35,6 +35,9 @@ public class Settlement {
             updatePlayerShop();
         }
     }
+    public boolean isCity() {
+        return isCity;
+    }
     public void upgrade() {
         isCity = true;
     }

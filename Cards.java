@@ -54,5 +54,12 @@ public class Cards {
     public void putResource(String resource, int num) {
         numResourceCards.put(resource, numResourceCards.get(resource) + num);
     }
+    public void removeResource(String resource, int num) {
+        numResourceCards.put(resource, numResourceCards.get(resource) - num);
+    }
 
+    //TODO: give random dev card
+    public static void giveDevCard(Player p) {
+
+    }
 }
