@@ -217,7 +217,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 drawCards(g, currentPlayer);
             } else if (gs.getSubState().equals("discard")) {
                 drawCards(g, toDiscard.get(0));
-                g.drawString("Player " + toDiscard.get(0).playerIndex + " must discard " + numDiscard.get(0) + " cards", 500, 100);
+                g.drawString("Player " + toDiscard.get(0).playerIndex + " must discard " + numDiscard.get(0) + " cards", 800, 100);
             }
             if (gs.getSubState().equals("showInventory")) {
                 drawCards(g, toViewInven);
@@ -1066,52 +1066,52 @@ public class CatanPanel extends JPanel implements MouseListener {
         g.fillRoundRect(1600, 200, 170, 60, 20, 20);
         g.setColor(Color.black);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Trade", 1605, 200+40);
+        g.drawString("Trade", 1645, 200+40);
     }
     public void drawTradeGray(Graphics g) {
         g.setColor(Color.lightGray);
-        g.fillRect(1600, 200, 170, 60);
+        g.fillRoundRect(1600, 200, 170, 60, 20, 20);
         g.setColor(Color.black);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Trade", 1605, 200+40);
+        g.drawString("Trade", 1645, 200+40);
     }
     public void drawGameLog(Graphics g) {
         changeColor(g);
-        g.fillRect(1600, 280, 170, 60);
+        g.fillRoundRect(1600, 280, 170, 60, 20, 20);
         g.setColor(Color.black);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
         g.drawString("Game Log", 1605, 280+40);
     }
     public void drawBuild(Graphics g) {
         changeColor(g);
-        g.fillRect(1600, 360, 170, 60);
+        g.fillRoundRect(1600, 360, 170, 60, 20, 20);
         g.setColor(Color.black);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
         if (gs.getGameState() == 2 && ((gs.getSubState().equals("settlement"))||gs.getSubState().equals("road") || gs.getSubState().equals("city")) || gs.getSubState().equals("road1")) {
             g.drawString("Cancel Build", 1605, 360+40);
         }
         else {
-            g.drawString("Build", 1605, 360+40);
+            g.drawString("Build", 1645, 360+40);
         }
 
     }
     public void drawBuild1(Graphics g) {
         changeColor(g);
-        g.fillRect(1600, 360, 170, 60);
+        g.fillRoundRect(1600, 360, 170, 60, 20, 20);
         g.setColor(Color.black);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Build", 1605, 360+40);
+        g.drawString("Build", 1645, 360+40);
     }
     public void drawPlayerInfo(Graphics g) {
         changeColor(g);
-        g.fillRect(1600, 440, 170, 60);
+        g.fillRoundRect(1600, 440, 170, 60, 20, 20);
         g.setColor(Color.black);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
         g.drawString("Inventories", 1605, 440+40);
     }
     public void drawNextTurnButton(Graphics g) {
         changeColor(g);
-        g.fillRect(1600, 520, 170, 60);
+        g.fillRoundRect(1600, 520, 170, 60, 20, 20);
         g.setColor(Color.black);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
         g.drawString("Next Turn", 1605, 520+40);
