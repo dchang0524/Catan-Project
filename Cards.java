@@ -5,7 +5,7 @@ public class Cards {
     ArrayList<String> devCards = new ArrayList<>();
     static HashMap<String, BufferedImage> cardImages = new HashMap<String, BufferedImage>();
     static HashMap<String, Integer> numDevCards = new HashMap<>();
-    HashMap<String, Integer> numResourceCards = new HashMap<>();
+    static HashMap<String, Integer> numResourceCards = new HashMap<>();
     public Cards() {
         try {
             cardImages.put("brick", ImageIO.read(Cards.class.getResource("/resourceCards/brickCard.png")));

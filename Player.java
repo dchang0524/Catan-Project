@@ -6,7 +6,7 @@ public class Player {
     HashMap<String, Integer>  devCards  = new HashMap<String, Integer>();
     HashMap<String, Integer> newDevCards = new HashMap<>();
     ArrayList<Settlement> settlements;
-    int KnightsUsed;
+    int knightsUsed = 0;
     HashMap<String, Integer> developmentCards;
     int victoryPoints;
     HashMap<String, Integer> shopRatio;
@@ -19,7 +19,7 @@ public class Player {
     public Player(String name, Cards c, int i) {
         resources = new HashMap<String, Integer>();
         settlements = new ArrayList<Settlement>();
-        KnightsUsed = 0;
+        knightsUsed = 0;
         developmentCards = new HashMap<String, Integer>();
         victoryPoints = 0;
         shopRatio = new HashMap<String, Integer>();
@@ -88,7 +88,13 @@ public class Player {
         bank.putResource(resource, amount);
     }
 
-
+    public void useKnight() {
+        if (devCards.get("knight") > 0) {
+            knightsUsed++;
+            devCards.put("knight", devCards.get("knight") - 1);
+            Cards.numDevCards.put("knight", Cards.numDevCards.get("knight") + 1);
+        }
+    }
     public String getColor() {
         return color;
     }

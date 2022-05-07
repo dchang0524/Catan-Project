@@ -566,7 +566,57 @@ public class CatanPanel extends JPanel implements MouseListener {
                     }
                 }
                 else if (coordToDevCard(x, y).equals("monopoly") && currentPlayer.devCards.get("monopoly") > 0) {
+                    String[]  options = new String[2];
+                    options[0] = "Wheat";
+                    options[1] = "Ore";
+                    options[2] = "Sheep";
+                    options[3] = "Wood";
+                    options[4] = "Brick";
 
+                    String picked = (String) JOptionPane.showInputDialog(null, "Which resource do you want?", "Choose Resource", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (picked != null) {
+                        currentPlayer.devCards.put("monopoly", currentPlayer.devCards.get("monopoly") - 1);
+                        Cards.numDevCards.put("monopoly", Cards.numDevCards.get("monopoly") + 1);
+                        pManage.monopoly(currentPlayer, picked.toLowerCase());
+                    }
+                }
+                else if (coordToDevCard(x, y).equals("yearOfPlenty") && currentPlayer.devCards.get("yearOfPlenty") > 0) {
+                    ArrayList<String> options1 = new ArrayList<>();
+                    for (String s : Cards.numResourceCards.keySet()) {
+                        if (Cards.numResourceCards.get(s) > 0) {
+                            options1.add(s);
+                        }
+                    }
+                    String[] options = new String[options1.size()];
+                    for (int i = 0; i < options1.size(); i++) {
+                        options[i] = options1.get(i);
+                    }
+                    String picked1 = (String) JOptionPane.showInputDialog(null, "Which resource do you want?", "Choose Resource 1", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (picked1 != null) {
+                        ArrayList<String> options2 = new ArrayList<>();
+                        for (String s : Cards.numResourceCards.keySet()) {
+                            if (s.equals(picked1)) {
+                                if (Cards.numResourceCards.get(s) > 1) {
+                                    options2.add(s);
+                                }
+                            }
+                            else {
+                                if (Cards.numResourceCards.get(s) > 0) {
+                                    options2.add(s);
+                                }
+                            }
+                        }
+                        String[] options22 = new String[options2.size()];
+                        for (int i = 0; i < options2.size(); i++) {
+                            options22[i] = options2.get(i);
+                        }
+                        String picked2 = (String) JOptionPane.showInputDialog(null, "Which resource do you want?", "Choose Resource 2", JOptionPane.QUESTION_MESSAGE, null, options22, options22[0]);
+                        if (picked2 != null) {
+                            currentPlayer.devCards.put("yearOfPlenty", currentPlayer.devCards.get("yearOfPlenty") - 1);
+                            Cards.numDevCards.put("yearOfPlenty", Cards.numDevCards.get("yearOfPlenty") + 1);
+                            pManage.yearOfPlenty(currentPlayer, picked1.toLowerCase(), picked2.toLowerCase());
+                        }
+                    }
                 }
             }
             else if (gs.getSubState().equals("")) {

@@ -92,4 +92,19 @@ public class PlayerManager {
             A.addResource(resourceName, quantity);
         }
     }
+
+    public void monopoly(Player A, String resource) {
+        for (Player player : players) {
+            if (player != A) {
+                if (player.getResources().containsKey(resource)) {
+                    player.removeResource(resource, player.getResources().get(resource));
+                    A.addResource(resource, player.getResources().get(resource));
+                }
+            }
+        }
+    }
+    public void yearOfPlenty(Player A, String resource1, String resource2) {
+        A.addResource(resource1, 1);
+        A.addResource(resource2, 1);
+    }
 }
