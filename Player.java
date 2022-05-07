@@ -92,7 +92,6 @@ public class Player {
         if (devCards.get("knight") > 0) {
             knightsUsed++;
             devCards.put("knight", devCards.get("knight") - 1);
-            Cards.numDevCards.put("knight", Cards.numDevCards.get("knight") + 1);
         }
     }
     public String getColor() {

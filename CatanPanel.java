@@ -344,12 +344,18 @@ public class CatanPanel extends JPanel implements MouseListener {
             g.fillRect(30, 130, 100, 100); //dice button
             g.drawImage(dice, 35, 135, 90, 90, null);
             if (rolledDice == false) {
-                g.drawString("Roll Dice", 800, 100);
-            } else {
+                if (!gs.getSubState().equals("knight")) {
+                    g.drawString("Roll Dice", 800, 100);
+                }
+                else {
+                    g.drawString("Choose tile to place robber", 800, 120);
+                }
+            }
+            else {
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
                 g.drawString(die1 + " + " + die2 + " = " + sum, 20, 100);
             }
-            if (gs.getSubState().equals("robber")) {
+            if (gs.getSubState().equals("robber") || gs.getSubState().equals("knight")) {
                 g.drawString("Choose tile to place robber", 800, 120);
 
                 //TODO: print all players' inventory counts
@@ -381,6 +387,9 @@ public class CatanPanel extends JPanel implements MouseListener {
             drawNextTurnButton(g);
             drawDevCards(g);
             drawCards(g, currentPlayer);
+            if (gs.getSubState().equals("knight")) {
+                g.drawString("Choose tile to place robber", 800, 120);
+            }
             if (gs.getSubState().equals("showInventory")) {
                 drawCards(g, toViewInven);
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
@@ -565,8 +574,9 @@ public class CatanPanel extends JPanel implements MouseListener {
                         board.distributeResources(sum);
                     }
                 }
-                else if (coordToDevCard(x, y).equals("monopoly") && currentPlayer.devCards.get("monopoly") > 0) {
-                    String[]  options = new String[2];
+                //development cards
+                else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("monopoly") && currentPlayer.devCards.get("monopoly") > 0 && usedDevCard == false) {
+                    String[]  options = new String[5];
                     options[0] = "Wheat";
                     options[1] = "Ore";
                     options[2] = "Sheep";
@@ -578,9 +588,10 @@ public class CatanPanel extends JPanel implements MouseListener {
                         currentPlayer.devCards.put("monopoly", currentPlayer.devCards.get("monopoly") - 1);
                         Cards.numDevCards.put("monopoly", Cards.numDevCards.get("monopoly") + 1);
                         pManage.monopoly(currentPlayer, picked.toLowerCase());
+                        usedDevCard = true;
                     }
                 }
-                else if (coordToDevCard(x, y).equals("yearOfPlenty") && currentPlayer.devCards.get("yearOfPlenty") > 0) {
+                else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("yearOfPlenty") && currentPlayer.devCards.get("yearOfPlenty") > 0 && usedDevCard == false) {
                     ArrayList<String> options1 = new ArrayList<>();
                     for (String s : Cards.numResourceCards.keySet()) {
                         if (Cards.numResourceCards.get(s) > 0) {
@@ -615,6 +626,50 @@ public class CatanPanel extends JPanel implements MouseListener {
                             currentPlayer.devCards.put("yearOfPlenty", currentPlayer.devCards.get("yearOfPlenty") - 1);
                             Cards.numDevCards.put("yearOfPlenty", Cards.numDevCards.get("yearOfPlenty") + 1);
                             pManage.yearOfPlenty(currentPlayer, picked1.toLowerCase(), picked2.toLowerCase());
+                            usedDevCard = true;
+                        }
+                    }
+                }
+                else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("knight") && currentPlayer.devCards.get("knight") > 0 && usedDevCard == false) {
+                    gs.setSubState("knight");
+                    currentPlayer.useKnight();
+                    usedDevCard = true;
+                }
+                else if (gs.getSubState().equals("knight")) {
+                    for (int i = 0; i < tiles.length; i++) {
+                        for (int j = 0; j < tiles[i].length; j++) {
+                            if (tiles[i][j] != null && x >= tiles[i][j].getX() + 52 && x <= tiles[i][j].getX() + 52 + 55 && y >= tiles[i][j].getY() + 50 && y <= tiles[i][j].getY() + 100 && tiles[i][j] != robber.getPosition() && tiles[i][j].getResource() != "desert") {
+                                robber.setPosition(tiles[i][j]);
+                                gs.setSubState("");
+                                System.out.println("robber moved to " + i + " " + j + " " + tiles[i][j].getResource());
+                                boolean movedRobber = false;
+                                //stealing
+                                ArrayList<String> owners = new ArrayList<String>();
+                                System.out.println(tiles[i][j].settles.size());
+                                for (int k = 0; k < tiles[i][j].settles.size(); k++) {
+                                    System.out.println("settlement at " + tiles[i][j].settles.get(k) + " " + tiles[i][j].settles.get(k).getOwner());
+                                    Player currentOwner = tiles[i][j].settles.get(k).getOwner();
+                                    if (currentOwner != currentPlayer && owners.contains(currentOwner.toString()) == false && currentOwner.getInventorySize() > 0) {
+                                        owners.add(tiles[i][j].settles.get(k).getOwner().toString());
+                                    }
+                                }
+                                System.out.println("could steal from" + owners);
+                                if (owners.size() > 0) {
+                                    String[] owns = new String[owners.size()];
+                                    for (int n = 0; n < owners.size(); n++) {
+                                        owns[n] = owners.get(n) + "(Inventory Size: " + pManage.toStringReverse(owners.get(n)).getInventorySize() + " Color: " + pManage.toStringReverse(owners.get(n)).color.toUpperCase() + ")";
+                                    }
+                                    System.out.println("choose player to steal");
+                                    while (movedRobber == false) {
+                                        String picked = (String) JOptionPane.showInputDialog(null, "What player do you want to rob?", "Rob Player", JOptionPane.QUESTION_MESSAGE, null, owns, owns[0]);
+                                        if (picked != null) {
+                                            Player toSteal = pManage.get(Integer.parseInt("" + picked.charAt(7)));
+                                            System.out.println("stole " + pManage.steal(currentPlayer, toSteal));
+                                            movedRobber = true;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -684,6 +739,105 @@ public class CatanPanel extends JPanel implements MouseListener {
                     else {
                         JOptionPane.showMessageDialog(null, "You do not have enough resources to build anything. You can either trade or end your turn.", "NOTICE", JOptionPane.ERROR_MESSAGE);
                         gs.setSubState("");
+                    }
+                }
+                //development cards
+                else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("monopoly") && currentPlayer.devCards.get("monopoly") > 0 && usedDevCard == false) {
+                    String[]  options = new String[5];
+                    options[0] = "Wheat";
+                    options[1] = "Ore";
+                    options[2] = "Sheep";
+                    options[3] = "Wood";
+                    options[4] = "Brick";
+
+                    String picked = (String) JOptionPane.showInputDialog(null, "Which resource do you want?", "Choose Resource", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (picked != null) {
+                        currentPlayer.devCards.put("monopoly", currentPlayer.devCards.get("monopoly") - 1);
+                        Cards.numDevCards.put("monopoly", Cards.numDevCards.get("monopoly") + 1);
+                        pManage.monopoly(currentPlayer, picked.toLowerCase());
+                        usedDevCard = true;
+                    }
+                }
+                else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("yearOfPlenty") && currentPlayer.devCards.get("yearOfPlenty") > 0 && usedDevCard == false) {
+                    ArrayList<String> options1 = new ArrayList<>();
+                    for (String s : Cards.numResourceCards.keySet()) {
+                        if (Cards.numResourceCards.get(s) > 0) {
+                            options1.add(s);
+                        }
+                    }
+                    String[] options = new String[options1.size()];
+                    for (int i = 0; i < options1.size(); i++) {
+                        options[i] = options1.get(i);
+                    }
+                    String picked1 = (String) JOptionPane.showInputDialog(null, "Which resource do you want?", "Choose Resource 1", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (picked1 != null) {
+                        ArrayList<String> options2 = new ArrayList<>();
+                        for (String s : Cards.numResourceCards.keySet()) {
+                            if (s.equals(picked1)) {
+                                if (Cards.numResourceCards.get(s) > 1) {
+                                    options2.add(s);
+                                }
+                            }
+                            else {
+                                if (Cards.numResourceCards.get(s) > 0) {
+                                    options2.add(s);
+                                }
+                            }
+                        }
+                        String[] options22 = new String[options2.size()];
+                        for (int i = 0; i < options2.size(); i++) {
+                            options22[i] = options2.get(i);
+                        }
+                        String picked2 = (String) JOptionPane.showInputDialog(null, "Which resource do you want?", "Choose Resource 2", JOptionPane.QUESTION_MESSAGE, null, options22, options22[0]);
+                        if (picked2 != null) {
+                            currentPlayer.devCards.put("yearOfPlenty", currentPlayer.devCards.get("yearOfPlenty") - 1);
+                            Cards.numDevCards.put("yearOfPlenty", Cards.numDevCards.get("yearOfPlenty") + 1);
+                            pManage.yearOfPlenty(currentPlayer, picked1.toLowerCase(), picked2.toLowerCase());
+                            usedDevCard = true;
+                        }
+                    }
+                }
+                else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("knight") && currentPlayer.devCards.get("knight") > 0 && usedDevCard == false) {
+                    gs.setSubState("knight");
+                    currentPlayer.useKnight();
+                    usedDevCard = true;
+                }
+            }
+            else if (gs.getSubState().equals("knight")) {
+                for (int i = 0; i < tiles.length; i++) {
+                    for (int j = 0; j < tiles[i].length; j++) {
+                        if (tiles[i][j] != null && x >= tiles[i][j].getX() + 52 && x <= tiles[i][j].getX() + 52 + 55 && y >= tiles[i][j].getY() + 50 && y <= tiles[i][j].getY() + 100 && tiles[i][j] != robber.getPosition() && tiles[i][j].getResource() != "desert") {
+                            robber.setPosition(tiles[i][j]);
+                            gs.setSubState("");
+                            System.out.println("robber moved to " + i + " " + j + " " + tiles[i][j].getResource());
+                            boolean movedRobber = false;
+                            //stealing
+                            ArrayList<String> owners = new ArrayList<String>();
+                            System.out.println(tiles[i][j].settles.size());
+                            for (int k = 0; k < tiles[i][j].settles.size(); k++) {
+                                System.out.println("settlement at " + tiles[i][j].settles.get(k) + " " + tiles[i][j].settles.get(k).getOwner());
+                                Player currentOwner = tiles[i][j].settles.get(k).getOwner();
+                                if (currentOwner != currentPlayer && owners.contains(currentOwner.toString()) == false && currentOwner.getInventorySize() > 0) {
+                                    owners.add(tiles[i][j].settles.get(k).getOwner().toString());
+                                }
+                            }
+                            System.out.println("could steal from" + owners);
+                            if (owners.size() > 0) {
+                                String[] owns = new String[owners.size()];
+                                for (int n = 0; n < owners.size(); n++) {
+                                    owns[n] = owners.get(n) + "(Inventory Size: " + pManage.toStringReverse(owners.get(n)).getInventorySize() + " Color: " + pManage.toStringReverse(owners.get(n)).color.toUpperCase() + ")";
+                                }
+                                System.out.println("choose player to steal");
+                                while (movedRobber == false) {
+                                    String picked = (String) JOptionPane.showInputDialog(null, "What player do you want to rob?", "Rob Player", JOptionPane.QUESTION_MESSAGE, null, owns, owns[0]);
+                                    if (picked != null) {
+                                        Player toSteal = pManage.get(Integer.parseInt("" + picked.charAt(7)));
+                                        System.out.println("stole " + pManage.steal(currentPlayer, toSteal));
+                                        movedRobber = true;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -955,6 +1109,105 @@ public class CatanPanel extends JPanel implements MouseListener {
                     usedDevCard = false;
                     gs.setSubState("");
                     gs.setGameState(1);
+                }
+                //development cards
+                else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("monopoly") && currentPlayer.devCards.get("monopoly") > 0 && usedDevCard == false) {
+                    String[]  options = new String[5];
+                    options[0] = "Wheat";
+                    options[1] = "Ore";
+                    options[2] = "Sheep";
+                    options[3] = "Wood";
+                    options[4] = "Brick";
+
+                    String picked = (String) JOptionPane.showInputDialog(null, "Which resource do you want?", "Choose Resource", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (picked != null) {
+                        currentPlayer.devCards.put("monopoly", currentPlayer.devCards.get("monopoly") - 1);
+                        Cards.numDevCards.put("monopoly", Cards.numDevCards.get("monopoly") + 1);
+                        pManage.monopoly(currentPlayer, picked.toLowerCase());
+                        usedDevCard = true;
+                    }
+                }
+                else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("yearOfPlenty") && currentPlayer.devCards.get("yearOfPlenty") > 0 && usedDevCard == false) {
+                    ArrayList<String> options1 = new ArrayList<>();
+                    for (String s : Cards.numResourceCards.keySet()) {
+                        if (Cards.numResourceCards.get(s) > 0) {
+                            options1.add(s);
+                        }
+                    }
+                    String[] options = new String[options1.size()];
+                    for (int i = 0; i < options1.size(); i++) {
+                        options[i] = options1.get(i);
+                    }
+                    String picked1 = (String) JOptionPane.showInputDialog(null, "Which resource do you want?", "Choose Resource 1", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (picked1 != null) {
+                        ArrayList<String> options2 = new ArrayList<>();
+                        for (String s : Cards.numResourceCards.keySet()) {
+                            if (s.equals(picked1)) {
+                                if (Cards.numResourceCards.get(s) > 1) {
+                                    options2.add(s);
+                                }
+                            }
+                            else {
+                                if (Cards.numResourceCards.get(s) > 0) {
+                                    options2.add(s);
+                                }
+                            }
+                        }
+                        String[] options22 = new String[options2.size()];
+                        for (int i = 0; i < options2.size(); i++) {
+                            options22[i] = options2.get(i);
+                        }
+                        String picked2 = (String) JOptionPane.showInputDialog(null, "Which resource do you want?", "Choose Resource 2", JOptionPane.QUESTION_MESSAGE, null, options22, options22[0]);
+                        if (picked2 != null) {
+                            currentPlayer.devCards.put("yearOfPlenty", currentPlayer.devCards.get("yearOfPlenty") - 1);
+                            Cards.numDevCards.put("yearOfPlenty", Cards.numDevCards.get("yearOfPlenty") + 1);
+                            pManage.yearOfPlenty(currentPlayer, picked1.toLowerCase(), picked2.toLowerCase());
+                            usedDevCard = true;
+                        }
+                    }
+                }
+                else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("knight") && currentPlayer.devCards.get("knight") > 0 && usedDevCard == false) {
+                    gs.setSubState("knight");
+                    currentPlayer.useKnight();
+                    usedDevCard = true;
+                }
+            }
+            else if (gs.getSubState().equals("knight")) {
+                for (int i = 0; i < tiles.length; i++) {
+                    for (int j = 0; j < tiles[i].length; j++) {
+                        if (tiles[i][j] != null && x >= tiles[i][j].getX() + 52 && x <= tiles[i][j].getX() + 52 + 55 && y >= tiles[i][j].getY() + 50 && y <= tiles[i][j].getY() + 100 && tiles[i][j] != robber.getPosition() && tiles[i][j].getResource() != "desert") {
+                            robber.setPosition(tiles[i][j]);
+                            gs.setSubState("");
+                            System.out.println("robber moved to " + i + " " + j + " " + tiles[i][j].getResource());
+                            boolean movedRobber = false;
+                            //stealing
+                            ArrayList<String> owners = new ArrayList<String>();
+                            System.out.println(tiles[i][j].settles.size());
+                            for (int k = 0; k < tiles[i][j].settles.size(); k++) {
+                                System.out.println("settlement at " + tiles[i][j].settles.get(k) + " " + tiles[i][j].settles.get(k).getOwner());
+                                Player currentOwner = tiles[i][j].settles.get(k).getOwner();
+                                if (currentOwner != currentPlayer && owners.contains(currentOwner.toString()) == false && currentOwner.getInventorySize() > 0) {
+                                    owners.add(tiles[i][j].settles.get(k).getOwner().toString());
+                                }
+                            }
+                            System.out.println("could steal from" + owners);
+                            if (owners.size() > 0) {
+                                String[] owns = new String[owners.size()];
+                                for (int n = 0; n < owners.size(); n++) {
+                                    owns[n] = owners.get(n) + "(Inventory Size: " + pManage.toStringReverse(owners.get(n)).getInventorySize() + " Color: " + pManage.toStringReverse(owners.get(n)).color.toUpperCase() + ")";
+                                }
+                                System.out.println("choose player to steal");
+                                while (movedRobber == false) {
+                                    String picked = (String) JOptionPane.showInputDialog(null, "What player do you want to rob?", "Rob Player", JOptionPane.QUESTION_MESSAGE, null, owns, owns[0]);
+                                    if (picked != null) {
+                                        Player toSteal = pManage.get(Integer.parseInt("" + picked.charAt(7)));
+                                        System.out.println("stole " + pManage.steal(currentPlayer, toSteal));
+                                        movedRobber = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             else if (gs.getSubState().equals("showInventory")) {

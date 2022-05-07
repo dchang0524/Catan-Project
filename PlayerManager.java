@@ -97,8 +97,9 @@ public class PlayerManager {
         for (Player player : players) {
             if (player != A) {
                 if (player.getResources().containsKey(resource)) {
-                    player.removeResource(resource, player.getResources().get(resource));
-                    A.addResource(resource, player.getResources().get(resource));
+                    int amount = player.getResources().get(resource);
+                    player.removeResource(resource, amount);
+                    A.addResource(resource, amount);
                 }
             }
         }
