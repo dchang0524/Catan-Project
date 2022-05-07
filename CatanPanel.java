@@ -16,7 +16,8 @@ import java.io.*;
 public class CatanPanel extends JPanel implements MouseListener {
     private static final long serialVersionUID = 1L;
     GameState gs;
-    BufferedImage startBackground, logo, portBrick, portWood, portSheep, portWheat, portOre, portUnknown, dice, robberImg, buildCosts;
+    BufferedImage startBackground, logo, portBrick, portWood, portSheep, portWheat, portOre,
+            portUnknown, dice, robberImg, buildCosts, armyImg, roadImg;
     Board board;
     PlayerManager pManage;
     Player currentPlayer;
@@ -61,6 +62,8 @@ public class CatanPanel extends JPanel implements MouseListener {
             portUnknown = (ImageIO.read(CatanPanel.class.getResource("/PortImages/port_unknown.png")));
             robberImg = (ImageIO.read(CatanPanel.class.getResource("/misc/robber.png")));
             buildCosts = ImageIO.read(CatanPanel.class.getResource("/misc/build costs.png"));
+            armyImg = ImageIO.read(CatanPanel.class.getResource("/DevCards/LargestArmyCard.png"));
+            roadImg = ImageIO.read(CatanPanel.class.getResource("/DevCards/LongestRoadCard.png"));
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error loading image");
@@ -344,7 +347,9 @@ public class CatanPanel extends JPanel implements MouseListener {
             g.fillRect(30, 130, 100, 100); //dice button
             g.drawImage(dice, 35, 135, 90, 90, null);
             if (rolledDice == false) {
-                if (!gs.getSubState().equals("knight")) {
+                if (!(gs.getSubState().equals("knight")
+                        || gs.getSubState().equals("roadBuilding1") || gs.getSubState().equals("roadBuilding2") ||
+                        gs.getSubState().equals("roadBuilding3") || gs.getSubState().equals("roadBuilding4"))) {
                     g.drawString("Roll Dice", 800, 100);
                 }
                 else {
@@ -359,9 +364,19 @@ public class CatanPanel extends JPanel implements MouseListener {
                 g.drawString("Choose tile to place robber", 800, 120);
 
                 //TODO: print all players' inventory counts
-
             }
-
+            if (gs.getSubState().equals("roadBuilding1") || gs.getSubState().equals("roadBuilding3")) {
+                highlightRoadAble1(g);
+                g.setColor(Color.cyan);
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.drawString("Click on first intersection to build the road", 800, 100);
+            }
+            if (gs.getSubState().equals("roadBuilding2") || gs.getSubState().equals("roadBuilding4")) {
+                highlightRoadAble2(g);
+                g.setColor(Color.cyan);
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.drawString("Click on second intersection to build the road", 800, 100);
+            }
         }
         //gameState = 2, buy phase
         else if (gs.getGameState() == 2) {
@@ -406,13 +421,13 @@ public class CatanPanel extends JPanel implements MouseListener {
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
                 g.drawString("Click on highlighted intersection to build a settlment", 800, 100);
             }
-            else if (gs.getSubState().equals("road")) {
+            else if (gs.getSubState().equals("road") || gs.getSubState().equals("roadBuilding1") || gs.getSubState().equals("roadBuilding3")) {
                highlightRoadAble1(g);
                 g.setColor(Color.cyan);
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
                 g.drawString("Click on first intersection to build the road", 800, 100);
             }
-            else if (gs.getSubState().equals("road1")) {
+            else if (gs.getSubState().equals("road1") || gs.getSubState().equals("roadBuilding2") || gs.getSubState().equals("roadBuilding4")) {
                 highlightRoadAble2(g);
                 g.setColor(Color.cyan);
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
@@ -633,6 +648,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("knight") && currentPlayer.devCards.get("knight") > 0 && usedDevCard == false) {
                     gs.setSubState("knight");
                     currentPlayer.useKnight();
+                    pManage.updateLargestArmy();
                     usedDevCard = true;
                 }
                 else if (gs.getSubState().equals("knight")) {
@@ -668,6 +684,69 @@ public class CatanPanel extends JPanel implements MouseListener {
                                             movedRobber = true;
                                         }
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("roadBuilding") && currentPlayer.devCards.get("roadBuilding") > 0 && usedDevCard == false) {
+                    gs.setSubState("roadBuilding1");
+                }
+                else if (gs.getSubState().equals("roadBuilding1")) {
+                    if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60) {//cancel(build) button
+                        gs.setSubState("");
+                    }
+                    for (int i = 0; i < intersections.length; i++) {
+                        for (int j = 0; j < intersections[i].length; j++) {
+                            if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
+                                if (currentPlayer.possibleRoadI1().contains(intersections[i][j])) {
+                                    gs.setSubState("roadBuilding2");
+                                    roadBuildI1 = intersections[i][j];
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (gs.getSubState().equals("roadBuilding2")) {
+                    if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60) {//cancel(build) button
+                        gs.setSubState("");
+                        roadBuildI1 = null;
+                    }
+                    for (int i = 0; i < intersections.length; i++) {
+                        for (int j = 0; j < intersections[i].length; j++) {
+                            if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
+                                if (currentPlayer.possibleRoadI2(roadBuildI1).contains(intersections[i][j])) {
+                                    new Road(roadBuildI1, intersections[i][j], currentPlayer);
+                                    gs.setSubState("roadBuilding3");
+                                    roadBuildI1 = null;
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (gs.getSubState().equals("roadBuilding3")) {
+                    for (int i = 0; i < intersections.length; i++) {
+                        for (int j = 0; j < intersections[i].length; j++) {
+                            if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
+                                if (currentPlayer.possibleRoadI1().contains(intersections[i][j])) {
+                                    gs.setSubState("roadBuilding4");
+                                    roadBuildI1 = intersections[i][j];
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (gs.getSubState().equals("roadBuilding4")) {
+                    for (int i = 0; i < intersections.length; i++) {
+                        for (int j = 0; j < intersections[i].length; j++) {
+                            if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
+                                if (currentPlayer.possibleRoadI2(roadBuildI1).contains(intersections[i][j])) {
+                                    new Road(roadBuildI1, intersections[i][j], currentPlayer);
+                                    gs.setSubState("");
+                                    roadBuildI1 = null;
+                                    currentPlayer.devCards.put("roadBuilding", currentPlayer.devCards.get("roadBuilding") - 1);
+                                    usedDevCard  = true;
+                                    Cards.numDevCards.put("roadBuilding", Cards.numDevCards.get("roadBuilding") + 1);
                                 }
                             }
                         }
@@ -742,6 +821,9 @@ public class CatanPanel extends JPanel implements MouseListener {
                     }
                 }
                 //development cards
+                else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("roadBuilding") && currentPlayer.devCards.get("roadBuilding") > 0 && usedDevCard == false) {
+                    gs.setSubState("roadBuilding1");
+                }
                 else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("monopoly") && currentPlayer.devCards.get("monopoly") > 0 && usedDevCard == false) {
                     String[]  options = new String[5];
                     options[0] = "Wheat";
@@ -800,6 +882,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("knight") && currentPlayer.devCards.get("knight") > 0 && usedDevCard == false) {
                     gs.setSubState("knight");
                     currentPlayer.useKnight();
+                    pManage.updateLargestArmy();
                     usedDevCard = true;
                 }
             }
@@ -1031,6 +1114,66 @@ public class CatanPanel extends JPanel implements MouseListener {
                     }
                 }
             }
+            else if (gs.getSubState().equals("roadBuilding1")) {
+                if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60) {//cancel(build) button
+                    gs.setSubState("");
+                }
+                for (int i = 0; i < intersections.length; i++) {
+                    for (int j = 0; j < intersections[i].length; j++) {
+                        if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
+                            if (currentPlayer.possibleRoadI1().contains(intersections[i][j])) {
+                                gs.setSubState("roadBuilding2");
+                                roadBuildI1 = intersections[i][j];
+                            }
+                        }
+                    }
+                }
+            }
+            else if (gs.getSubState().equals("roadBuilding2")) {
+                if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60) {//cancel(build) button
+                    gs.setSubState("");
+                    roadBuildI1 = null;
+                }
+                for (int i = 0; i < intersections.length; i++) {
+                    for (int j = 0; j < intersections[i].length; j++) {
+                        if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
+                            if (currentPlayer.possibleRoadI2(roadBuildI1).contains(intersections[i][j])) {
+                                new Road(roadBuildI1, intersections[i][j], currentPlayer);
+                                gs.setSubState("roadBuilding3");
+                                roadBuildI1 = null;
+                            }
+                        }
+                    }
+                }
+            }
+            else if (gs.getSubState().equals("roadBuilding3")) {
+                for (int i = 0; i < intersections.length; i++) {
+                    for (int j = 0; j < intersections[i].length; j++) {
+                        if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
+                            if (currentPlayer.possibleRoadI1().contains(intersections[i][j])) {
+                                gs.setSubState("roadBuilding4");
+                                roadBuildI1 = intersections[i][j];
+                            }
+                        }
+                    }
+                }
+            }
+            else if (gs.getSubState().equals("roadBuilding4")) {
+                for (int i = 0; i < intersections.length; i++) {
+                    for (int j = 0; j < intersections[i].length; j++) {
+                        if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
+                            if (currentPlayer.possibleRoadI2(roadBuildI1).contains(intersections[i][j])) {
+                                new Road(roadBuildI1, intersections[i][j], currentPlayer);
+                                gs.setSubState("");
+                                roadBuildI1 = null;
+                                currentPlayer.devCards.put("roadBuilding", currentPlayer.devCards.get("roadBuilding") - 1);
+                                usedDevCard  = true;
+                                Cards.numDevCards.put("roadBuilding", Cards.numDevCards.get("roadBuilding") + 1);
+                            }
+                        }
+                    }
+                }
+            }
             repaint();
         }
         if(gs.getGameState() == 2){
@@ -1111,6 +1254,9 @@ public class CatanPanel extends JPanel implements MouseListener {
                     gs.setGameState(1);
                 }
                 //development cards
+                else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("roadBuilding") && currentPlayer.devCards.get("roadBuilding") > 0 && usedDevCard == false) {
+                    gs.setSubState("roadBuilding1");
+                }
                 else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("monopoly") && currentPlayer.devCards.get("monopoly") > 0 && usedDevCard == false) {
                     String[]  options = new String[5];
                     options[0] = "Wheat";
@@ -1169,6 +1315,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("knight") && currentPlayer.devCards.get("knight") > 0 && usedDevCard == false) {
                     gs.setSubState("knight");
                     currentPlayer.useKnight();
+                    pManage.updateLargestArmy();
                     usedDevCard = true;
                 }
             }
@@ -1264,6 +1411,8 @@ public class CatanPanel extends JPanel implements MouseListener {
                                 new Road(roadBuildI1, intersections[i][j], currentPlayer);
                                 currentPlayer.removeResource("brick", 1);
                                 currentPlayer.removeResource("wood", 1);
+                                currentPlayer.manageRoads();
+                                pManage.updateLongestRoad();
                                 gs.setSubState("");
                                 roadBuildI1 = null;
                             }
@@ -1283,6 +1432,70 @@ public class CatanPanel extends JPanel implements MouseListener {
                                 currentPlayer.removeResource("ore", 3);
                                 intersections[i][j].getSettlement().upgrade();
                                 gs.setSubState("");
+                            }
+                        }
+                    }
+                }
+            }
+            else if (gs.getSubState().equals("roadBuilding1")) {
+                if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60) {//cancel(build) button
+                    gs.setSubState("");
+                }
+                for (int i = 0; i < intersections.length; i++) {
+                    for (int j = 0; j < intersections[i].length; j++) {
+                        if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
+                            if (currentPlayer.possibleRoadI1().contains(intersections[i][j])) {
+                                gs.setSubState("roadBuilding2");
+                                roadBuildI1 = intersections[i][j];
+                            }
+                        }
+                    }
+                }
+            }
+            else if (gs.getSubState().equals("roadBuilding2")) {
+                if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60) {//cancel(build) button
+                    gs.setSubState("");
+                    roadBuildI1 = null;
+                }
+                for (int i = 0; i < intersections.length; i++) {
+                    for (int j = 0; j < intersections[i].length; j++) {
+                        if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
+                            if (currentPlayer.possibleRoadI2(roadBuildI1).contains(intersections[i][j])) {
+                                new Road(roadBuildI1, intersections[i][j], currentPlayer);
+                                currentPlayer.manageRoads();
+                                pManage.updateLongestRoad();
+                                gs.setSubState("roadBuilding3");
+                                roadBuildI1 = null;
+                            }
+                        }
+                    }
+                }
+            }
+            else if (gs.getSubState().equals("roadBuilding3")) {
+                for (int i = 0; i < intersections.length; i++) {
+                    for (int j = 0; j < intersections[i].length; j++) {
+                        if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
+                            if (currentPlayer.possibleRoadI1().contains(intersections[i][j])) {
+                                gs.setSubState("roadBuilding4");
+                                roadBuildI1 = intersections[i][j];
+                            }
+                        }
+                    }
+                }
+            }
+            else if (gs.getSubState().equals("roadBuilding4")) {
+                for (int i = 0; i < intersections.length; i++) {
+                    for (int j = 0; j < intersections[i].length; j++) {
+                        if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
+                            if (currentPlayer.possibleRoadI2(roadBuildI1).contains(intersections[i][j])) {
+                                new Road(roadBuildI1, intersections[i][j], currentPlayer);
+                                currentPlayer.manageRoads();
+                                pManage.updateLongestRoad();
+                                gs.setSubState("");
+                                roadBuildI1 = null;
+                                currentPlayer.devCards.put("roadBuilding", currentPlayer.devCards.get("roadBuilding") - 1);
+                                usedDevCard  = true;
+                                Cards.numDevCards.put("roadBuilding", Cards.numDevCards.get("roadBuilding") + 1);
                             }
                         }
                     }
@@ -1665,7 +1878,22 @@ public class CatanPanel extends JPanel implements MouseListener {
                 g.drawImage(tiles[4][j].getNumImage(), (int)x+52, (int)y+50, 55, 55, null);
             }
         }
-        g.drawImage(buildCosts, 1150, 210, 276, 370, null);
+        //276x370
+        g.drawImage(buildCosts, 1350, 500, 180, (int)(180.0/276.0*370.0), null);
+        g.drawImage(armyImg, 1150, 500, 180, (int)(180.0/276.0*370.0), null);
+        pManage.updateLargestArmy();
+        if (pManage.largestArmy != null) {
+            changeColor(g, pManage.largestArmy);
+            g.setFont(new Font("TimesRoman", Font.BOLD, 30));
+            g.drawString(pManage.largestArmy.toString(), 1150, 530);
+        }
+        g.drawImage(roadImg, 950, 500, 180, (int)(180.0/276.0*370.0), null);
+        pManage.updateLongestRoad();
+        if (pManage.longestRoad != null) {
+            changeColor(g, pManage.longestRoad);
+            g.setFont(new Font("TimesRoman", Font.BOLD, 30));
+            g.drawString(pManage.longestRoad.toString(), 950, 530);
+        }
     }
     public void drawIntersections(Graphics g) {
         g.setColor(Color.green);

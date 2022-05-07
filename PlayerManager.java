@@ -108,4 +108,46 @@ public class PlayerManager {
         A.addResource(resource1, 1);
         A.addResource(resource2, 1);
     }
+
+    public Player updateLargestArmy() {
+        int largestArmyInt = 2;
+        if (largestArmy != null) {
+            largestArmyInt = largestArmy.knightsUsed;
+        }
+        for (Player player : players) {
+            if (player.knightsUsed > largestArmyInt) {
+                if (largestArmy != null) {
+                    largestArmy.largestArmy = false;
+                }
+                largestArmy = player;
+                player.largestArmy = true;
+            }
+        }
+        if (largestArmy != null) {
+            System.out.println(largestArmy + " used the most knights: " + largestArmy.knightsUsed);
+        }
+
+        return largestArmy;
+    }
+    public Player updateLongestRoad() {
+        int longestRoadInt = 4;
+        if (longestRoad != null) {
+            longestRoadInt = longestRoad.longestRoadLength();
+        }
+        for (Player player : players) {
+            player.manageRoads();
+            System.out.println(player + "'s longest road length: " + player.longestRoadLength());
+            if (player.longestRoadLength() > longestRoadInt) {
+                if (longestRoad != null) {
+                    longestRoad.longestRoad = false;
+                }
+                longestRoad = player;
+                player.longestRoad = true;
+            }
+        }
+        if (longestRoad != null) {
+            System.out.println(longestRoad + " has the longest road, length: " + longestRoad.longestRoadLength());
+        }
+        return longestRoad;
+    }
 }

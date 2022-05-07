@@ -90,7 +90,7 @@ public class Road {
     public void connect(Road r) {
         Intersection commonPoint = this.commonPoint(r);
         if (commonPoint != null) {
-            if (commonPoint.hasSettlement() && commonPoint.getSettlement().getOwner() == owner) {
+            if (!(commonPoint.hasSettlement() && commonPoint.getSettlement().getOwner() != owner)) {
                 if (r.getR1() != r && r.getR2() != r && r.getR3() != r && r.getR4() != r) {
                     if (r1 == null) {
                         r1 = r;
@@ -170,7 +170,23 @@ public class Road {
     public int getHeight() {
         HashSet<Road> visited = new HashSet<>();
         visited.add(this);
-        return 1+Math.max(Math.max(r1.getHeightHelper(visited), r2.getHeightHelper(visited)), Math.max(r4.getHeightHelper(visited), r4.getHeightHelper(visited)));
+        int r1Height = 0;
+        if (r1 != null) {
+            r1Height = r1.getHeightHelper(visited);
+        }
+        int r2Height = 0;
+        if (r2 != null) {
+            r2Height = r2.getHeightHelper(visited);
+        }
+        int r3Height = 0;
+        if (r3 != null) {
+            r3Height = r3.getHeightHelper(visited);
+        }
+        int r4Height = 0;
+        if (r4 != null) {
+            r4Height = r4.getHeightHelper(visited);
+        }
+        return 1+Math.max(Math.max(r1Height, r2Height), Math.max(r3Height, r4Height));
     }
     public int getHeightHelper(HashSet<Road> visited) {
         if (this == null) {
@@ -180,7 +196,23 @@ public class Road {
             return 0;
         }
         visited.add(this);
-        return 1+Math.max(Math.max(r1.getHeightHelper(visited), r2.getHeightHelper(visited)), Math.max(r4.getHeightHelper(visited), r4.getHeightHelper(visited)));
+        int r1Height = 0;
+        if (r1 != null) {
+            r1Height = r1.getHeightHelper(visited);
+        }
+        int r2Height = 0;
+        if (r2 != null) {
+            r2Height = r2.getHeightHelper(visited);
+        }
+        int r3Height = 0;
+        if (r3 != null) {
+            r3Height = r3.getHeightHelper(visited);
+        }
+        int r4Height = 0;
+        if (r4 != null) {
+            r4Height = r4.getHeightHelper(visited);
+        }
+        return 1+Math.max(Math.max(r1Height, r2Height), Math.max(r3Height, r4Height));
     }
 
 }

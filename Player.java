@@ -14,7 +14,8 @@ public class Player {
     ArrayList<Road> roads;
     Cards bank;
     int playerIndex;
-
+    boolean longestRoad = false;
+    boolean largestArmy = false;
     //constructor
     public Player(String name, Cards c, int i) {
         resources = new HashMap<String, Integer>();
@@ -132,7 +133,7 @@ public class Player {
     public void manageRoads() {
         for (int i = 0; i< roads.size(); i++) {
             for (int j = 0; j< roads.size(); j++) {
-                if (roads.get(i) != roads.get(j)) {
+                if (i != j) {
                     roads.get(i).connect(roads.get(j));
                     roads.get(i).disconnect(roads.get(j));
                 }
