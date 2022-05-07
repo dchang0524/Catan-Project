@@ -1960,6 +1960,10 @@ public class CatanPanel extends JPanel implements MouseListener {
         }
         g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
         g.drawString("Player " + p.playerIndex, 30, 850);
+        int vp = currentPlayer.updateVP();
+        int hvp = currentPlayer.updateHiddenVP();
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString("Points: " + vp + "(+"+hvp+") = " + (hvp+vp), 30, 920);
     }
 
     public void mouseReleased(MouseEvent m) {}

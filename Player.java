@@ -9,6 +9,7 @@ public class Player {
     int knightsUsed = 0;
     HashMap<String, Integer> developmentCards;
     int victoryPoints;
+    int hiddenVP;
     HashMap<String, Integer> shopRatio;
     String color;
     ArrayList<Road> roads;
@@ -233,15 +234,31 @@ public class Player {
         return false;
     }*/
     // get victory points
-    public int getVictoryPoints() {
+    public int updateVP() {
         int points = 0;
         for (Settlement s : settlements) {
             points += 1;
+            if (s.isCity()) {
+                points+=1;
+            }
         }
-        /*if (hasLongestRoad(this))
-            points += 2;*/
-        //TODO: add points for longest road and largest army and cities
-        return points;
+        if (longestRoad) {
+            points += 2;
+        }
+        if (largestArmy) {
+            points += 2;
+        }
+        victoryPoints = points;
+        return victoryPoints;
+    }
+    public int updateHiddenVP() {
+        int points = 0;
+        points += devCards.get("library");
+        points += devCards.get("university");
+        points += newDevCards.get("library");
+        points += newDevCards.get("university");
+        hiddenVP = points;
+        return hiddenVP;
     }
 }
 
