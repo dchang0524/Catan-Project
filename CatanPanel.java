@@ -107,9 +107,9 @@ public class CatanPanel extends JPanel implements MouseListener {
         setPort(intersections[3][4], portImages.get(7));
         setPort(intersections[0][1], portImages.get(8));
         setPort(intersections[1][2], portImages.get(8));
-        System.out.println(intersections[8][1].t1);
-        System.out.println(intersections[8][1].t2);
-        System.out.println(intersections[8][1].t3);
+        System.out.println(intersections[3][3].t1);
+        System.out.println(intersections[3][3].t2);
+        System.out.println(intersections[3][3].t3);
     }
     public void setPort (Intersection i, BufferedImage img) {
         if (img == portBrick) {
