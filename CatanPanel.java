@@ -43,6 +43,9 @@ public class CatanPanel extends JPanel implements MouseListener {
     Player toViewInven;
 
     Intersection roadBuildI1;
+
+    boolean usedDevCard = false;
+
     public CatanPanel() {
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
@@ -562,11 +565,15 @@ public class CatanPanel extends JPanel implements MouseListener {
                         board.distributeResources(sum);
                     }
                 }
+                else if (coordToDevCard(x, y).equals("monopoly") && currentPlayer.devCards.get("monopoly") > 0) {
+
+                }
             }
             else if (gs.getSubState().equals("")) {
                 if (x >= 1600 && x <= 1600 + 170 && y >= 520 && y <= 580) { //if next turn button (1500, 520, 170, 60)
                     pManage.nextPlayer();
                     rolledDice = false;
+                    usedDevCard = false;
                     gs.setSubState("");
                     gs.setGameState(1);
                     repaint();
@@ -895,6 +902,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 else if (x >= 1600 && x <= 1600 + 170 && y >= 520 && y <= 580) { //if next turn button (1500, 520, 170, 60)
                     pManage.nextPlayer();
                     rolledDice = false;
+                    usedDevCard = false;
                     gs.setSubState("");
                     gs.setGameState(1);
                 }
@@ -1148,6 +1156,31 @@ public class CatanPanel extends JPanel implements MouseListener {
                 }
             }
         }
+    }
+    public String coordToDevCard(int x, int y) {
+        HashMap<String, Integer> tempDev = currentPlayer.devCards;
+        HashMap<String, Integer> tempNew = currentPlayer.newDevCards;
+        Set<String> keys = tempDev.keySet();
+        double ratio = 482.0/326.0;
+        if (keys != null) {
+            Iterator<String> iter = keys.iterator();
+            int width = 100;
+            int height = (int) (width*ratio);
+            int count = 0;
+            int horDiff = width + 30;
+            while (iter.hasNext()) {
+                String card = iter.next();
+                int amount = tempDev.get(card) + tempNew.get(card);
+
+                if (amount > 0) {
+                    if (x>=1050+horDiff*count && x<=1050+horDiff*count+width && y>=800 && y<=800+height) {
+                        return card;
+                    }
+                    count++;
+                }
+            }
+        }
+        return null;
     }
     public void drawCards(Graphics g, Player p) {
         g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
