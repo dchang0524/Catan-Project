@@ -212,7 +212,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             drawBuild1(g);
             drawPlayerInfo(g);
             drawNextTurnButton(g);
-            //TODO: drawDevCards();
+            drawDevCards(g);
             if (!gs.getSubState().equals("discard")) {
                 drawCards(g, currentPlayer);
             } else if (gs.getSubState().equals("discard")) {
@@ -376,6 +376,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             drawBuild(g);
             drawPlayerInfo(g);
             drawNextTurnButton(g);
+            drawDevCards(g);
             drawCards(g, currentPlayer);
             if (gs.getSubState().equals("showInventory")) {
                 drawCards(g, toViewInven);
@@ -568,6 +569,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                     rolledDice = false;
                     gs.setSubState("");
                     gs.setGameState(1);
+                    repaint();
                 }
                 else if (x >= 1600 && x <= 1600 + 170 && y >= 200 && y <= 200 + 60) { //if trade button
                     String[] tradeTypes = new String[2];
@@ -596,6 +598,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                             gs.setSubState("maritime");
                         }
                     }
+                    repaint();
                 }
                 else if (x>=1600 && y>=440 && x<=1600+170 && y<=440+60)  { //inventories button 1600, 440, 170, 60
                     String[] toView = new String[pManage.size()-1];
@@ -612,23 +615,14 @@ public class CatanPanel extends JPanel implements MouseListener {
                         int playerIndex = Integer.parseInt("" + picked.charAt(7));
                         toViewInven = pManage.get(playerIndex);
                     }
+                    repaint();
                 }
                 else if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60)  { //build button 1600, 360, 170, 60
-                    ArrayList<String> possibleOptions = new ArrayList<>();
-                    if (currentPlayer.enoughResourcesCard()) {
-                        possibleOptions.add("Development Card");
-                    }
-                    if (currentPlayer.enoughResourcesSettlement()) {
-                        possibleOptions.add("Settlement");
-                    }
-                    if (currentPlayer.enoughResourcesRoad()) {
-                        possibleOptions.add("Road");
-                    }
-                    if (currentPlayer.enoughResourcesCity()) {
-                        possibleOptions.add("City");
-                    }
-                    if (possibleOptions.size()>0) {
+                    System.out.println("current inventory: " + currentPlayer.resources);
+                    if (currentPlayer.enoughResourcesCard() || currentPlayer.enoughResourcesRoad() ||
+                            currentPlayer.enoughResourcesSettlement() || currentPlayer.enoughResourcesCity()) {
                         gs.setGameState(2);
+                        System.out.println("entered build");
                     }
                     else {
                         JOptionPane.showMessageDialog(null, "You do not have enough resources to build anything. You can either trade or end your turn.", "NOTICE", JOptionPane.ERROR_MESSAGE);
@@ -832,6 +826,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             if (gs.getSubState().equals("")) {
                 if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60)  { //build button 1600, 360, 170, 60
                     ArrayList<String> possibleOptions = new ArrayList<>();
+                    System.out.println("current inventory: " + currentPlayer.resources);
                     if (currentPlayer.enoughResourcesCard()) {
                         possibleOptions.add("Development Card");
                     }
@@ -862,6 +857,14 @@ public class CatanPanel extends JPanel implements MouseListener {
                             }
                             else if (picked.equals("Development Card")) {
                                 Cards.giveDevCard(currentPlayer);
+                                currentPlayer.removeResource("wheat", 1);
+                                currentPlayer.removeResource("sheep", 1);
+                                currentPlayer.removeResource("ore", 1);
+                                gs.setSubState("");
+                                System.out.println("giving dev card");
+                                System.out.println("new dev cards " + currentPlayer.newDevCards);
+                                System.out.println("old dev cards " + currentPlayer.devCards);
+                                repaint();
                             }
                         }
                         else {
@@ -1121,7 +1124,31 @@ public class CatanPanel extends JPanel implements MouseListener {
         //g.drawImage(tiles[1][j].getNumImage(), (int)x+52, (int)y+50, 55, 55, null);
         g.drawImage(robberImg, robber.getPosition().getX()+53, robber.getPosition().getY()+30, 54, 111, null);
     }
-
+    public void drawDevCards(Graphics g) {
+        HashMap<String, Integer> tempDev = currentPlayer.devCards;
+        HashMap<String, Integer> tempNew = currentPlayer.newDevCards;
+        Set<String> keys = tempDev.keySet();
+        double ratio = 482.0/326.0;
+        if (keys != null) {
+            Iterator<String> iter = keys.iterator();
+            int width = 100;
+            int height = (int) (width*ratio);
+            int count = 0;
+            int horDiff = width + 30;
+            while (iter.hasNext()) {
+                String card = iter.next();
+                changeColor(g);
+                int amount = tempDev.get(card) + tempNew.get(card);
+                if (amount > 0) {
+                    BufferedImage img = Cards.cardImages.get(card);
+                    g.drawImage(img, 1050+horDiff*count, 800, width, height, null);
+                    g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
+                    g.drawString(""+amount, 1050+horDiff*count, 852);
+                    count++;
+                }
+            }
+        }
+    }
     public void drawCards(Graphics g, Player p) {
         g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
         double ratio = 454.0/296.0;

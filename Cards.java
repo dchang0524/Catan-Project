@@ -4,7 +4,7 @@ import java.util.*;
 public class Cards {
     ArrayList<String> devCards = new ArrayList<>();
     static HashMap<String, BufferedImage> cardImages = new HashMap<String, BufferedImage>();
-    HashMap<String, Integer> numDevCards = new HashMap<>();
+    static HashMap<String, Integer> numDevCards = new HashMap<>();
     HashMap<String, Integer> numResourceCards = new HashMap<>();
     public Cards() {
         try {
@@ -60,6 +60,19 @@ public class Cards {
 
     //TODO: give random dev card
     public static void giveDevCard(Player p) {
-
+        int total = 0;
+        for (String key : numDevCards.keySet()) {
+            total += numDevCards.get(key);
+        }
+        int rand = (int) (Math.random() * total);
+        int count = 0;
+        for (String key : numDevCards.keySet()) {
+            count += numDevCards.get(key);
+            if (count >= rand) {
+                p.newDevCards.put(key, 1);
+                numDevCards.put(key, numDevCards.get(key) - 1);
+                return;
+            }
+        }
     }
 }

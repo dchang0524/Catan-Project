@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Player {
     HashMap<String, Integer> resources = new HashMap<String, Integer>();
-    HashMap<String, Integer> devCards = new HashMap<String, Integer>();
+    HashMap<String, Integer>  devCards  = new HashMap<String, Integer>();
     HashMap<String, Integer> newDevCards = new HashMap<>();
     ArrayList<Settlement> settlements;
     int KnightsUsed;
@@ -37,6 +37,20 @@ public class Player {
         shopRatio.put("sheep", 4);
         shopRatio.put("wheat", 4);
         shopRatio.put("wood", 4);
+
+        devCards.put("university", 0);
+        devCards.put("library", 0);
+        devCards.put("roadBuilding", 0);
+        devCards.put("yearOfPlenty", 0);
+        devCards.put("monopoly", 0);
+        devCards.put("knight", 0);
+
+        newDevCards.put("university", 0);
+        newDevCards.put("library", 0);
+        newDevCards.put("roadBuilding", 0);
+        newDevCards.put("yearOfPlenty", 0);
+        newDevCards.put("monopoly", 0);
+        newDevCards.put("knight", 0);
     }
     public void setPlayerIndex(int i) {
         playerIndex = i;
@@ -128,6 +142,12 @@ public class Player {
             }
         }
         newDevCards = new HashMap<String, Integer>();
+        newDevCards.put("university", 0);
+        newDevCards.put("library", 0);
+        newDevCards.put("roadBuilding", 0);
+        newDevCards.put("yearOfPlenty", 0);
+        newDevCards.put("monopoly", 0);
+        newDevCards.put("knight", 0);
     }
     public HashSet<Intersection> possibleRoadI1() {
         HashSet<Intersection> possibleRoadI1 = new HashSet<Intersection>();
