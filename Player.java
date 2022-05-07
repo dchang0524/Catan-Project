@@ -215,10 +215,27 @@ public class Player {
         return false;
     }
     public boolean enoughResourcesCard() {
-        if (resources.get("wheat") >= 1 && resources.get("sheep") >= 1 && resources.get("wood") >= 1) {
+        if (resources.get("wheat") >= 1 && resources.get("sheep") >= 1 && resources.get("ore") >= 1) {
             return true;
         }
         return false;
+    }
+    /*public boolean hasLongestRoad(Player p){
+        if (p.longestRoadLength()==this.longestRoadLength()){
+            return true;
+        }
+        return false;
+    }*/
+    // get victory points
+    public int getVictoryPoints() {
+        int points = 0;
+        for (Settlement s : settlements) {
+            points += 1;
+        }
+        /*if (hasLongestRoad(this))
+            points += 2;*/
+        //TODO: add points for longest road and largest army and cities
+        return points;
     }
 }
 
