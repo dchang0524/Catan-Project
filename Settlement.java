@@ -79,9 +79,11 @@ public class Settlement {
     }
     public void giveResource(Tile t) {
         if (isCity == false) {
+            System.out.println("Giving 1 of " + t.getResource() + " to " + owner.toString());
             owner.addResource(t.getResource(),1);
         }
         else {
+            System.out.println("Giving 2 of " + t.getResource() + " to " + owner.toString())
             owner.addResource(t.getResource(),2);
         }
     }
