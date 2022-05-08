@@ -191,6 +191,7 @@ public class Player {
 
     public int longestRoadLength() {
         int longest = 0;
+        manageRoads();
         for (Road r : roads) {
             if (r.getHeight() > longest) {
                 longest = r.getHeight();
@@ -236,12 +237,6 @@ public class Player {
         }
         return false;
     }
-    /*public boolean hasLongestRoad(Player p){
-        if (p.longestRoadLength()==this.longestRoadLength()){
-            return true;
-        }
-        return false;
-    }*/
     // get victory points
     public int updateVP() {
         int points = 0;
