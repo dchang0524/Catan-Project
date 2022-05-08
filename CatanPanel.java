@@ -779,6 +779,12 @@ public class CatanPanel extends JPanel implements MouseListener {
                     gs.setGameState(1);
                     repaint();
                 }
+                else if (x>=30 && y>=630 && x<= 30 + 120 && y<=50+630) { //bank button 30, 630, 120, 50
+                    JOptionPane.showMessageDialog(null, "Remaining Resource Cards: " + Cards.numResourceCards, "BANK", JOptionPane.INFORMATION_MESSAGE);
+                    for (int i = 0; i<pManage.size(); i++) {
+                        JOptionPane.showMessageDialog(null, "Settlements: " + pManage.get(i).settlementsLeft() + "\nCities: " + pManage.get(i).citiesLeft() + "\nRoads: " + pManage.get(i).roadsLeft(), pManage.get(i).toString(), JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
                 else if (x >= 1600 && x <= 1600 + 170 && y >= 200 && y <= 200 + 60) { //if trade button
                     String[] tradeTypes = new String[2];
                     tradeTypes[0] = "Trade With Players";
@@ -1944,6 +1950,12 @@ public class CatanPanel extends JPanel implements MouseListener {
             g.setFont(new Font("TimesRoman", Font.BOLD, 30));
             g.drawString(pManage.longestRoad.toString(), 950, 530);
         }
+
+        changeColor(g);
+        g.fillRoundRect(30, 630, 120, 50, 20, 20);
+        g.setFont(new Font("TimesRoman", Font.BOLD, 30));
+        g.setColor(Color.BLACK);
+        g.drawString("Bank", 50, 663);
     }
     public void drawIntersections(Graphics g) {
         g.setColor(Color.green);
