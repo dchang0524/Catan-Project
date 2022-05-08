@@ -42,7 +42,7 @@ public class Cards {
        // numDevCards.put("greatHall", 1);
         //numDevCards.put("market", 1);
         //functional cards
-        numDevCards.put("roadBuilding", 2);
+        numDevCards.put("roadBuilding", 200);
         numDevCards.put("yearOfPlenty", 2);
         numDevCards.put("monopoly", 2);
         numDevCards.put("knight", 14);
@@ -69,7 +69,7 @@ public class Cards {
         for (String key : numDevCards.keySet()) {
             count += numDevCards.get(key);
             if (count >= rand) {
-                p.newDevCards.put(key, 1);
+                p.newDevCards.put(key, p.devCards.get(key) + 1);
                 numDevCards.put(key, numDevCards.get(key) - 1);
                 return;
             }

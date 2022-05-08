@@ -146,6 +146,7 @@ public class Player {
         for (String card : newDevCards.keySet()) {
             if (newDevCards.get(card) > 0) {
                 devCards.put(card, devCards.get(card) + newDevCards.get(card));
+                newDevCards.put(card, 0);
             }
         }
         newDevCards = new HashMap<String, Integer>();
@@ -203,27 +204,35 @@ public class Player {
 
     public boolean enoughResourcesRoad() {
         if (resources.get("brick") >= 1 && resources.get("wood") >= 1) {
-            return true;
+            if (this.roadsLeft() > 0) {
+                return true;
+            }
         }
         return false;
     }
 
     public boolean enoughResourcesSettlement() {
         if (resources.get("brick") >= 1 && resources.get("wood") >= 1 && resources.get("wheat") >= 1 && resources.get("sheep") >= 1) {
-            return true;
+            if (this.settlementsLeft() > 0) {
+                return true;
+            }
         }
         return false;
     }
 
     public boolean enoughResourcesCity() {
         if (resources.get("ore") >= 3 && resources.get("wheat") >= 2) {
-            return true;
+            if (this.citiesLeft() > 0) {
+                return true;
+            }
         }
         return false;
     }
     public boolean enoughResourcesCard() {
         if (resources.get("wheat") >= 1 && resources.get("sheep") >= 1 && resources.get("ore") >= 1) {
-            return true;
+            if (Cards.numDevCards.size() > 0) {
+                return true;
+            }
         }
         return false;
     }
@@ -259,6 +268,27 @@ public class Player {
         points += newDevCards.get("university");
         hiddenVP = points;
         return hiddenVP;
+    }
+    public int roadsLeft() {
+        return 15 - roads.size();
+    }
+    public int settlementsLeft() {
+        int start = 5;
+        for (Settlement s : settlements) {
+            if (s.isCity() == false) {
+                start--;
+            }
+        }
+        return start;
+    }
+    public int citiesLeft() {
+        int start = 5;
+        for (Settlement s : settlements) {
+            if (s.isCity() == true) {
+                start--;
+            }
+        }
+        return start;
     }
 }
 

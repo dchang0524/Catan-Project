@@ -168,49 +168,66 @@ public class Road {
     }
 
     public int getHeight() {
-        HashSet<Road> visited = new HashSet<>();
-        visited.add(this);
+        HashSet<Road> visited1 = new HashSet<>();
+        HashSet<Road> visited2 = new HashSet<>();
+        HashSet<Road> visited3 = new HashSet<>();
+        HashSet<Road> visited4 = new HashSet<>();
+        visited1.add(this);
+        visited2.add(this);
+        visited3.add(this);
+        visited4.add(this);
         int r1Height = 0;
         if (r1 != null) {
-            r1Height = r1.getHeightHelper(visited);
+            r1Height = r1.getHeightHelper(visited1, commonPoint(r1));
         }
         int r2Height = 0;
         if (r2 != null) {
-            r2Height = r2.getHeightHelper(visited);
+            r2Height = r2.getHeightHelper(visited2, commonPoint(r2));
         }
         int r3Height = 0;
         if (r3 != null) {
-            r3Height = r3.getHeightHelper(visited);
+            r3Height = r3.getHeightHelper(visited3, commonPoint(r3));
         }
         int r4Height = 0;
         if (r4 != null) {
-            r4Height = r4.getHeightHelper(visited);
+            r4Height = r4.getHeightHelper(visited4, commonPoint(r4));
         }
         return 1+Math.max(Math.max(r1Height, r2Height), Math.max(r3Height, r4Height));
     }
-    public int getHeightHelper(HashSet<Road> visited) {
+    public int getHeightHelper(HashSet<Road> visited, Intersection prevCommonPoint) {
         if (this == null) {
             return 0;
         }
         if (visited.contains(this)) {
             return 0;
         }
-        visited.add(this);
+        HashSet<Road> visited1 = new HashSet<>();
+        HashSet<Road> visited2 = new HashSet<>();
+        HashSet<Road> visited3 = new HashSet<>();
+        HashSet<Road> visited4 = new HashSet<>();
+        visited1.addAll(visited);
+        visited1.add(this);
+        visited2.addAll(visited);
+        visited2.add(this);
+        visited3.addAll(visited);
+        visited3.add(this);
+        visited4.addAll(visited);
+        visited4.add(this);
         int r1Height = 0;
-        if (r1 != null) {
-            r1Height = r1.getHeightHelper(visited);
+        if (r1 != null && commonPoint(r1) != prevCommonPoint) {
+            r1Height = r1.getHeightHelper(visited1, commonPoint(r1));
         }
         int r2Height = 0;
-        if (r2 != null) {
-            r2Height = r2.getHeightHelper(visited);
+        if (r2 != null && commonPoint(r2) != prevCommonPoint) {
+            r2Height = r2.getHeightHelper(visited2, commonPoint(r2));
         }
         int r3Height = 0;
-        if (r3 != null) {
-            r3Height = r3.getHeightHelper(visited);
+        if (r3 != null && commonPoint(r3) != prevCommonPoint) {
+            r3Height = r3.getHeightHelper(visited3, commonPoint(r3));
         }
         int r4Height = 0;
-        if (r4 != null) {
-            r4Height = r4.getHeightHelper(visited);
+        if (r4 != null && commonPoint(r4) != prevCommonPoint) {
+            r4Height = r4.getHeightHelper(visited4, commonPoint(r4));
         }
         return 1+Math.max(Math.max(r1Height, r2Height), Math.max(r3Height, r4Height));
     }

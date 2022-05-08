@@ -690,7 +690,12 @@ public class CatanPanel extends JPanel implements MouseListener {
                     }
                 }
                 else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("roadBuilding") && currentPlayer.devCards.get("roadBuilding") > 0 && usedDevCard == false) {
-                    gs.setSubState("roadBuilding1");
+                    if (currentPlayer.roadsLeft() > 0) {
+                        gs.setSubState("roadBuilding1");
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "You do not have enough roads to build", "NOTICE", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
                 else if (gs.getSubState().equals("roadBuilding1")) {
                     if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60) {//cancel(build) button
@@ -717,7 +722,17 @@ public class CatanPanel extends JPanel implements MouseListener {
                             if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
                                 if (currentPlayer.possibleRoadI2(roadBuildI1).contains(intersections[i][j])) {
                                     new Road(roadBuildI1, intersections[i][j], currentPlayer);
-                                    gs.setSubState("roadBuilding3");
+                                    currentPlayer.manageRoads();
+                                    pManage.updateLongestRoad();
+                                    if (currentPlayer.roadsLeft()>0) {
+                                        gs.setSubState("roadBuilding3");
+                                    }
+                                    else {
+                                        currentPlayer.devCards.put("roadBuilding", currentPlayer.devCards.get("roadBuilding") - 1);
+                                        Cards.numDevCards.put("roadBuilding", Cards.numDevCards.get("roadBuilding") + 1);
+                                        gs.setSubState("");
+                                        JOptionPane.showMessageDialog(null, "You do not have enough roads to build");
+                                    }
                                     roadBuildI1 = null;
                                 }
                             }
@@ -742,6 +757,8 @@ public class CatanPanel extends JPanel implements MouseListener {
                             if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
                                 if (currentPlayer.possibleRoadI2(roadBuildI1).contains(intersections[i][j])) {
                                     new Road(roadBuildI1, intersections[i][j], currentPlayer);
+                                    currentPlayer.manageRoads();
+                                    pManage.updateLongestRoad();
                                     gs.setSubState("");
                                     roadBuildI1 = null;
                                     currentPlayer.devCards.put("roadBuilding", currentPlayer.devCards.get("roadBuilding") - 1);
@@ -822,7 +839,12 @@ public class CatanPanel extends JPanel implements MouseListener {
                 }
                 //development cards
                 else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("roadBuilding") && currentPlayer.devCards.get("roadBuilding") > 0 && usedDevCard == false) {
-                    gs.setSubState("roadBuilding1");
+                    if (currentPlayer.roadsLeft() > 0) {
+                        gs.setSubState("roadBuilding1");
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "You do not have enough roads to build", "NOTICE", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
                 else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("monopoly") && currentPlayer.devCards.get("monopoly") > 0 && usedDevCard == false) {
                     String[]  options = new String[5];
@@ -1139,7 +1161,17 @@ public class CatanPanel extends JPanel implements MouseListener {
                         if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
                             if (currentPlayer.possibleRoadI2(roadBuildI1).contains(intersections[i][j])) {
                                 new Road(roadBuildI1, intersections[i][j], currentPlayer);
-                                gs.setSubState("roadBuilding3");
+                                currentPlayer.manageRoads();
+                                pManage.updateLongestRoad();
+                                if (currentPlayer.roadsLeft()>0) {
+                                    gs.setSubState("roadBuilding3");
+                                }
+                                else {
+                                    currentPlayer.devCards.put("roadBuilding", currentPlayer.devCards.get("roadBuilding") - 1);
+                                    Cards.numDevCards.put("roadBuilding", Cards.numDevCards.get("roadBuilding") + 1);
+                                    gs.setSubState("");
+                                    JOptionPane.showMessageDialog(null, "You do not have enough roads to build");
+                                }
                                 roadBuildI1 = null;
                             }
                         }
@@ -1164,6 +1196,8 @@ public class CatanPanel extends JPanel implements MouseListener {
                         if (intersections[i][j] != null && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
                             if (currentPlayer.possibleRoadI2(roadBuildI1).contains(intersections[i][j])) {
                                 new Road(roadBuildI1, intersections[i][j], currentPlayer);
+                                currentPlayer.manageRoads();
+                                pManage.updateLongestRoad();
                                 gs.setSubState("");
                                 roadBuildI1 = null;
                                 currentPlayer.devCards.put("roadBuilding", currentPlayer.devCards.get("roadBuilding") - 1);
@@ -1183,10 +1217,10 @@ public class CatanPanel extends JPanel implements MouseListener {
                     System.out.println("current inventory: " + currentPlayer.resources);
                     if (currentPlayer.enoughResourcesCard()) {
                         possibleOptions.add("Development Card");
-                    }
+                    } //devCard
                     if (currentPlayer.enoughResourcesSettlement()) {
                         possibleOptions.add("Settlement");
-                    }
+                    } //settlement
                     if (currentPlayer.enoughResourcesRoad()) {
                         possibleOptions.add("Road");
                     }
@@ -1255,7 +1289,12 @@ public class CatanPanel extends JPanel implements MouseListener {
                 }
                 //development cards
                 else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("roadBuilding") && currentPlayer.devCards.get("roadBuilding") > 0 && usedDevCard == false) {
-                    gs.setSubState("roadBuilding1");
+                    if (currentPlayer.roadsLeft() > 0) {
+                        gs.setSubState("roadBuilding1");
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "You do not have enough roads to build", "NOTICE", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
                 else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("monopoly") && currentPlayer.devCards.get("monopoly") > 0 && usedDevCard == false) {
                     String[]  options = new String[5];
@@ -1464,7 +1503,18 @@ public class CatanPanel extends JPanel implements MouseListener {
                                 new Road(roadBuildI1, intersections[i][j], currentPlayer);
                                 currentPlayer.manageRoads();
                                 pManage.updateLongestRoad();
-                                gs.setSubState("roadBuilding3");
+                                if (currentPlayer.roadsLeft()>0) {
+                                    gs.setSubState("roadBuilding3");
+                                }
+                                else {
+                                    currentPlayer.devCards.put("roadBuilding", currentPlayer.devCards.get("roadBuilding") - 1);
+                                    Cards.numDevCards.put("roadBuilding", Cards.numDevCards.get("roadBuilding") + 1);
+                                    gs.setSubState("");
+                                    JOptionPane.showMessageDialog(null, "You do not have enough roads to build");
+                                }
+                                roadBuildI1 = null;
+                                currentPlayer.manageRoads();
+                                pManage.updateLongestRoad();
                                 roadBuildI1 = null;
                             }
                         }
