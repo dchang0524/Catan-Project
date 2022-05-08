@@ -252,6 +252,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             }
 
             if (gs.getSubState().equals("domesticWant")) {
+                g.setFont(new Font("Helvetica", Font.PLAIN, 30));
                 g.drawString("Choose what cards you want to get by clicking on them", 800, 50);
                 g.drawString("Right click to remove cards", 800, 100);
                 System.out.println("currently wants " + currentPlayerWant);
@@ -266,6 +267,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             } else if (gs.getSubState().equals("domesticPlayers")) {
                 g.setFont(new Font("Helvetica", Font.PLAIN, 30));
                 changeColor(g);
+                g.setFont(new Font("Helvetica", Font.PLAIN, 20));
                 g.drawString("Choose what cards you want to get for  " + currentPlayerWant, 800, 25);
                 g.drawString("Will automatically skip over player if they don't have what the current player wants", 800, 75);
                 g.drawString("Click on the cards you want to get. To remove a card, right click on the card.", 800, 125);
