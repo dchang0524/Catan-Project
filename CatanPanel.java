@@ -247,7 +247,8 @@ public class CatanPanel extends JPanel implements MouseListener {
                 g.drawString("Click back to return", 800, 100);
             }
             if (gs.getSubState().equals("domesticWant")) {
-                g.drawString("Choose cards you want", 800, 100);
+                g.drawString("Choose what cards you want to get by clicking on them", 800, 50);
+                g.drawString("Right click to remove cards", 800, 100);
                 System.out.println("currently wants " + currentPlayerWant);
                 if (currentPlayerWant != null) {
                     drawTradeNums(g, offers.get(0), currentPlayer);
@@ -258,9 +259,11 @@ public class CatanPanel extends JPanel implements MouseListener {
                 g.setColor(Color.black);
                 g.drawString("Done", 300, 925);
             } else if (gs.getSubState().equals("domesticPlayers")) {
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
                 changeColor(g);
-                g.drawString("Choose cards you want for " + currentPlayerWant, 800, 100);
+                g.drawString("Choose what cards you want to get for  " + currentPlayerWant, 800, 25);
+                g.drawString("Will automatically skip over player if they don't have what the current player wants", 800, 75);
+                g.drawString("Click on the cards you want to get. To remove a card, right click on the card.", 800, 125);
                 changeColor(g, tradeITOrder.get(0));
                 g.drawString("Current chooser " + tradeITOrder.get(0), 900, 150);
                 drawCards(g, tradeITOrder.get(0));
@@ -364,6 +367,8 @@ public class CatanPanel extends JPanel implements MouseListener {
                         || gs.getSubState().equals("roadBuilding1") || gs.getSubState().equals("roadBuilding2") ||
                         gs.getSubState().equals("roadBuilding3") || gs.getSubState().equals("roadBuilding4"))) {
                     g.drawString("Roll Dice", 800, 100);
+                    g.setFont(new Font ("TimesRoman", Font.PLAIN, 20));
+                    g.drawString("if you want to use a development card, click on it", 800, 780);
                 }
                 else {
                     g.drawString("Choose tile to place robber", 800, 120);
@@ -372,6 +377,8 @@ public class CatanPanel extends JPanel implements MouseListener {
             else {
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
                 g.drawString(die1 + " + " + die2 + " = " + sum, 20, 100);
+                g.setFont(new Font ("TimesRoman", Font.PLAIN, 20));
+                g.drawString("if you want to use a development card, click on it", 800, 780);
             }
             if (gs.getSubState().equals("robber") || gs.getSubState().equals("knight")) {
                 g.drawString("Choose tile to place robber", 800, 120);
@@ -605,7 +612,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             repaint();
         }
         else if (gs.getGameState() == 1) {
-            if (rolledDice == false) {
+            if (!rolledDice) {
                 if (x >= 30 && x <= 130 && y >= 130 && y <= 230) {
                     rolledDice = true;
                     die1 = (int) (Math.random() * 6 + 1);
