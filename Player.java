@@ -290,6 +290,11 @@ public class Player {
         }
         return start;
     }
+    public int totalVP() {
+        updateVP();
+        updateHiddenVP();
+        return victoryPoints + hiddenVP;
+    }
 }
 
 

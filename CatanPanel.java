@@ -306,7 +306,9 @@ public class CatanPanel extends JPanel implements MouseListener {
                         ArrayList<String> potentialOptions = new ArrayList<>();
                         for (String resource : currentPlayer.shopRatio.keySet()) {
                             if (currentPlayer.getResourceCount(resource) >= currentPlayer.shopRatio.get(resource)) {
-                                potentialOptions.add(resource);
+                                if (resource != picked.toLowerCase()) {
+                                    potentialOptions.add(resource);
+                                }
                             }
                         }
                         String[] options2 = new String[potentialOptions.size()];
@@ -439,6 +441,13 @@ public class CatanPanel extends JPanel implements MouseListener {
                 g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
                 g.drawString("Click on highlighted intersection to build a city", 800, 100);
             }
+        }
+        else if (gs.getGameState() == 3) {
+            changeColor(g);
+            g.clearRect(0, 0, 1900, 220);
+            g.setColor(Color.black);
+            g.setFont(new Font("TimesRoman", Font.PLAIN, 100));
+            g.drawString(currentPlayer + " wins!", 800, 100);
         }
     }
 
@@ -1934,7 +1943,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 g.drawImage(tiles[4][j].getNumImage(), (int)x+52, (int)y+50, 55, 55, null);
             }
         }
-        //276x370
+        //276x370 longest road largest army
         g.drawImage(buildCosts, 1350, 500, 180, (int)(180.0/276.0*370.0), null);
         g.drawImage(armyImg, 1150, 500, 180, (int)(180.0/276.0*370.0), null);
         pManage.updateLargestArmy();
@@ -1950,12 +1959,18 @@ public class CatanPanel extends JPanel implements MouseListener {
             g.setFont(new Font("TimesRoman", Font.BOLD, 30));
             g.drawString(pManage.longestRoad.toString(), 950, 530);
         }
-
+        //bank
         changeColor(g);
         g.fillRoundRect(30, 630, 120, 50, 20, 20);
         g.setFont(new Font("TimesRoman", Font.BOLD, 30));
         g.setColor(Color.BLACK);
         g.drawString("Bank", 50, 663);
+        //victory points
+        if (currentPlayer.totalVP() >= 10 && gs.getGameState() != 3) {
+            gs.setGameState(3);
+            gs.setSubState(currentPlayer.toString());
+            repaint();
+        }
     }
     public void drawIntersections(Graphics g) {
         g.setColor(Color.green);
