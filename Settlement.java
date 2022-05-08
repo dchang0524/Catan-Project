@@ -83,7 +83,7 @@ public class Settlement {
             owner.addResource(t.getResource(),1);
         }
         else {
-            System.out.println("Giving 2 of " + t.getResource() + " to " + owner.toString())
+            System.out.println("Giving 2 of " + t.getResource() + " to " + owner.toString());
             owner.addResource(t.getResource(),2);
         }
     }
