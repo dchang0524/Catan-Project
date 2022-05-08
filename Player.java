@@ -295,6 +295,20 @@ public class Player {
         updateHiddenVP();
         return victoryPoints + hiddenVP;
     }
+    public int totalResources() {
+        int total = 0;
+        for (String s : resources.keySet()) {
+            total += resources.get(s);
+        }
+        return total;
+    }
+    public int totalDevCards() {
+        int total = 0;
+        for (String s : devCards.keySet()) {
+            total += devCards.get(s);
+        }
+        return total;
+    }
 }
 
 

@@ -593,7 +593,7 @@ public class Board{
                         intersections[i][j].setT2(tiles[4][j + 1]);
                         intersections[i][j].setT1(tiles[3][j]);
                         if (j > 0) {
-                            intersections[i][j].setT3(tiles[4][j - 1]);
+                            intersections[i][j].setT3(tiles[4][j]);
                         }
                     }
                 } else if (i == 10) {
@@ -603,7 +603,7 @@ public class Board{
                     }
                 } else if (i == 11) {
                     if (j < 3) {
-                        intersections[i][j].setT1(tiles[4][j]);
+                        intersections[i][j].setT1(tiles[4][j+1]);
                     }
                 }
             }

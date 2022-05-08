@@ -17,7 +17,7 @@ public class CatanPanel extends JPanel implements MouseListener {
     private static final long serialVersionUID = 1L;
     GameState gs;
     BufferedImage startBackground, logo, portBrick, portWood, portSheep, portWheat, portOre,
-            portUnknown, dice, robberImg, buildCosts, armyImg, roadImg;
+            portUnknown, dice, robberImg, buildCosts, armyImg, roadImg, devFaceDown, resourceFaceDown;
     Board board;
     PlayerManager pManage;
     Player currentPlayer;
@@ -64,6 +64,8 @@ public class CatanPanel extends JPanel implements MouseListener {
             buildCosts = ImageIO.read(CatanPanel.class.getResource("/misc/build costs.png"));
             armyImg = ImageIO.read(CatanPanel.class.getResource("/DevCards/LargestArmyCard.png"));
             roadImg = ImageIO.read(CatanPanel.class.getResource("/DevCards/LongestRoadCard.png"));
+            devFaceDown = ImageIO.read(CatanPanel.class.getResource("/DevCards/devFaceDown.jpg"));
+            resourceFaceDown = ImageIO.read(CatanPanel.class.getResource("/DevCards/resourceFaceDown.jpg"));
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error loading image");
@@ -110,9 +112,18 @@ public class CatanPanel extends JPanel implements MouseListener {
         setPort(intersections[3][4], portImages.get(7));
         setPort(intersections[0][1], portImages.get(8));
         setPort(intersections[1][2], portImages.get(8));
-        System.out.println(intersections[3][3].t1);
-        System.out.println(intersections[3][3].t2);
-        System.out.println(intersections[3][3].t3);
+        for (int i = 0; i < intersections.length; i++) {
+            for (int j = 0; j < intersections[i].length; j++) {
+                if (intersections[i][j] != null) {
+                    System.out.println("Intersection [" + i + ", " + j + "]");
+                    System.out.println(intersections[i][j].t1);
+                    System.out.println(intersections[i][j].t2);
+                    System.out.println(intersections[i][j].t3);
+                    System.out.println();
+                }
+            }
+
+        }
     }
     public void setPort (Intersection i, BufferedImage img) {
         if (img == portBrick) {
@@ -1970,6 +1981,20 @@ public class CatanPanel extends JPanel implements MouseListener {
             gs.setGameState(3);
             gs.setSubState(currentPlayer.toString());
             repaint();
+        }
+        //player info
+        g.setFont(new Font("TimesRoman", Font.BOLD, 30));
+        g.setColor(Color.GREEN);
+        g.drawString("Player #", 1000, 230);
+        g.drawImage(resourceFaceDown, 1130, 150, 100, 150, null);
+        g.drawImage(devFaceDown, 1260, 150, 100, 150, null);
+        g.drawImage(Cards.cardImages.get("knight"), 1380, 150, 100, 150, null);
+        for (int i = 0; i<pManage.size(); i++) {
+            changeColor(g, pManage.get(i));
+            g.drawString(pManage.get(i).toString(), 1000, 330 + i*30);
+            g.drawString(pManage.get(i).totalResources() + "", 1170, 330 + i*30);
+            g.drawString(pManage.get(i).totalDevCards() + "", 1300, 330 + i*30);
+            g.drawString(pManage.get(i).knightsUsed + "", 1420, 330 + i*30);
         }
     }
     public void drawIntersections(Graphics g) {
