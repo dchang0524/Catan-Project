@@ -250,6 +250,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 g.setFont(new Font("Helvetica", Font.PLAIN, 40));
                 g.drawString("Click back to return", 800, 100);
             }
+
             if (gs.getSubState().equals("domesticWant")) {
                 g.drawString("Choose what cards you want to get by clicking on them", 800, 50);
                 g.drawString("Right click to remove cards", 800, 100);
