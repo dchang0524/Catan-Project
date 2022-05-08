@@ -154,4 +154,18 @@ public class Intersection {
     public String toString() {
         return x + " " + y;
     }
+
+    public double getExpectedValue() {
+        double expectedValue = 0;
+        if (t1 != null) {
+            expectedValue += t1.getExpectedValue();
+        }
+        if (t2 != null) {
+            expectedValue += t2.getExpectedValue();
+        }
+        if (t3 != null) {
+            expectedValue += t3.getExpectedValue();
+        }
+        return expectedValue;
+    }
 }

@@ -47,6 +47,8 @@ public class CatanPanel extends JPanel implements MouseListener {
 
     boolean usedDevCard = false;
 
+    boolean showExpected = false;
+
     public CatanPanel() {
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
@@ -171,6 +173,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 drawBuild(g);
                 drawPlayerInfo(g);
                 drawNextTurnButton(g);
+                drawExpected(g);
 
                 if (gs.getSubState().equals("settlement")) {
                     changeColor(g);
@@ -230,6 +233,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             drawPlayerInfo(g);
             drawNextTurnButton(g);
             drawDevCards(g);
+            drawExpected(g);
             if (!gs.getSubState().equals("discard")) {
                 drawCards(g, currentPlayer);
             } else if (gs.getSubState().equals("discard")) {
@@ -422,6 +426,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             drawNextTurnButton(g);
             drawDevCards(g);
             drawCards(g, currentPlayer);
+            drawExpected(g);
             if (gs.getSubState().equals("knight")) {
                 g.drawString("Choose tile to place robber", 800, 120);
             }
@@ -511,6 +516,14 @@ public class CatanPanel extends JPanel implements MouseListener {
         }
         //choose starting settlements
         else if (gs.getGameState() == 0 && startGame) {
+            if (x>=1600 && x<=1600+170 && y>=280 && y<=280+60) { //1600, 280, 170, 60
+                if (showExpected) {
+                    showExpected = false;
+                }
+                else {
+                    showExpected = true;
+                }
+            }
             if (gs.getSubState().equals("settlement")) {
                 for (int i = 0; i < intersections.length; i++) {
                     for (int j = 0; j < intersections[i].length; j++) {
@@ -603,6 +616,14 @@ public class CatanPanel extends JPanel implements MouseListener {
             repaint();
         }
         else if (gs.getGameState() == 1) {
+            if (x>=1600 && x<=1600+170 && y>=280 && y<=280+60) { //1600, 280, 170, 60
+                if (showExpected) {
+                    showExpected = false;
+                }
+                else {
+                    showExpected = true;
+                }
+            }
             if (!rolledDice) {
                 if (x >= 30 && x <= 130 && y >= 130 && y <= 230) {
                     rolledDice = true;
@@ -1244,6 +1265,14 @@ public class CatanPanel extends JPanel implements MouseListener {
             repaint();
         }
         if(gs.getGameState() == 2){
+            if (x>=1600 && x<=1600+170 && y>=280 && y<=280+60) { //1600, 280, 170, 60
+                if (showExpected) {
+                    showExpected = false;
+                }
+                else {
+                    showExpected = true;
+                }
+            }
             if (gs.getSubState().equals("")) {
                 if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60)  { //build button 1600, 360, 170, 60
                     ArrayList<String> possibleOptions = new ArrayList<>();
@@ -1689,8 +1718,16 @@ public class CatanPanel extends JPanel implements MouseListener {
         changeColor(g);
         g.fillRoundRect(1600, 280, 170, 60, 20, 20);
         g.setColor(Color.black);
-        g.setFont(new Font("Helvetica", Font.PLAIN, 30));
-        g.drawString("Game Log", 1615, 280+40);
+
+        if (showExpected) {
+            g.setFont(new Font("Helvetica", Font.PLAIN, 30));
+            g.drawString("Hide Values", 1605, 280+40);
+        }
+        else {
+            g.setFont(new Font("Helvetica", Font.PLAIN, 28));
+            g.drawString("Show Values", 1605, 280+40);
+        }
+
     }
     public void drawBuild(Graphics g) {
         changeColor(g);
@@ -2015,6 +2052,21 @@ public class CatanPanel extends JPanel implements MouseListener {
             for (int j = 0; j < intersections[i].length; j++) {
                 if (intersections[i][j] != null) {
                     g.fillRect(intersections[i][j].getX()-10, intersections[i][j].getY()-10, 10, 10);
+                }
+            }
+        }
+    }
+    public void drawExpected(Graphics g) {
+        if (showExpected) {
+            for (int i = 0; i < intersections.length; i++) {
+                for (int j = 0; j < intersections[i].length; j++) {
+                    if (intersections[i][j] != null) {
+                        g.setColor(Color.green);
+                        g.setFont(new Font("Helvetica", Font.BOLD, 15));
+                        double factor = 1e5; // = 1 * 10^5 = 100000.
+                        double result = Math.round(intersections[i][j].getExpectedValue() * factor) / factor;
+                        g.drawString( result + "", intersections[i][j].getX()-30, intersections[i][j].getY()-15);
+                    }
                 }
             }
         }

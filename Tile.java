@@ -114,6 +114,20 @@ public class Tile {
     public String toString() {
         return resource + " " + number;
     }
-
+    public double getExpectedValue() {
+        ArrayList<Integer> diceRolls = new ArrayList<Integer>();
+        int desiredOutcomes = 0;
+        for (int i = 1; i<=6; i++) {
+            for (int j = 1; j<=6; j++) {
+                diceRolls.add(i+j);
+            }
+        }
+        for (Integer i : diceRolls) {
+            if (i == number) {
+                desiredOutcomes++;
+            }
+        }
+        return desiredOutcomes/36.0;
+    }
 
 }
