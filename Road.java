@@ -198,7 +198,7 @@ public class Road {
         if (this == null) {
             return 0;
         }
-        if (visited.contains(this)) {
+        if (visited.contains(this)){
             return 0;
         }
         HashSet<Road> visited1 = new HashSet<>();

@@ -174,7 +174,7 @@ public class CatanPanel extends JPanel implements MouseListener {
 
                 if (gs.getSubState().equals("settlement")) {
                     changeColor(g);
-                    g.setFont(new Font("TimesRoman", Font.PLAIN, 45));
+                    g.setFont(new Font("Helvetica", Font.PLAIN, 45));
                     if (adjacent == false) {
                         g.drawString("Choose starting settlement", 800, 100);
                     } else {
@@ -187,12 +187,12 @@ public class CatanPanel extends JPanel implements MouseListener {
                     }
                 } else if (gs.getSubState().equals("road")) {
                     changeColor(g);
-                    g.setFont(new Font("TimesRoman", Font.PLAIN, 55));
+                    g.setFont(new Font("Helvetica", Font.PLAIN, 55));
                     g.drawString("Choose endpoint of road for the settlement", 800, 100);
-                    g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
+                    g.setFont(new Font("Helvetica", Font.PLAIN, 70));
                 } else if (gs.getSubState().equals("settlement2")) {
                     changeColor(g);
-                    g.setFont(new Font("TimesRoman", Font.PLAIN, 45));
+                    g.setFont(new Font("Helvetica", Font.PLAIN, 45));
                     if (adjacent == false) {
                         g.drawString("Choose second settlement", 800, 100);
                     } else {
@@ -202,7 +202,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                     }
                 } else if (gs.getSubState().equals("road2")) {
                     changeColor(g);
-                    g.setFont(new Font("TimesRoman", Font.PLAIN, 45));
+                    g.setFont(new Font("Helvetica", Font.PLAIN, 45));
                     g.drawString("Choose road for the second settlement", 800, 100);
                 }
             }
@@ -238,12 +238,12 @@ public class CatanPanel extends JPanel implements MouseListener {
             }
             if (gs.getSubState().equals("showInventory")) {
                 drawCards(g, toViewInven);
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
+                g.setFont(new Font("Helvetica", Font.PLAIN, 25));
                 g.setColor(Color.white);
                 g.fillRect(300, 900, 60, 30);
                 g.setColor(Color.black);
                 g.drawString("Back", 300, 925);
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.setFont(new Font("Helvetica", Font.PLAIN, 40));
                 g.drawString("Click back to return", 800, 100);
             }
             if (gs.getSubState().equals("domesticWant")) {
@@ -252,13 +252,13 @@ public class CatanPanel extends JPanel implements MouseListener {
                 if (currentPlayerWant != null) {
                     drawTradeNums(g, offers.get(0), currentPlayer);
                 }
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
+                g.setFont(new Font("Helvetica", Font.PLAIN, 25));
                 g.setColor(Color.white);
                 g.fillRect(300, 900, 60, 30);
                 g.setColor(Color.black);
                 g.drawString("Done", 300, 925);
             } else if (gs.getSubState().equals("domesticPlayers")) {
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+                g.setFont(new Font("Helvetica", Font.PLAIN, 30));
                 changeColor(g);
                 g.drawString("Choose cards you want for " + currentPlayerWant, 800, 100);
                 changeColor(g, tradeITOrder.get(0));
@@ -268,7 +268,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 g.setColor(Color.white);
                 g.fillRect(300, 900, 60, 30);
                 g.setColor(Color.black);
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
+                g.setFont(new Font("Helvetica", Font.PLAIN, 25));
                 g.drawString("Done", 300, 930);
             } else if (gs.getSubState().equals("domesticFinal")) {
                 drawCards(g, currentPlayer);
@@ -370,7 +370,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 }
             }
             else {
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.setFont(new Font("Helvetica", Font.PLAIN, 40));
                 g.drawString(die1 + " + " + die2 + " = " + sum, 20, 100);
             }
             if (gs.getSubState().equals("robber") || gs.getSubState().equals("knight")) {
@@ -381,13 +381,13 @@ public class CatanPanel extends JPanel implements MouseListener {
             if (gs.getSubState().equals("roadBuilding1") || gs.getSubState().equals("roadBuilding3")) {
                 highlightRoadAble1(g);
                 g.setColor(Color.cyan);
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.setFont(new Font("Helvetica", Font.PLAIN, 40));
                 g.drawString("Click on first intersection to build the road", 800, 100);
             }
             if (gs.getSubState().equals("roadBuilding2") || gs.getSubState().equals("roadBuilding4")) {
                 highlightRoadAble2(g);
                 g.setColor(Color.cyan);
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.setFont(new Font("Helvetica", Font.PLAIN, 40));
                 g.drawString("Click on second intersection to build the road", 800, 100);
             }
         }
@@ -420,36 +420,36 @@ public class CatanPanel extends JPanel implements MouseListener {
             }
             if (gs.getSubState().equals("showInventory")) {
                 drawCards(g, toViewInven);
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
+                g.setFont(new Font("Helvetica", Font.PLAIN, 25));
                 g.setColor(Color.white);
                 g.fillRect(300, 900, 60, 30);
                 g.setColor(Color.black);
                 g.drawString("Back", 300, 925);
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.setFont(new Font("Helvetica", Font.PLAIN, 40));
                 g.drawString("Click back to return", 800, 100);
             }
             else if (gs.getSubState().equals("settlement")) {
                 highlightSettleAble(g);
                 g.setColor(Color.cyan);
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.setFont(new Font("Helvetica", Font.PLAIN, 40));
                 g.drawString("Click on highlighted intersection to build a settlment", 800, 100);
             }
             else if (gs.getSubState().equals("road") || gs.getSubState().equals("roadBuilding1") || gs.getSubState().equals("roadBuilding3")) {
                highlightRoadAble1(g);
                 g.setColor(Color.cyan);
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.setFont(new Font("Helvetica", Font.PLAIN, 40));
                 g.drawString("Click on first intersection to build the road", 800, 100);
             }
             else if (gs.getSubState().equals("road1") || gs.getSubState().equals("roadBuilding2") || gs.getSubState().equals("roadBuilding4")) {
                 highlightRoadAble2(g);
                 g.setColor(Color.cyan);
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.setFont(new Font("Helvetica", Font.PLAIN, 40));
                 g.drawString("Click on second intersection to build the road", 800, 100);
             }
             else if (gs.getSubState().equals("city")) {
                 highlightUpgradeAble(g);
                 g.setColor(Color.cyan);
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+                g.setFont(new Font("Helvetica", Font.PLAIN, 40));
                 g.drawString("Click on highlighted intersection to build a city", 800, 100);
             }
         }
@@ -457,7 +457,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             changeColor(g);
             g.clearRect(0, 0, 1900, 220);
             g.setColor(Color.black);
-            g.setFont(new Font("TimesRoman", Font.PLAIN, 100));
+            g.setFont(new Font("Helvetica", Font.PLAIN, 100));
             g.drawString(currentPlayer + " wins!", 800, 100);
         }
     }
@@ -1646,7 +1646,7 @@ public class CatanPanel extends JPanel implements MouseListener {
         return null;
     }
     public void drawTradeNums(Graphics g, HashMap<String, Integer> temp, Player p) {
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
+        g.setFont(new Font("Helvetica", Font.PLAIN, 70));
         Set<String> keys = temp.keySet();
         if (keys != null) {
             System.out.println("found requested resources from " + temp);
@@ -1668,33 +1668,33 @@ public class CatanPanel extends JPanel implements MouseListener {
         changeColor(g);
         g.fillRoundRect(1600, 200, 170, 60, 20, 20);
         g.setColor(Color.black);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.setFont(new Font("Helvetica", Font.PLAIN, 30));
         g.drawString("Trade", 1645, 200+40);
     }
     public void drawTradeGray(Graphics g) {
         g.setColor(Color.lightGray);
         g.fillRoundRect(1600, 200, 170, 60, 20, 20);
         g.setColor(Color.black);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.setFont(new Font("Helvetica", Font.PLAIN, 30));
         g.drawString("Trade", 1645, 200+40);
     }
     public void drawGameLog(Graphics g) {
         changeColor(g);
         g.fillRoundRect(1600, 280, 170, 60, 20, 20);
         g.setColor(Color.black);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Game Log", 1605, 280+40);
+        g.setFont(new Font("Helvetica", Font.PLAIN, 30));
+        g.drawString("Game Log", 1615, 280+40);
     }
     public void drawBuild(Graphics g) {
         changeColor(g);
         g.fillRoundRect(1600, 360, 170, 60, 20, 20);
         g.setColor(Color.black);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.setFont(new Font("Helvetica", Font.PLAIN, 30));
         if (gs.getGameState() == 2 && ((gs.getSubState().equals("settlement"))||gs.getSubState().equals("road") || gs.getSubState().equals("city")) || gs.getSubState().equals("road1")) {
             g.drawString("Cancel Build", 1605, 360+40);
         }
         else {
-            g.drawString("Build", 1645, 360+40);
+            g.drawString("Build", 1650, 360+40);
         }
 
     }
@@ -1702,22 +1702,22 @@ public class CatanPanel extends JPanel implements MouseListener {
         changeColor(g);
         g.fillRoundRect(1600, 360, 170, 60, 20, 20);
         g.setColor(Color.black);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Build", 1645, 360+40);
+        g.setFont(new Font("Helvetica", Font.PLAIN, 30));
+        g.drawString("Build", 1650, 360+40);
     }
     public void drawPlayerInfo(Graphics g) {
         changeColor(g);
         g.fillRoundRect(1600, 440, 170, 60, 20, 20);
         g.setColor(Color.black);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Inventories", 1605, 440+40);
+        g.setFont(new Font("Helvetica", Font.PLAIN, 30));
+        g.drawString("Inventories", 1615, 440+40);
     }
     public void drawNextTurnButton(Graphics g) {
         changeColor(g);
         g.fillRoundRect(1600, 520, 170, 60, 20, 20);
         g.setColor(Color.black);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString("Next Turn", 1605, 520+40);
+        g.setFont(new Font("Helvetica", Font.PLAIN, 30));
+        g.drawString("Next Turn", 1620, 520+40);
     }
 
     public void drawRobber(Graphics g) {
@@ -1742,7 +1742,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 if (amount > 0) {
                     BufferedImage img = Cards.cardImages.get(card);
                     g.drawImage(img, 1050+horDiff*count, 800, width, height, null);
-                    g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
+                    g.setFont(new Font("Helvetica", Font.PLAIN, 70));
                     g.drawString(""+amount, 1050+horDiff*count, 852);
                     count++;
                 }
@@ -1775,7 +1775,7 @@ public class CatanPanel extends JPanel implements MouseListener {
         return null;
     }
     public void drawCards(Graphics g, Player p) {
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
+        g.setFont(new Font("Helvetica", Font.PLAIN, 70));
         double ratio = 454.0/296.0;
         HashMap<String, Integer> resources = p.getResources();
         Set<String> keys = resources.keySet();
@@ -1960,20 +1960,20 @@ public class CatanPanel extends JPanel implements MouseListener {
         pManage.updateLargestArmy();
         if (pManage.largestArmy != null) {
             changeColor(g, pManage.largestArmy);
-            g.setFont(new Font("TimesRoman", Font.BOLD, 30));
+            g.setFont(new Font("Helvetica", Font.BOLD, 30));
             g.drawString(pManage.largestArmy.toString(), 1150, 530);
         }
         g.drawImage(roadImg, 950, 500, 180, (int)(180.0/276.0*370.0), null);
         pManage.updateLongestRoad();
         if (pManage.longestRoad != null) {
             changeColor(g, pManage.longestRoad);
-            g.setFont(new Font("TimesRoman", Font.BOLD, 30));
+            g.setFont(new Font("Helvetica", Font.BOLD, 30));
             g.drawString(pManage.longestRoad.toString(), 950, 530);
         }
         //bank
         changeColor(g);
         g.fillRoundRect(30, 630, 120, 50, 20, 20);
-        g.setFont(new Font("TimesRoman", Font.BOLD, 30));
+        g.setFont(new Font("Helvetica", Font.BOLD, 30));
         g.setColor(Color.BLACK);
         g.drawString("Bank", 50, 663);
         //victory points
@@ -1983,12 +1983,17 @@ public class CatanPanel extends JPanel implements MouseListener {
             repaint();
         }
         //player info
-        g.setFont(new Font("TimesRoman", Font.BOLD, 30));
+        g.setFont(new Font("Helvetica", Font.BOLD, 30));
         g.setColor(Color.GREEN);
         g.drawString("Player #", 1000, 230);
         g.drawImage(resourceFaceDown, 1130, 150, 100, 150, null);
+        g.setFont(new Font("Helvetica", Font.BOLD, 10));
+        g.drawString("# of Resources Cards",1125, 135);
         g.drawImage(devFaceDown, 1260, 150, 100, 150, null);
+        g.drawString("# of Development Cards",1250, 135);
         g.drawImage(Cards.cardImages.get("knight"), 1380, 150, 100, 150, null);
+        g.drawString("# of Knights Used",1387, 135);
+        g.setFont(new Font("Helvetica", Font.BOLD, 30));
         for (int i = 0; i<pManage.size(); i++) {
             changeColor(g, pManage.get(i));
             g.drawString(pManage.get(i).toString(), 1000, 330 + i*30);
@@ -2060,11 +2065,11 @@ public class CatanPanel extends JPanel implements MouseListener {
             g.setColor(Color.YELLOW);
             //System.out.println("set color to yellow");
         }
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
+        g.setFont(new Font("Helvetica", Font.PLAIN, 70));
         g.drawString("Player " + p.playerIndex, 30, 850);
         int vp = currentPlayer.updateVP();
         int hvp = currentPlayer.updateHiddenVP();
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.setFont(new Font("Helvetica", Font.PLAIN, 30));
         g.drawString("Points: " + vp + "(+"+hvp+") = " + (hvp+vp), 30, 920);
     }
 
