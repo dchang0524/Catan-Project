@@ -454,11 +454,20 @@ public class CatanPanel extends JPanel implements MouseListener {
             }
         }
         else if (gs.getGameState() == 3) {
-            changeColor(g);
-            g.clearRect(0, 0, 1900, 220);
-            g.setColor(Color.black);
-            g.setFont(new Font("TimesRoman", Font.PLAIN, 100));
-            g.drawString(currentPlayer + " wins!", 800, 100);
+            drawTiles(g);
+            drawPlayer(g, currentPlayer);
+            drawIntersections(g);
+            drawPorts(g);
+            drawSettlements(g);
+            drawRoads(g);
+            drawGameLog(g);
+            drawRobber(g);
+            drawTradeGray(g);
+            drawBuild(g);
+            drawPlayerInfo(g);
+            drawNextTurnButton(g);
+            drawDevCards(g);
+            drawCards(g, currentPlayer);
         }
     }
 
@@ -1978,9 +1987,9 @@ public class CatanPanel extends JPanel implements MouseListener {
         g.drawString("Bank", 50, 663);
         //victory points
         if (currentPlayer.totalVP() >= 10 && gs.getGameState() != 3) {
+            VictoryPanel vp = new VictoryPanel(currentPlayer.toString());
             gs.setGameState(3);
-            gs.setSubState(currentPlayer.toString());
-            repaint();
+
         }
         //player info
         g.setFont(new Font("TimesRoman", Font.BOLD, 30));
