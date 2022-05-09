@@ -67,7 +67,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             armyImg = ImageIO.read(CatanPanel.class.getResource("/DevCards/LargestArmyCard.png"));
             roadImg = ImageIO.read(CatanPanel.class.getResource("/DevCards/LongestRoadCard.png"));
             devFaceDown = ImageIO.read(CatanPanel.class.getResource("/DevCards/devFaceDown.jpg"));
-            resourceFaceDown = ImageIO.read(CatanPanel.class.getResource("/DevCards/resourceFaceDown.jpg"));
+            resourceFaceDown = ImageIO.read(CatanPanel.class.getResource("/DevCards/resourceFacedown.jpg"));
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error loading image");
@@ -327,7 +327,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                         ArrayList<String> potentialOptions = new ArrayList<>();
                         for (String resource : currentPlayer.shopRatio.keySet()) {
                             if (currentPlayer.getResourceCount(resource) >= currentPlayer.shopRatio.get(resource)) {
-                                if (resource != picked.toLowerCase()) {
+                                if (!resource.equals(picked.toLowerCase())) {
                                     potentialOptions.add(resource);
                                 }
                             }

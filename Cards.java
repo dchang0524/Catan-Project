@@ -14,16 +14,16 @@ public class Cards {
             cardImages.put("wheat", ImageIO.read(Cards.class.getResource("/resourceCards/wheatCard.png")));
             cardImages.put("wood", ImageIO.read(Cards.class.getResource("/resourceCards/woodCard.png")));
 
-            cardImages.put("longestRoad", ImageIO.read(Cards.class.getResource("/devCards/LongestRoadCard.png")));
-            cardImages.put("largestArmy", ImageIO.read(Cards.class.getResource("/devCards/LargestArmyCard.png")));
+            cardImages.put("longestRoad", ImageIO.read(Cards.class.getResource("/DevCards/LongestRoadCard.png")));
+            cardImages.put("largestArmy", ImageIO.read(Cards.class.getResource("/DevCards/LargestArmyCard.png")));
 
-            cardImages.put("knight", ImageIO.read(Cards.class.getResource("/devCards/knightCard.png")));
-            cardImages.put("roadBuilding", ImageIO.read(Cards.class.getResource("/devCards/RoadBuildingCard.png")));
-            cardImages.put("monopoly", ImageIO.read(Cards.class.getResource("/devCards/MonopolyCard.png")));
-            cardImages.put("yearOfPlenty", ImageIO.read(Cards.class.getResource("/devCards/YearOfPlentyCard.png")));
+            cardImages.put("knight", ImageIO.read(Cards.class.getResource("/DevCards/knightCard.png")));
+            cardImages.put("roadBuilding", ImageIO.read(Cards.class.getResource("/DevCards/RoadBuildingCard.png")));
+            cardImages.put("monopoly", ImageIO.read(Cards.class.getResource("/DevCards/MonopolyCard.png")));
+            cardImages.put("yearOfPlenty", ImageIO.read(Cards.class.getResource("/DevCards/YearOfPlentyCard.png")));
 
-            cardImages.put("university", ImageIO.read(Cards.class.getResource("/devCards/UniversityCard.png")));
-            cardImages.put("library", ImageIO.read(Cards.class.getResource("/devCards/LibraryCard.png")));
+            cardImages.put("university", ImageIO.read(Cards.class.getResource("/DevCards/UniversityCard.png")));
+            cardImages.put("library", ImageIO.read(Cards.class.getResource("/DevCards/LibraryCard.png")));
         }
         catch(Exception e){
             System.out.println("Error loading image");
