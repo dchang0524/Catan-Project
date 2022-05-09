@@ -71,8 +71,18 @@ public class Cards {
             if (count >= rand) {
                 p.newDevCards.put(key, p.newDevCards.get(key) + 1);
                 numDevCards.put(key, numDevCards.get(key) - 1);
+                System.out.println("Gave " + key + " to " + p);
+                System.out.println("Remaining: " + numDevCards);
                 return;
             }
         }
+    }
+
+    public static int totalDevCardCount() {
+        int total = 0;
+        for (String key : numDevCards.keySet()) {
+            total += numDevCards.get(key);
+        }
+        return total;
     }
 }

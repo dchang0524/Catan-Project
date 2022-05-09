@@ -388,6 +388,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 g.drawString("if you want to use a development card, click on it", 800, 780);
             }
             if (gs.getSubState().equals("robber") || gs.getSubState().equals("knight")) {
+                g.setFont(new Font("Helvetica", Font.PLAIN, 40));
                 g.drawString("Choose tile to place robber", 800, 120);
 
                 //TODO: print all players' inventory counts
@@ -431,6 +432,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             drawCards(g, currentPlayer);
             drawExpected(g);
             if (gs.getSubState().equals("knight")) {
+                g.setFont(new Font("Helvetica", Font.PLAIN, 40));
                 g.drawString("Choose tile to place robber", 800, 120);
             }
             if (gs.getSubState().equals("showInventory")) {
@@ -641,6 +643,12 @@ public class CatanPanel extends JPanel implements MouseListener {
                         board.distributeResources(sum);
                     }
                 }
+                else if (x>=30 && y>=630 && x<= 30 + 120 && y<=50+630) { //bank button 30, 630, 120, 50
+                    JOptionPane.showMessageDialog(null, "Remaining Resource Cards: " + Cards.numResourceCards +"\nRemaining Development Card Count: " + Cards.totalDevCardCount(), "BANK", JOptionPane.INFORMATION_MESSAGE);
+                    for (int i = 0; i<pManage.size(); i++) {
+                        JOptionPane.showMessageDialog(null, "Settlements: " + pManage.get(i).settlementsLeft() + "\nCities: " + pManage.get(i).citiesLeft() + "\nRoads: " + pManage.get(i).roadsLeft(), pManage.get(i).toString(), JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } //bank button
                 //development cards
                 else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("monopoly") && currentPlayer.devCards.get("monopoly") > 0 && usedDevCard == false) {
                     String[]  options = new String[5];
@@ -830,9 +838,9 @@ public class CatanPanel extends JPanel implements MouseListener {
                     gs.setSubState("");
                     gs.setGameState(1);
                     repaint();
-                }
+                } //next turn button
                 else if (x>=30 && y>=630 && x<= 30 + 120 && y<=50+630) { //bank button 30, 630, 120, 50
-                    JOptionPane.showMessageDialog(null, "Remaining Resource Cards: " + Cards.numResourceCards, "BANK", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Remaining Resource Cards: " + Cards.numResourceCards +"\nRemaining Development Card Count: " + Cards.totalDevCardCount(), "BANK", JOptionPane.INFORMATION_MESSAGE);
                     for (int i = 0; i<pManage.size(); i++) {
                         JOptionPane.showMessageDialog(null, "Settlements: " + pManage.get(i).settlementsLeft() + "\nCities: " + pManage.get(i).citiesLeft() + "\nRoads: " + pManage.get(i).roadsLeft(), pManage.get(i).toString(), JOptionPane.INFORMATION_MESSAGE);
                     }
@@ -865,7 +873,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                         }
                     }
                     repaint();
-                }
+                } //trade button
                 else if (x>=1600 && y>=440 && x<=1600+170 && y<=440+60)  { //inventories button 1600, 440, 170, 60
                     String[] toView = new String[pManage.size()-1];
                     int count = 0;
@@ -882,7 +890,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                         toViewInven = pManage.get(playerIndex);
                     }
                     repaint();
-                }
+                }//inventories button
                 else if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60)  { //build button 1600, 360, 170, 60
                     System.out.println("current inventory: " + currentPlayer.resources);
                     if (currentPlayer.enoughResourcesCard() || currentPlayer.enoughResourcesRoad() ||
@@ -894,7 +902,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                         JOptionPane.showMessageDialog(null, "You do not have enough resources to build anything. You can either trade or end your turn.", "NOTICE", JOptionPane.ERROR_MESSAGE);
                         gs.setSubState("");
                     }
-                }
+                } //build button
                 //development cards
                 else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("roadBuilding") && currentPlayer.devCards.get("roadBuilding") > 0 && usedDevCard == false) {
                     if (currentPlayer.roadsLeft() > 0) {
@@ -1162,7 +1170,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                             toDiscard = new ArrayList<Player>();
                             numDiscard = new ArrayList<Integer>();
                             for (int b = 0; b < pManage.size(); b++) {
-                                if (pManage.get(b).getInventorySize() > 7 && pManage.get(b) != currentPlayer) {
+                                if (pManage.get(b).getInventorySize() > 7) {
                                     toDiscard.add(pManage.get(b));
                                     numDiscard.add((int) Math.floor(pManage.get(b).getInventorySize() / 2.0));
                                 }
@@ -1329,7 +1337,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                         JOptionPane.showMessageDialog(null, "You do not have enough resources to build anything. You can either trade or end your turn.", "NOTICE", JOptionPane.ERROR_MESSAGE);
                         gs.setSubState("");
                     }
-                }
+                } //build button
                 else if (x>=1600 && y>=440 && x<=1600+170 && y<=440+60)  { //inventories button 1600, 440, 170, 60
                     String[] toView = new String[pManage.size()-1];
                     int count = 0;
@@ -1345,13 +1353,19 @@ public class CatanPanel extends JPanel implements MouseListener {
                         int playerIndex = Integer.parseInt("" + picked.charAt(7));
                         toViewInven = pManage.get(playerIndex);
                     }
-                }
+                } //inventories button
                 else if (x >= 1600 && x <= 1600 + 170 && y >= 520 && y <= 580) { //if next turn button (1500, 520, 170, 60)
                     pManage.nextPlayer();
                     rolledDice = false;
                     usedDevCard = false;
                     gs.setSubState("");
                     gs.setGameState(1);
+                } //next turn button
+                else if (x>=30 && y>=630 && x<= 30 + 120 && y<=50+630) { //bank button 30, 630, 120, 50
+                    JOptionPane.showMessageDialog(null, "Remaining Resource Cards: " + Cards.numResourceCards +"\nRemaining Development Card Count: " + Cards.totalDevCardCount(), "BANK", JOptionPane.INFORMATION_MESSAGE);
+                    for (int i = 0; i<pManage.size(); i++) {
+                        JOptionPane.showMessageDialog(null, "Settlements: " + pManage.get(i).settlementsLeft() + "\nCities: " + pManage.get(i).citiesLeft() + "\nRoads: " + pManage.get(i).roadsLeft(), pManage.get(i).toString(), JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
                 //development cards
                 else if (coordToDevCard(x, y) != null && coordToDevCard(x, y).equals("roadBuilding") && currentPlayer.devCards.get("roadBuilding") > 0 && usedDevCard == false) {
