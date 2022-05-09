@@ -66,7 +66,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             buildCosts = ImageIO.read(CatanPanel.class.getResource("/misc/build costs.png"));
             armyImg = ImageIO.read(CatanPanel.class.getResource("/DevCards/LargestArmyCard.png"));
             roadImg = ImageIO.read(CatanPanel.class.getResource("/DevCards/LongestRoadCard.png"));
-            devFaceDown = ImageIO.read(CatanPanel.class.getResource("/DevCards/devFacedown.jpg"));
+            devFaceDown = ImageIO.read(CatanPanel.class.getResource("/DevCards/devFaceDown.jpg"));
             resourceFaceDown = ImageIO.read(CatanPanel.class.getResource("/DevCards/resourceFacedown.jpg"));
         } catch (Exception e) {
             e.printStackTrace();
