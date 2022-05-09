@@ -68,12 +68,15 @@ public class Settlement {
             amount = 2;
         }
         if (t1 != null && !t1.resource.equals("desert")) {
+            System.out.println("Giving " + amount + " of " + t1.getResource());
             owner.addResource(t1.getResource(),amount);
         }
         if (t2 != null && !t2.resource.equals("desert")) {
+            System.out.println("Giving " + amount + " of " + t2.getResource());
             owner.addResource(t2.getResource(),amount);
         }
         if (t3 != null && !t3.resource.equals("desert")) {
+            System.out.println("Giving " + amount + " of " + t3.getResource());
             owner.addResource(t3.getResource(),amount);
         }
     }

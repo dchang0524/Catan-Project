@@ -17,7 +17,7 @@ public class Cards {
             cardImages.put("longestRoad", ImageIO.read(Cards.class.getResource("/DevCards/LongestRoadCard.png")));
             cardImages.put("largestArmy", ImageIO.read(Cards.class.getResource("/DevCards/LargestArmyCard.png")));
 
-            cardImages.put("knight", ImageIO.read(Cards.class.getResource("/DevCards/knightCard.png")));
+            cardImages.put("knight", ImageIO.read(Cards.class.getResource("/DevCards/KnightCard.png")));
             cardImages.put("roadBuilding", ImageIO.read(Cards.class.getResource("/DevCards/RoadBuildingCard.png")));
             cardImages.put("monopoly", ImageIO.read(Cards.class.getResource("/DevCards/MonopolyCard.png")));
             cardImages.put("yearOfPlenty", ImageIO.read(Cards.class.getResource("/DevCards/YearOfPlentyCard.png")));

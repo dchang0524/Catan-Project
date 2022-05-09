@@ -66,7 +66,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             buildCosts = ImageIO.read(CatanPanel.class.getResource("/misc/build costs.png"));
             armyImg = ImageIO.read(CatanPanel.class.getResource("/DevCards/LargestArmyCard.png"));
             roadImg = ImageIO.read(CatanPanel.class.getResource("/DevCards/LongestRoadCard.png"));
-            devFaceDown = ImageIO.read(CatanPanel.class.getResource("/DevCards/devFaceDown.jpg"));
+            devFaceDown = ImageIO.read(CatanPanel.class.getResource("/DevCards/devFacedown.jpg"));
             resourceFaceDown = ImageIO.read(CatanPanel.class.getResource("/DevCards/resourceFacedown.jpg"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -573,6 +573,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                                 && intersections[i][j].getX() - 14 <= x && x <= intersections[i][j].getX() + 14 && intersections[i][j].getY() - 14 <= y && y <= intersections[i][j].getY() + 14) {
                             System.out.println("intersection: " + intersections[i][j].getX() + " " + intersections[i][j].getY());
                             intersections[i][j].setSettlement(currentPlayer);
+                            System.out.println(bank.numResourceCards);
                             intersections[i][j].s.giveAllResource();
                             gs.setSubState("road2");
                         }
