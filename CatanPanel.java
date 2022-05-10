@@ -496,9 +496,11 @@ public class CatanPanel extends JPanel implements MouseListener {
         // menu screen
         if (gs.getGameState() == 0 && startGame == false) {
             if (x > 800 && x < 1100 && y > 500 && y < 600) {
-                pManage = new PlayerManager(Integer.parseInt(JOptionPane.showInputDialog(null,
-                        "Please enter the number of players(3-4):",
-                        "Number of Players", JOptionPane.QUESTION_MESSAGE)), bank);
+                int numPlayers = Integer.parseInt(JOptionPane.showInputDialog("Enter number of players (3-4)"));
+                while (numPlayers < 3 || numPlayers > 4) {
+                    numPlayers = Integer.parseInt(JOptionPane.showInputDialog("Please enter a valid number of players (3-4)"));
+                }
+                pManage = new PlayerManager(numPlayers, bank);
                 startGame = true;
                 gs.setSubState("settlement");
             }
