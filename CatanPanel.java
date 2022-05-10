@@ -378,15 +378,15 @@ public class CatanPanel extends JPanel implements MouseListener {
                     g.setFont(new Font ("TimesRoman", Font.PLAIN, 20));
                     g.drawString("if you want to use a development card, click on it", 800, 780);
                 }
-                else if (gs.getSubState().equals("knight") || gs.getSubState().equals("robber")) {
-                    g.drawString("Choose tile to place robber", 800, 120);
-                }
+                /*
                 else if (gs.getSubState().equals("roadBuilding1") || gs.getSubState().equals("roadBuilding3")) {
                     g.drawString("Choose first intersection of road", 800, 120);
                 }
                 else if (gs.getSubState().equals("roadBuilding2") || gs.getSubState().equals("roadBuilding4")) {
                     g.drawString("Choose second intersection of road", 800, 120);
                 }
+                 */
+
             }
             else {
                 g.setFont(new Font("Helvetica", Font.PLAIN, 40));
@@ -394,6 +394,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 g.setFont(new Font ("TimesRoman", Font.PLAIN, 20));
                 g.drawString("if you want to use a development card, click on it", 800, 780);
             }
+
             if (gs.getSubState().equals("robber") || gs.getSubState().equals("knight")) {
                 g.setFont(new Font("Helvetica", Font.PLAIN, 40));
                 g.drawString("Choose tile to place robber", 800, 120);
