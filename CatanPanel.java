@@ -369,6 +369,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             changeColor(g);
             g.fillRect(30, 130, 100, 100); //dice button
             g.drawImage(dice, 35, 135, 90, 90, null);
+            g.setFont(new Font("Helvetica", Font.PLAIN, 40));
             if (rolledDice == false) {
                 if (!(gs.getSubState().equals("knight")
                         || gs.getSubState().equals("roadBuilding1") || gs.getSubState().equals("roadBuilding2") ||
@@ -377,8 +378,14 @@ public class CatanPanel extends JPanel implements MouseListener {
                     g.setFont(new Font ("TimesRoman", Font.PLAIN, 20));
                     g.drawString("if you want to use a development card, click on it", 800, 780);
                 }
-                else {
+                else if (gs.getSubState().equals("knight") || gs.getSubState().equals("robber")) {
                     g.drawString("Choose tile to place robber", 800, 120);
+                }
+                else if (gs.getSubState().equals("roadBuilding1") || gs.getSubState().equals("roadBuilding3")) {
+                    g.drawString("Choose first intersection of road", 800, 120);
+                }
+                else if (gs.getSubState().equals("roadBuilding2") || gs.getSubState().equals("roadBuilding4")) {
+                    g.drawString("Choose second intersection of road", 800, 120);
                 }
             }
             else {
@@ -1289,7 +1296,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 if (x>=1600 && y>=360 && x<=1600+170 && y<=360+60)  { //build button 1600, 360, 170, 60
                     ArrayList<String> possibleOptions = new ArrayList<>();
                     System.out.println("current inventory: " + currentPlayer.resources);
-                    if (currentPlayer.enoughResourcesCard()) {
+                    if (currentPlayer.enoughResourcesCard() && Cards.totalDevCardCount() > 0) {
                         possibleOptions.add("Development Card");
                     } //devCard
                     if (currentPlayer.enoughResourcesSettlement()) {
