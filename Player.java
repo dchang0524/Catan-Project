@@ -28,11 +28,11 @@ public class Player {
         color = name;
         roads = new ArrayList<Road>();
         bank = c;
-        resources.put("brick", 999);
-        resources.put("ore", 999);
-        resources.put("sheep", 999);
-        resources.put("wheat", 999);
-        resources.put("wood", 999);
+        resources.put("brick", 0);
+        resources.put("ore", 0);
+        resources.put("sheep", 0);
+        resources.put("wheat", 0);
+        resources.put("wood", 0);
         playerIndex = i;
         shopRatio.put("brick", 4);
         shopRatio.put("ore", 4);
@@ -277,7 +277,7 @@ public class Player {
         return start;
     }
     public int citiesLeft() {
-        int start = 5;
+        int start = 4;
         for (Settlement s : settlements) {
             if (s.isCity() == true) {
                 start--;
