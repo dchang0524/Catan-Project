@@ -45,6 +45,16 @@ public class Tile {
         robber = false;
     }
     //getters and setters
+    public boolean canSteal(Player p) {
+        if (settles.size() > 0) {
+            for (int i = 0; i < settles.size(); i++) {
+                if (settles.get(i).getOwner() != p) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     public boolean hasRobber() {
         return robber;
     }

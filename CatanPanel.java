@@ -724,7 +724,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 else if (gs.getSubState().equals("knight")) {
                     for (int i = 0; i < tiles.length; i++) {
                         for (int j = 0; j < tiles[i].length; j++) {
-                            if (tiles[i][j] != null && x >= tiles[i][j].getX() + 52 && x <= tiles[i][j].getX() + 52 + 55 && y >= tiles[i][j].getY() + 50 && y <= tiles[i][j].getY() + 100 && tiles[i][j] != robber.getPosition() && tiles[i][j].getResource() != "desert") {
+                            if (tiles[i][j] != null && x >= tiles[i][j].getX() + 52 && x <= tiles[i][j].getX() + 52 + 55 && y >= tiles[i][j].getY() + 50 && y <= tiles[i][j].getY() + 100 && tiles[i][j] != robber.getPosition() && tiles[i][j].getResource() != "desert" && tiles[i][j].canSteal(currentPlayer)) {
                                 robber.setPosition(tiles[i][j]);
                                 gs.setSubState("");
                                 System.out.println("robber moved to " + i + " " + j + " " + tiles[i][j].getResource());
@@ -987,7 +987,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             else if (gs.getSubState().equals("knight")) {
                 for (int i = 0; i < tiles.length; i++) {
                     for (int j = 0; j < tiles[i].length; j++) {
-                        if (tiles[i][j] != null && x >= tiles[i][j].getX() + 52 && x <= tiles[i][j].getX() + 52 + 55 && y >= tiles[i][j].getY() + 50 && y <= tiles[i][j].getY() + 100 && tiles[i][j] != robber.getPosition() && tiles[i][j].getResource() != "desert") {
+                        if (tiles[i][j] != null && x >= tiles[i][j].getX() + 52 && x <= tiles[i][j].getX() + 52 + 55 && y >= tiles[i][j].getY() + 50 && y <= tiles[i][j].getY() + 100 && tiles[i][j] != robber.getPosition() && tiles[i][j].getResource() != "desert" && tiles[i][j].canSteal(currentPlayer)) {
                             robber.setPosition(tiles[i][j]);
                             gs.setSubState("");
                             System.out.println("robber moved to " + i + " " + j + " " + tiles[i][j].getResource());
@@ -1143,7 +1143,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             else if (gs.getSubState().equals("robber")) {
                 for (int i = 0; i < tiles.length; i++) {
                     for (int j = 0; j < tiles[i].length; j++) {
-                        if (tiles[i][j] != null && x >= tiles[i][j].getX() + 52 && x <= tiles[i][j].getX() + 52 + 55 && y >= tiles[i][j].getY() + 50 && y <= tiles[i][j].getY() + 100 && tiles[i][j] != robber.getPosition() && tiles[i][j].getResource() != "desert") {
+                        if (tiles[i][j] != null && x >= tiles[i][j].getX() + 52 && x <= tiles[i][j].getX() + 52 + 55 && y >= tiles[i][j].getY() + 50 && y <= tiles[i][j].getY() + 100 && tiles[i][j] != robber.getPosition() && tiles[i][j].getResource() != "desert" && tiles[i][j].canSteal(currentPlayer)) {
                             robber.setPosition(tiles[i][j]);
                             gs.setSubState("");
                             System.out.println("robber moved to " + i + " " + j + " " + tiles[i][j].getResource());
@@ -1451,7 +1451,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             else if (gs.getSubState().equals("knight")) {
                 for (int i = 0; i < tiles.length; i++) {
                     for (int j = 0; j < tiles[i].length; j++) {
-                        if (tiles[i][j] != null && x >= tiles[i][j].getX() + 52 && x <= tiles[i][j].getX() + 52 + 55 && y >= tiles[i][j].getY() + 50 && y <= tiles[i][j].getY() + 100 && tiles[i][j] != robber.getPosition() && tiles[i][j].getResource() != "desert") {
+                        if (tiles[i][j] != null && x >= tiles[i][j].getX() + 52 && x <= tiles[i][j].getX() + 52 + 55 && y >= tiles[i][j].getY() + 50 && y <= tiles[i][j].getY() + 100 && tiles[i][j] != robber.getPosition() && tiles[i][j].getResource() != "desert" && tiles[i][j].canSteal(currentPlayer)) {
                             robber.setPosition(tiles[i][j]);
                             gs.setSubState("");
                             System.out.println("robber moved to " + i + " " + j + " " + tiles[i][j].getResource());
