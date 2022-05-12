@@ -136,7 +136,7 @@ public class PlayerManager {
         }
         for (Player player : players) {
             player.manageRoads();
-            System.out.println(player + "'s longest road length: " + player.longestRoadLength());
+            //System.out.println(player + "'s longest road length: " + player.longestRoadLength());
             if (player.longestRoadLength() > longestRoadInt) {
                 if (longestRoad != null) {
                     longestRoad.longestRoad = false;
@@ -146,7 +146,7 @@ public class PlayerManager {
             }
         }
         if (longestRoad != null) {
-            System.out.println(longestRoad + " has the longest road, length: " + longestRoad.longestRoadLength());
+            //System.out.println(longestRoad + " has the longest road, length: " + longestRoad.longestRoadLength());
         }
         return longestRoad;
     }

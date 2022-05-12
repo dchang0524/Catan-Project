@@ -254,9 +254,9 @@ public class CatanPanel extends JPanel implements MouseListener {
             if (gs.getSubState().equals("domesticWant")) {
                 g.setFont(new Font("Helvetica", Font.PLAIN, 30));
                 g.drawString("Choose what cards you want to get by clicking on them", 800, 50);
-                g.drawString("Right click to remove cards", 800, 100);
+                g.drawString("Right click to remove cards, press Done without clicking anything to cancel", 800, 100);
                 System.out.println("currently wants " + currentPlayerWant);
-                if (currentPlayerWant != null) {
+                if (offers != null && !offers.isEmpty()) {
                     drawTradeNums(g, offers.get(0), currentPlayer);
                 }
                 g.setFont(new Font("Helvetica", Font.PLAIN, 25));
@@ -270,7 +270,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 g.setFont(new Font("Helvetica", Font.PLAIN, 20));
                 g.drawString("Choose what cards you want to get for  " + currentPlayerWant, 800, 25);
                 g.drawString("Will automatically skip over player if they don't have what the current player wants", 800, 75);
-                g.drawString("Click on the cards you want to get. To remove a card, right click on the card.", 800, 125);
+                g.drawString("Click on the cards you want to get. Right click to remove cards, press Done without clicking anything to decline", 800, 125);
                 changeColor(g, tradeITOrder.get(0));
                 g.drawString("Current chooser " + tradeITOrder.get(0), 900, 150);
                 drawCards(g, tradeITOrder.get(0));
@@ -854,7 +854,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                     for (int i = 0; i<pManage.size(); i++) {
                         JOptionPane.showMessageDialog(null, "Settlements: " + pManage.get(i).settlementsLeft() + "\nCities: " + pManage.get(i).citiesLeft() + "\nRoads: " + pManage.get(i).roadsLeft(), pManage.get(i).toString(), JOptionPane.INFORMATION_MESSAGE);
                     }
-                }
+                } //bank button
                 else if (x >= 1600 && x <= 1600 + 170 && y >= 200 && y <= 200 + 60) { //if trade button
                     String[] tradeTypes = new String[2];
                     tradeTypes[0] = "Trade With Players";
@@ -863,6 +863,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                     if (picked != null) {
                         if (picked.equals("Trade With Players")) {
                             gs.setSubState("domesticWant"); //current player adds items he wants to trade
+                            System.out.println("Setting up what current player wants to trade");
                             finalOffers = new ArrayList<HashMap<String, Integer>>();
                             finalOfferPlayers = new ArrayList<Player>();
                             tradeITOrder = new ArrayList<Player>();
@@ -1042,6 +1043,8 @@ public class CatanPanel extends JPanel implements MouseListener {
                     if (sum == 0) {
                         gs.setSubState("");
                         currentPlayerWant = null;
+                        tradeITOrder = null;
+                        offers = null;
                     } else if (sum > 0) {
                         gs.setSubState("domesticPlayers");
                         for (int i = 0; i < pManage.players.size(); i++) {
@@ -2055,9 +2058,9 @@ public class CatanPanel extends JPanel implements MouseListener {
 
         }
         //player info
-        g.setFont(new Font("Helvetica", Font.BOLD, 30));
+        g.setFont(new Font("Helvetica", Font.BOLD, 23));
         g.setColor(Color.GREEN);
-        g.drawString("Player #", 1000, 230);
+        g.drawString("(Vp)Player #", 990, 230);
         g.drawImage(resourceFaceDown, 1130, 150, 100, 150, null);
         g.setFont(new Font("Helvetica", Font.BOLD, 10));
         g.drawString("# of Resources Cards",1125, 135);
@@ -2065,10 +2068,10 @@ public class CatanPanel extends JPanel implements MouseListener {
         g.drawString("# of Development Cards",1250, 135);
         g.drawImage(Cards.cardImages.get("knight"), 1380, 150, 100, 150, null);
         g.drawString("# of Knights Used",1387, 135);
-        g.setFont(new Font("Helvetica", Font.BOLD, 30));
+        g.setFont(new Font("Helvetica", Font.BOLD, 29));
         for (int i = 0; i<pManage.size(); i++) {
             changeColor(g, pManage.get(i));
-            g.drawString(pManage.get(i).toString(), 1000, 330 + i*30);
+            g.drawString("("+pManage.get(i).updateVP() + ")" + pManage.get(i).toString(), 990, 330 + i*30);
             g.drawString(pManage.get(i).totalResources() + "", 1170, 330 + i*30);
             g.drawString(pManage.get(i).totalDevCards() + "", 1300, 330 + i*30);
             g.drawString(pManage.get(i).knightsUsed + "", 1420, 330 + i*30);
