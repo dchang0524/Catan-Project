@@ -671,7 +671,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                     String picked = (String) JOptionPane.showInputDialog(null, "Which resource do you want?", "Choose Resource", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                     if (picked != null) {
                         currentPlayer.devCards.put("monopoly", currentPlayer.devCards.get("monopoly") - 1);
-                        Cards.numDevCards.put("monopoly", Cards.numDevCards.get("monopoly") + 1);
+                       // Cards.numDevCards.put("monopoly", Cards.numDevCards.get("monopoly") + 1);
                         pManage.monopoly(currentPlayer, picked.toLowerCase());
                         usedDevCard = true;
                     }
@@ -709,7 +709,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                         String picked2 = (String) JOptionPane.showInputDialog(null, "Which resource do you want?", "Choose Resource 2", JOptionPane.QUESTION_MESSAGE, null, options22, options22[0]);
                         if (picked2 != null) {
                             currentPlayer.devCards.put("yearOfPlenty", currentPlayer.devCards.get("yearOfPlenty") - 1);
-                            Cards.numDevCards.put("yearOfPlenty", Cards.numDevCards.get("yearOfPlenty") + 1);
+                           // Cards.numDevCards.put("yearOfPlenty", Cards.numDevCards.get("yearOfPlenty") + 1);
                             pManage.yearOfPlenty(currentPlayer, picked1.toLowerCase(), picked2.toLowerCase());
                             usedDevCard = true;
                         }
@@ -799,7 +799,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                                     }
                                     else {
                                         currentPlayer.devCards.put("roadBuilding", currentPlayer.devCards.get("roadBuilding") - 1);
-                                        Cards.numDevCards.put("roadBuilding", Cards.numDevCards.get("roadBuilding") + 1);
+                                  //      Cards.numDevCards.put("roadBuilding", Cards.numDevCards.get("roadBuilding") + 1);
                                         gs.setSubState("");
                                         JOptionPane.showMessageDialog(null, "You do not have enough roads to build");
                                     }
@@ -833,7 +833,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                                     roadBuildI1 = null;
                                     currentPlayer.devCards.put("roadBuilding", currentPlayer.devCards.get("roadBuilding") - 1);
                                     usedDevCard  = true;
-                                    Cards.numDevCards.put("roadBuilding", Cards.numDevCards.get("roadBuilding") + 1);
+                          //          Cards.numDevCards.put("roadBuilding", Cards.numDevCards.get("roadBuilding") + 1);
                                 }
                             }
                         }
@@ -934,7 +934,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                     String picked = (String) JOptionPane.showInputDialog(null, "Which resource do you want?", "Choose Resource", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                     if (picked != null) {
                         currentPlayer.devCards.put("monopoly", currentPlayer.devCards.get("monopoly") - 1);
-                        Cards.numDevCards.put("monopoly", Cards.numDevCards.get("monopoly") + 1);
+                //        Cards.numDevCards.put("monopoly", Cards.numDevCards.get("monopoly") + 1);
                         pManage.monopoly(currentPlayer, picked.toLowerCase());
                         usedDevCard = true;
                     }
@@ -972,7 +972,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                         String picked2 = (String) JOptionPane.showInputDialog(null, "Which resource do you want?", "Choose Resource 2", JOptionPane.QUESTION_MESSAGE, null, options22, options22[0]);
                         if (picked2 != null) {
                             currentPlayer.devCards.put("yearOfPlenty", currentPlayer.devCards.get("yearOfPlenty") - 1);
-                            Cards.numDevCards.put("yearOfPlenty", Cards.numDevCards.get("yearOfPlenty") + 1);
+                     //       Cards.numDevCards.put("yearOfPlenty", Cards.numDevCards.get("yearOfPlenty") + 1);
                             pManage.yearOfPlenty(currentPlayer, picked1.toLowerCase(), picked2.toLowerCase());
                             usedDevCard = true;
                         }
@@ -1247,7 +1247,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                                 }
                                 else {
                                     currentPlayer.devCards.put("roadBuilding", currentPlayer.devCards.get("roadBuilding") - 1);
-                                    Cards.numDevCards.put("roadBuilding", Cards.numDevCards.get("roadBuilding") + 1);
+                       //             Cards.numDevCards.put("roadBuilding", Cards.numDevCards.get("roadBuilding") + 1);
                                     gs.setSubState("");
                                     JOptionPane.showMessageDialog(null, "You do not have enough roads to build");
                                 }
@@ -1281,7 +1281,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                                 roadBuildI1 = null;
                                 currentPlayer.devCards.put("roadBuilding", currentPlayer.devCards.get("roadBuilding") - 1);
                                 usedDevCard  = true;
-                                Cards.numDevCards.put("roadBuilding", Cards.numDevCards.get("roadBuilding") + 1);
+                           //     Cards.numDevCards.put("roadBuilding", Cards.numDevCards.get("roadBuilding") + 1);
                             }
                         }
                     }
@@ -1400,7 +1400,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                     String picked = (String) JOptionPane.showInputDialog(null, "Which resource do you want?", "Choose Resource", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                     if (picked != null) {
                         currentPlayer.devCards.put("monopoly", currentPlayer.devCards.get("monopoly") - 1);
-                        Cards.numDevCards.put("monopoly", Cards.numDevCards.get("monopoly") + 1);
+                   //     Cards.numDevCards.put("monopoly", Cards.numDevCards.get("monopoly") + 1);
                         pManage.monopoly(currentPlayer, picked.toLowerCase());
                         usedDevCard = true;
                     }
@@ -1438,7 +1438,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                         String picked2 = (String) JOptionPane.showInputDialog(null, "Which resource do you want?", "Choose Resource 2", JOptionPane.QUESTION_MESSAGE, null, options22, options22[0]);
                         if (picked2 != null) {
                             currentPlayer.devCards.put("yearOfPlenty", currentPlayer.devCards.get("yearOfPlenty") - 1);
-                            Cards.numDevCards.put("yearOfPlenty", Cards.numDevCards.get("yearOfPlenty") + 1);
+                     //       Cards.numDevCards.put("yearOfPlenty", Cards.numDevCards.get("yearOfPlenty") + 1);
                             pManage.yearOfPlenty(currentPlayer, picked1.toLowerCase(), picked2.toLowerCase());
                             usedDevCard = true;
                         }
@@ -1601,7 +1601,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                                 }
                                 else {
                                     currentPlayer.devCards.put("roadBuilding", currentPlayer.devCards.get("roadBuilding") - 1);
-                                    Cards.numDevCards.put("roadBuilding", Cards.numDevCards.get("roadBuilding") + 1);
+                            //        Cards.numDevCards.put("roadBuilding", Cards.numDevCards.get("roadBuilding") + 1);
                                     gs.setSubState("");
                                     JOptionPane.showMessageDialog(null, "You do not have enough roads to build");
                                 }
@@ -1638,7 +1638,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                                 roadBuildI1 = null;
                                 currentPlayer.devCards.put("roadBuilding", currentPlayer.devCards.get("roadBuilding") - 1);
                                 usedDevCard  = true;
-                                Cards.numDevCards.put("roadBuilding", Cards.numDevCards.get("roadBuilding") + 1);
+                           //     Cards.numDevCards.put("roadBuilding", Cards.numDevCards.get("roadBuilding") + 1);
                             }
                         }
                     }
