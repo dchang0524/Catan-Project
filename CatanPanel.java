@@ -49,6 +49,8 @@ public class CatanPanel extends JPanel implements MouseListener {
 
     boolean showExpected = false;
 
+    boolean stole = false;
+
     public CatanPanel() {
         //dim = Toolkit.getDefaultToolkit().getScreenSize();
         gs = new GameState();
@@ -82,6 +84,7 @@ public class CatanPanel extends JPanel implements MouseListener {
             for (int j = 0; j < tiles[i].length; j++) {
                 if (tiles[i][j] != null && tiles[i][j].getResource().equals("desert")) {
                     robber = new Robber(tiles[i][j]);
+                    board.setRobber(robber);
                 }
             }
         }
@@ -648,7 +651,21 @@ public class CatanPanel extends JPanel implements MouseListener {
                     sum = die1 + die2;
                     System.out.println("dice: " + die1 + " " + die2 + " sum: " + sum);
                     if (sum == 7) {
-                        gs.setSubState("robber");
+                        //discarding
+                        toDiscard = new ArrayList<Player>();
+                        numDiscard = new ArrayList<Integer>();
+                        for (int b = 0; b < pManage.size(); b++) {
+                            if (pManage.get(b).getInventorySize() > 7) {
+                                toDiscard.add(pManage.get(b));
+                                numDiscard.add((int) Math.floor(pManage.get(b).getInventorySize() / 2.0));
+                            }
+                        }
+                        if (toDiscard.size() > 0) {
+                            gs.setSubState("discard");
+                        }
+                        else {
+                            gs.setSubState("robber");
+                        }
                     } else {
                         board.distributeResources(sum);
                     }
@@ -1144,6 +1161,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                 }
             }
             else if (gs.getSubState().equals("robber")) {
+
                 for (int i = 0; i < tiles.length; i++) {
                     for (int j = 0; j < tiles[i].length; j++) {
                         if (tiles[i][j] != null && x >= tiles[i][j].getX() + 52 && x <= tiles[i][j].getX() + 52 + 55 && y >= tiles[i][j].getY() + 50 && y <= tiles[i][j].getY() + 100 && tiles[i][j] != robber.getPosition() && tiles[i][j].getResource() != "desert" && tiles[i][j].canSteal(currentPlayer)) {
@@ -1179,18 +1197,7 @@ public class CatanPanel extends JPanel implements MouseListener {
 
 
                             }
-                            //discarding
-                            toDiscard = new ArrayList<Player>();
-                            numDiscard = new ArrayList<Integer>();
-                            for (int b = 0; b < pManage.size(); b++) {
-                                if (pManage.get(b).getInventorySize() > 7) {
-                                    toDiscard.add(pManage.get(b));
-                                    numDiscard.add((int) Math.floor(pManage.get(b).getInventorySize() / 2.0));
-                                }
-                            }
-                            if (toDiscard.size() > 0) {
-                                gs.setSubState("discard");
-                            }
+
                         }
                     }
                 }
@@ -1208,7 +1215,7 @@ public class CatanPanel extends JPanel implements MouseListener {
                                 toDiscard.remove(0);
                                 numDiscard.remove(0);
                                 if (toDiscard.size() == 0) {
-                                    gs.setSubState("");
+                                    gs.setSubState("robber");
                                 }
                             }
                         }

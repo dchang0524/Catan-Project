@@ -7,10 +7,14 @@ public class Board{
     private Intersection[][] intersections;
     private Port[] ports;
     private BufferedImage[] numImages;
+    Robber robber;
     public Board() {
         setUpTiles();
         setUpIntersections();
         setPorts();
+    }
+    public void setRobber(Robber robber) {
+        this.robber = robber;
     }
     public Intersection[][] getIntersections() {
         return intersections;
@@ -695,7 +699,7 @@ public class Board{
     public void distributeResources(int k) {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                if (tiles[i][j] != null && tiles[i][j].getNumber() == k && tiles[i][j].hasRobber() == false) {
+                if (tiles[i][j] != null && tiles[i][j].getNumber() == k && robber.getPosition() != null && robber.getPosition() != tiles[i][j]) {
                     tiles[i][j].giveResources();
                 }
             }

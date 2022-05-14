@@ -64,9 +64,6 @@ public class Settlement {
     }
     public void giveAllResource() {
         int amount = 1;
-        if (isCity) {
-            amount = 2;
-        }
         if (t1 != null && !t1.resource.equals("desert")) {
             System.out.println("Giving " + amount + " of " + t1.getResource());
             owner.addResource(t1.getResource(),amount);
